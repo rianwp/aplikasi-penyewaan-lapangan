@@ -1,1 +1,1 @@
-## Aplikasi Penyewaal Lapangan MARGAJAYA Berbasis WEB
+## Aplikasi Penyewaan Lapangan MARGAJAYA Berbasis WEB
