@@ -78,13 +78,30 @@ export const GET = async (req: NextRequest) => {
 			}
 		)
 	}
-	return NextResponse.json(
-		{
-			success: true,
-			message: "ini jenis",
-		},
-		{
-			status: 200,
-		}
-	)
+	try {
+		const jenisLapangan = await prisma.jenisLapangan.findMany()
+
+		return NextResponse.json(
+			{
+				success: true,
+				data: {
+					jenisLapangan,
+				},
+			},
+			{
+				status: 200,
+			}
+		)
+	} catch (err) {
+		const error = err as Error
+		return NextResponse.json(
+			{
+				success: false,
+				message: error.message ?? "Terjadi kesalahan pada server",
+			},
+			{
+				status: 500,
+			}
+		)
+	}
 }

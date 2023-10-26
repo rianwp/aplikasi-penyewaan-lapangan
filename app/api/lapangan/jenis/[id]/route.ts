@@ -32,6 +32,24 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	})
 
 	try {
+		const findId = await prisma.jenisLapangan.findFirst({
+			where: {
+				id,
+			},
+		})
+
+		if (!findId) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Jenis Lapangan dengan id tersebut tidak ditemukan",
+				},
+				{
+					status: 404,
+				}
+			)
+		}
+
 		await prisma.jenisLapangan.update({
 			data: {
 				jenis_lapangan,
@@ -87,6 +105,24 @@ export const DELETE = async (
 	}
 
 	try {
+		const findId = await prisma.jenisLapangan.findFirst({
+			where: {
+				id,
+			},
+		})
+
+		if (!findId) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Jenis Lapangan dengan id tersebut tidak ditemukan",
+				},
+				{
+					status: 404,
+				}
+			)
+		}
+
 		await prisma.jenisLapangan.delete({
 			where: {
 				id,

@@ -29,6 +29,24 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	const checkJamBerakhir = jam_berakhir && checkHourFormat(jam_berakhir)
 
 	try {
+		const findId = await prisma.sesiLapangan.findFirst({
+			where: {
+				id,
+			},
+		})
+
+		if (!findId) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Sesi dengan id tersebut tidak ditemukan",
+				},
+				{
+					status: 404,
+				}
+			)
+		}
+
 		const sesi = await prisma.sesiLapangan.findFirst({
 			where: {
 				jam_mulai: jam_mulai,
@@ -100,6 +118,24 @@ export const DELETE = async (
 	}
 
 	try {
+		const findId = await prisma.sesiLapangan.findFirst({
+			where: {
+				id,
+			},
+		})
+
+		if (!findId) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Sesi dengan id tersebut tidak ditemukan",
+				},
+				{
+					status: 404,
+				}
+			)
+		}
+
 		await prisma.sesiLapangan.delete({
 			where: {
 				id,

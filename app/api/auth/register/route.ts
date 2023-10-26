@@ -101,7 +101,7 @@ export const POST = async (req: NextRequest) => {
 				message: "Register sukses",
 			},
 			{
-				status: 200,
+				status: 201,
 			}
 		)
 	} catch (err) {
