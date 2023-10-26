@@ -1,8 +1,8 @@
 import auth from "@/lib/auth"
 import { NextRequest, NextResponse } from "next/server"
 
-export const POST = async (req: NextRequest) => {
-	const user = await auth(req, "admin")
+export const GET = async (req: NextRequest) => {
+	const user = await auth(req, "user")
 	if (!user.success) {
 		return NextResponse.json(
 			{
@@ -17,19 +17,7 @@ export const POST = async (req: NextRequest) => {
 	return NextResponse.json(
 		{
 			success: true,
-			message: "ini lapangan",
-		},
-		{
-			status: 200,
-		}
-	)
-}
-
-export const GET = async (req: NextRequest) => {
-	return NextResponse.json(
-		{
-			success: true,
-			message: "ini lapangan",
+			message: "ini bookings",
 		},
 		{
 			status: 200,

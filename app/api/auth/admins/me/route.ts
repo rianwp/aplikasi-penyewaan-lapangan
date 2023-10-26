@@ -14,10 +14,21 @@ export const GET = async (req: NextRequest) => {
 			}
 		)
 	}
+
+	const payload = {
+		id: user.data?.id,
+		email: user.data?.email,
+		role: user.data?.role,
+		name: user.data?.name,
+		no_telp: user.data?.no_telp,
+	}
+
 	return NextResponse.json(
 		{
 			success: true,
-			message: "ini me",
+			data: {
+				user: { ...payload },
+			},
 		},
 		{
 			status: 200,

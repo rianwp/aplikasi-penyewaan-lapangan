@@ -8,7 +8,7 @@ const auth = async (req: NextRequest, role?: Role) => {
 	const secret = process.env.JWT_SECRET || ""
 	const bearerToken = req.headers.get("Authorization")?.split("Bearer ")[1]
 
-	if (!bearerToken || !req.cookies.get(COOKIE_NAME)) {
+	if (!bearerToken && !req.cookies.get(COOKIE_NAME)) {
 		return {
 			success: false,
 			message: "Unauthorized",
@@ -18,10 +18,9 @@ const auth = async (req: NextRequest, role?: Role) => {
 
 	try {
 		const payload = verify(
-			bearerToken ?? req.cookies.get(COOKIE_NAME)?.value,
+			bearerToken || req.cookies.get(COOKIE_NAME)?.value || "",
 			secret
 		) as User
-
 		const user = await prisma.user.findFirst({
 			where: {
 				id: payload.id,

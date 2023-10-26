@@ -56,10 +56,10 @@ model Lapangan {
 model JenisLapangan {
   id              String            @id @default(cuid())
   jenis_lapangan  String            @db.VarChar(255)
-  deskrpsi        String            @db.Text
-  image           Json?
+  deskripsi       String            @db.Text
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
+  Image           Image[]
   Lapangan        Lapangan[]
 }
 
@@ -70,6 +70,14 @@ model SesiLapangan {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @default(now()) @updatedAt
   Lapangan        Lapangan[]
+}
+
+model Image {
+  id              String            @id @default(cuid())
+  imageUrl        String            @db.Text()
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @default(now()) @updatedAt
+  JenisLapangan   JenisLapangan[]
 }
 
 enum Role {

@@ -1,18 +1,83 @@
+import auth from "@/lib/auth"
+import { prisma } from "@/lib/db"
+import checkBody from "@/utils/checkBody"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
-	return NextResponse.json(
-		{
-			success: true,
-			message: "ini jenis",
-		},
-		{
-			status: 200,
+	const user = await auth(req, "admin")
+	if (!user.success) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: user.message,
+			},
+			{
+				status: user.status,
+			}
+		)
+	}
+	const body = await req.json()
+	checkBody(["jenis_lapangan", "deskripsi"], body)
+
+	const { jenis_lapangan, deskripsi, images } = body as {
+		jenis_lapangan: string
+		deskripsi: string
+		images: string[]
+	}
+
+	const imageMap = images.map((image) => {
+		return {
+			id: image,
 		}
-	)
+	})
+
+	try {
+		await prisma.jenisLapangan.create({
+			data: {
+				jenis_lapangan,
+				deskripsi,
+				Image: {
+					connect: imageMap,
+				},
+			},
+		})
+
+		return NextResponse.json(
+			{
+				success: true,
+				message: "Jenis Lapangan sukses dibuat",
+			},
+			{
+				status: 201,
+			}
+		)
+	} catch (err) {
+		const error = err as Error
+		return NextResponse.json(
+			{
+				success: false,
+				message: error.message ?? "Terjadi kesalahan pada server",
+			},
+			{
+				status: 500,
+			}
+		)
+	}
 }
 
 export const GET = async (req: NextRequest) => {
+	const user = await auth(req, "admin")
+	if (!user.success) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: user.message,
+			},
+			{
+				status: user.status,
+			}
+		)
+	}
 	return NextResponse.json(
 		{
 			success: true,

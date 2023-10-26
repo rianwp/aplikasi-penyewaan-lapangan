@@ -1,10 +1,9 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
-import { IdParamsInterface } from "@/types/params"
+import imageKit from "@/lib/imageKit"
 import { NextRequest, NextResponse } from "next/server"
 
-export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
-	const id = params.id
+export const POST = async (req: NextRequest) => {
 	const user = await auth(req, "admin")
 	if (!user.success) {
 		return NextResponse.json(
@@ -18,37 +17,43 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 		)
 	}
 
-	const body = await req.json()
-	const { jenis_lapangan, deskripsi, images } = body as {
-		jenis_lapangan: string | undefined
-		deskripsi: string | undefined
-		images: string[] | undefined
-	}
-
-	const imageMap = images?.map((image) => {
-		return {
-			id: image,
-		}
-	})
-
 	try {
-		await prisma.jenisLapangan.update({
-			data: {
-				jenis_lapangan,
-				deskripsi,
-				Image: {
-					connect: imageMap,
+		const formData = await req.formData()
+		const file = formData.get("image") as Blob | null
+		if (!file) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "File tidak ditemukan",
 				},
-			},
-			where: {
-				id,
+				{
+					status: 200,
+				}
+			)
+		}
+
+		const split = file.name.split(".")
+		const extension = split[split.length - 1]
+		const buffer = Buffer.from(await file.arrayBuffer())
+
+		const uploadedImage = await imageKit.upload({
+			file: buffer,
+			fileName: `IMG-${Date.now()}.${extension}`,
+		})
+
+		const createImage = await prisma.image.create({
+			data: {
+				imageUrl: uploadedImage.url,
 			},
 		})
 
 		return NextResponse.json(
 			{
 				success: true,
-				message: "Jenis Lapangan sukses diupdate",
+				message: "Sukses upload image",
+				data: {
+					imageUrl: createImage.imageUrl,
+				},
 			},
 			{
 				status: 200,
@@ -68,11 +73,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	}
 }
 
-export const DELETE = async (
-	req: NextRequest,
-	{ params }: IdParamsInterface
-) => {
-	const id = params.id
+export const GET = async (req: NextRequest) => {
 	const user = await auth(req, "admin")
 	if (!user.success) {
 		return NextResponse.json(
@@ -87,16 +88,13 @@ export const DELETE = async (
 	}
 
 	try {
-		await prisma.jenisLapangan.delete({
-			where: {
-				id,
-			},
-		})
-
+		const image = await prisma.image.findMany()
 		return NextResponse.json(
 			{
 				success: true,
-				message: "Jenis Lapangan sukses dihapus",
+				data: {
+					image,
+				},
 			},
 			{
 				status: 200,
