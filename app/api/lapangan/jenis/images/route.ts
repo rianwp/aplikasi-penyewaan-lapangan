@@ -52,7 +52,7 @@ export const POST = async (req: NextRequest) => {
 				success: true,
 				message: "Sukses upload image",
 				data: {
-					imageUrl: createImage.imageUrl,
+					image: createImage,
 				},
 			},
 			{
