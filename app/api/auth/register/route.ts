@@ -16,66 +16,67 @@ export const POST = async (req: NextRequest) => {
 		no_telp: string
 		confirm_password: string
 	}
+
+	if (!checkEmail(email)) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Email tidak valid",
+			},
+			{
+				status: 400,
+			}
+		)
+	}
+
+	if (!checkPhoneNumber(no_telp)) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Nomer telepon tidak valid",
+			},
+			{
+				status: 400,
+			}
+		)
+	}
+
+	if (password.length < 8) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Password minimal 8 karakter",
+			},
+			{
+				status: 400,
+			}
+		)
+	}
+
+	if (password !== confirm_password) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Confirm Password harus sama dengan Password",
+			},
+			{
+				status: 400,
+			}
+		)
+	}
+
 	try {
-		const user = await prisma.user.findFirst({
+		const user = await prisma.user.findUnique({
 			where: {
 				email,
 			},
 		})
-
-		if (!checkEmail(email)) {
-			return NextResponse.json(
-				{
-					success: false,
-					message: "Email tidak valid",
-				},
-				{
-					status: 400,
-				}
-			)
-		}
 
 		if (user) {
 			return NextResponse.json(
 				{
 					success: false,
 					message: "Email sudah digunakan",
-				},
-				{
-					status: 400,
-				}
-			)
-		}
-
-		if (password.length < 8) {
-			return NextResponse.json(
-				{
-					success: false,
-					message: "Password minimal 8 karakter",
-				},
-				{
-					status: 400,
-				}
-			)
-		}
-
-		if (password !== confirm_password) {
-			return NextResponse.json(
-				{
-					success: false,
-					message: "Confirm Password harus sama dengan Password",
-				},
-				{
-					status: 400,
-				}
-			)
-		}
-
-		if (!checkPhoneNumber(no_telp)) {
-			return NextResponse.json(
-				{
-					success: false,
-					message: "Nomer telepon tidak valid",
 				},
 				{
 					status: 400,

@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
 		images: string[]
 	}
 
-	const imageMap = images.map((image) => {
+	const imageIdMap = images.map((image) => {
 		return {
 			id: image,
 		}
@@ -37,7 +37,7 @@ export const POST = async (req: NextRequest) => {
 				jenis_lapangan,
 				deskripsi,
 				Image: {
-					connect: imageMap,
+					connect: imageIdMap,
 				},
 			},
 		})

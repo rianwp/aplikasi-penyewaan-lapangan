@@ -25,11 +25,24 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 		jam_berakhir: string | undefined
 	}
 
-	const checkJamMulai = jam_mulai && checkHourFormat(jam_mulai)
-	const checkJamBerakhir = jam_berakhir && checkHourFormat(jam_berakhir)
+	const checkJamMulai = (jam_mulai && checkHourFormat(jam_mulai)) || !jam_mulai
+	const checkJamBerakhir =
+		(jam_berakhir && checkHourFormat(jam_berakhir)) || !jam_berakhir
+
+	if (!checkJamMulai || !checkJamBerakhir) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Format jam tidak valid",
+			},
+			{
+				status: 400,
+			}
+		)
+	}
 
 	try {
-		const findId = await prisma.sesiLapangan.findFirst({
+		const findId = await prisma.sesiLapangan.findUnique({
 			where: {
 				id,
 			},
@@ -68,8 +81,8 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		await prisma.sesiLapangan.update({
 			data: {
-				jam_mulai: checkJamMulai ? jam_mulai : undefined,
-				jam_berakhir: checkJamBerakhir ? jam_berakhir : undefined,
+				jam_mulai,
+				jam_berakhir,
 			},
 			where: {
 				id,
@@ -118,7 +131,7 @@ export const DELETE = async (
 	}
 
 	try {
-		const findId = await prisma.sesiLapangan.findFirst({
+		const findId = await prisma.sesiLapangan.findUnique({
 			where: {
 				id,
 			},

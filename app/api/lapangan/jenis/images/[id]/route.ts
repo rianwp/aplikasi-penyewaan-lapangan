@@ -22,7 +22,7 @@ export const DELETE = async (
 	}
 
 	try {
-		const findId = await prisma.image.findFirst({
+		const findId = await prisma.image.findUnique({
 			where: {
 				id,
 			},

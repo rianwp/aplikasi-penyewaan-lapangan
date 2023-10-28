@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest) => {
 	const { email, password } = await req.json()
 	const userAgent = req.headers.get("User-Agent")
 	try {
-		const user = await prisma.user.findFirst({
+		const user = await prisma.user.findUnique({
 			where: {
 				email,
 			},

@@ -32,7 +32,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	})
 
 	try {
-		const findId = await prisma.jenisLapangan.findFirst({
+		const findId = await prisma.jenisLapangan.findUnique({
 			where: {
 				id,
 			},
@@ -105,7 +105,7 @@ export const DELETE = async (
 	}
 
 	try {
-		const findId = await prisma.jenisLapangan.findFirst({
+		const findId = await prisma.jenisLapangan.findUnique({
 			where: {
 				id,
 			},

@@ -25,7 +25,7 @@ model Booking {
   amount          Int
   gross_amount    Int
   status          TransactionStatus @default(pending)
-  tanggal         DateTime          @default(now())
+  tanggal         DateTime          @default(now()) 
   payment_type    String            @db.VarChar(255)
   id_user         String            @db.VarChar(255)
   id_lapangan     String            @db.VarChar(255)
@@ -86,6 +86,7 @@ enum Role {
 }
 
 enum TransactionStatus {
+  offline_payment
   authorize
   capture
   settlement

@@ -21,7 +21,7 @@ const auth = async (req: NextRequest, role?: Role) => {
 			bearerToken || req.cookies.get(COOKIE_NAME)?.value || "",
 			secret
 		) as User
-		const user = await prisma.user.findFirst({
+		const user = await prisma.user.findUnique({
 			where: {
 				id: payload.id,
 				role: role ?? {
