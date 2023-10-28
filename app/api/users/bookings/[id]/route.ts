@@ -20,6 +20,31 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 	try {
 		const booking = await prisma.booking.findUnique({
+			include: {
+				Lapangan: {
+					include: {
+						JenisLapangan: {
+							select: {
+								jenis_lapangan: true,
+							},
+						},
+						SesiLapangan: {
+							select: {
+								jam_mulai: true,
+								jam_berakhir: true,
+							},
+						},
+					},
+					select: {
+						harga: true,
+					},
+				},
+				User: {
+					select: {
+						name: true,
+					},
+				},
+			},
 			where: {
 				id,
 				id_user: user.data?.id,
@@ -42,7 +67,18 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 			{
 				success: true,
 				data: {
-					booking,
+					booking: {
+						id: booking.id,
+						name: booking.User.name,
+						jenis_lapangan: booking.Lapangan.JenisLapangan.jenis_lapangan,
+						jam_mulai: booking.Lapangan.SesiLapangan.jam_mulai,
+						jam_berakhir: booking.Lapangan.SesiLapangan.jam_berakhir,
+						harga: booking.Lapangan.harga,
+						createdAt: booking.createdAt,
+						updatedAt: booking.updatedAt,
+						status: booking.status,
+						payment_type: booking.payment_type,
+					},
 				},
 			},
 			{

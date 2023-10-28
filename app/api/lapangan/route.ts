@@ -112,10 +112,19 @@ export const GET = async (req: NextRequest) => {
 	}
 
 	try {
-		const lapangan = await prisma.lapangan.findMany()
+		const lapangan = await prisma.lapangan.findMany({
+			include: {
+				JenisLapangan: true,
+				SesiLapangan: true,
+			},
+		})
 
 		const lapanganNotAvailable = tanggalParams
 			? await prisma.lapangan.findMany({
+					include: {
+						JenisLapangan: true,
+						SesiLapangan: true,
+					},
 					where: {
 						Booking: {
 							every: {

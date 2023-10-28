@@ -181,13 +181,54 @@ export const GET = async (req: NextRequest) => {
 		)
 	}
 	try {
-		const booking = await prisma.booking.findMany()
+		const booking = await prisma.booking.findMany({
+			include: {
+				Lapangan: {
+					include: {
+						JenisLapangan: {
+							select: {
+								jenis_lapangan: true,
+							},
+						},
+						SesiLapangan: {
+							select: {
+								jam_mulai: true,
+								jam_berakhir: true,
+							},
+						},
+					},
+					select: {
+						harga: true,
+					},
+				},
+				User: {
+					select: {
+						name: true,
+					},
+				},
+			},
+		})
+
+		const returnedData = booking.map((data) => {
+			return {
+				id: data.id,
+				name: data.User.name,
+				jenis_lapangan: data.Lapangan.JenisLapangan.jenis_lapangan,
+				jam_mulai: data.Lapangan.SesiLapangan.jam_mulai,
+				jam_berakhir: data.Lapangan.SesiLapangan.jam_berakhir,
+				harga: data.Lapangan.harga,
+				createdAt: data.createdAt,
+				updatedAt: data.updatedAt,
+				status: data.status,
+				payment_type: data.payment_type,
+			}
+		})
 
 		return NextResponse.json(
 			{
 				success: true,
 				data: {
-					booking,
+					booking: returnedData,
 				},
 			},
 			{
