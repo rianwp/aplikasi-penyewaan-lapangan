@@ -19,10 +19,10 @@ export const PUT = async (req: NextRequest) => {
 		)
 	}
 	const body = await req.json()
-	const { name, email, new_password, no_telp } = body as {
+	const { name, email, password, no_telp } = body as {
 		name: string | undefined
 		email: string | undefined
-		new_password: string | undefined
+		password: string | undefined
 		no_telp: string | undefined
 	}
 	try {
@@ -45,8 +45,7 @@ export const PUT = async (req: NextRequest) => {
 		}
 
 		const isValidEmail = (email && checkEmail(email)) || !email
-		const isValidPassword =
-			(new_password && new_password.length < 8) || !new_password
+		const isValidPassword = (password && password.length < 8) || !password
 		const isValidNoTelp = (no_telp && !checkPhoneNumber(no_telp)) || !no_telp
 
 		if (!isValidEmail) {
@@ -86,13 +85,13 @@ export const PUT = async (req: NextRequest) => {
 		}
 
 		const saltRounds = 10
-		const hashedPassword = await hash(new_password || "", saltRounds)
+		const hashedPassword = await hash(password || "", saltRounds)
 
 		await prisma.user.update({
 			data: {
 				email,
 				name,
-				password: hashedPassword,
+				password: password ? hashedPassword : undefined,
 				no_telp,
 			},
 			where: {
