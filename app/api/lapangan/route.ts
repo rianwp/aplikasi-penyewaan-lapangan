@@ -145,17 +145,18 @@ export const GET = async (req: NextRequest) => {
 		// 	: []
 
 		const filteredLapangan = lapangan.map((lap) => {
+			const { Booking, ...lapWithoutBooking } = lap
 			if (!tanggal) {
-				return lap
+				return lapWithoutBooking
 			}
 			if (lap.Booking.includes({ tanggal: new Date(tanggal) })) {
 				return {
-					...lap,
+					...lapWithoutBooking,
 					available: false,
 				}
 			} else {
 				return {
-					...lap,
+					...lapWithoutBooking,
 					available: true,
 				}
 			}
