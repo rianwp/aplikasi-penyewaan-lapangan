@@ -121,34 +121,34 @@ export const GET = async (req: NextRequest) => {
 				updatedAt: true,
 				JenisLapangan: true,
 				SesiLapangan: true,
+				Booking: {
+					select: {
+						tanggal: true,
+					},
+				},
 			},
 		})
 
-		const lapanganNotAvailable = tanggal
-			? await prisma.lapangan.findMany({
-					select: {
-						id: true,
-						harga: true,
-						createdAt: true,
-						updatedAt: true,
-						JenisLapangan: true,
-						SesiLapangan: true,
-					},
-					where: {
-						Booking: {
-							every: {
-								tanggal: isDateValid ? new Date(tanggal) : undefined,
-							},
-						},
-					},
-			  })
-			: []
+		// const lapanganNotAvailable = tanggal
+		// 	? await prisma.lapangan.findMany({
+		// 			select: {
+		// 				id: true,
+		// 			},
+		// 			where: {
+		// 				Booking: {
+		// 					every: {
+		// 						tanggal: isDateValid ? new Date(tanggal) : undefined,
+		// 					},
+		// 				},
+		// 			},
+		// 	  })
+		// 	: []
 
 		const filteredLapangan = lapangan.map((lap) => {
 			if (!tanggal) {
 				return lap
 			}
-			if (lapanganNotAvailable.includes(lap)) {
+			if (lap.Booking.includes({ tanggal: new Date(tanggal) })) {
 				return {
 					...lap,
 					available: false,
