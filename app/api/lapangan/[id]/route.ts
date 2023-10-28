@@ -7,7 +7,11 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 	const id = params.id
 	try {
 		const lapangan = await prisma.lapangan.findUnique({
-			include: {
+			select: {
+				id: true,
+				harga: true,
+				createdAt: true,
+				updatedAt: true,
 				JenisLapangan: true,
 				SesiLapangan: true,
 			},

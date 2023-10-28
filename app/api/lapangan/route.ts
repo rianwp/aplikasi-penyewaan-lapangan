@@ -96,10 +96,11 @@ export const POST = async (req: NextRequest) => {
 }
 
 export const GET = async (req: NextRequest) => {
-	const tanggalParams = req.nextUrl.searchParams.get("tanggal")
-	const tanggal = new Date(tanggalParams || "")
+	const tanggal = req.nextUrl.searchParams.get("tanggal")
 
-	if (!checkDate(tanggalParams) && tanggalParams) {
+	const isDateValid = (tanggal && checkDate(tanggal)) || !tanggal
+
+	if (!isDateValid) {
 		return NextResponse.json(
 			{
 				success: false,
@@ -113,22 +114,30 @@ export const GET = async (req: NextRequest) => {
 
 	try {
 		const lapangan = await prisma.lapangan.findMany({
-			include: {
+			select: {
+				id: true,
+				harga: true,
+				createdAt: true,
+				updatedAt: true,
 				JenisLapangan: true,
 				SesiLapangan: true,
 			},
 		})
 
-		const lapanganNotAvailable = tanggalParams
+		const lapanganNotAvailable = tanggal
 			? await prisma.lapangan.findMany({
-					include: {
+					select: {
+						id: true,
+						harga: true,
+						createdAt: true,
+						updatedAt: true,
 						JenisLapangan: true,
 						SesiLapangan: true,
 					},
 					where: {
 						Booking: {
 							every: {
-								tanggal: tanggalParams ? tanggal : undefined,
+								tanggal: isDateValid ? new Date(tanggal) : undefined,
 							},
 						},
 					},
@@ -136,7 +145,7 @@ export const GET = async (req: NextRequest) => {
 			: []
 
 		const filteredLapangan = lapangan.map((lap) => {
-			if (!tanggalParams) {
+			if (!tanggal) {
 				return lap
 			}
 			if (lapanganNotAvailable.includes(lap)) {
