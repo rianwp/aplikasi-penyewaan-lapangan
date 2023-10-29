@@ -78,18 +78,12 @@ export const POST = async (req: NextRequest) => {
 			)
 		}
 
-		const { harga } = (await prisma.lapangan.findUnique({
-			where: {
-				id: id_lapangan,
-			},
-		})) as Lapangan
-
 		const orderId = uuidv4()
 
 		const dataTransaction = {
 			transaction_details: {
 				order_id: orderId,
-				gross_amount: harga,
+				gross_amount: lapangan.harga,
 			},
 			customer_details: {},
 		}
@@ -99,8 +93,8 @@ export const POST = async (req: NextRequest) => {
 			tanggal: new Date(tanggal),
 			id_lapangan,
 			id_user: user.data?.id || "",
-			amount: harga,
-			gross_amount: harga,
+			amount: lapangan.harga,
+			gross_amount: lapangan.harga,
 			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
 			status: user.data?.role === "admin" ? "offline_payment" : undefined,
 		}
