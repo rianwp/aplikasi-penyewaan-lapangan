@@ -178,7 +178,8 @@ export const GET = async (req: NextRequest) => {
 		const booking = await prisma.booking.findMany({
 			include: {
 				Lapangan: {
-					include: {
+					select: {
+						harga: true,
 						JenisLapangan: {
 							select: {
 								jenis_lapangan: true,
@@ -190,9 +191,6 @@ export const GET = async (req: NextRequest) => {
 								jam_berakhir: true,
 							},
 						},
-					},
-					select: {
-						harga: true,
 					},
 				},
 				User: {

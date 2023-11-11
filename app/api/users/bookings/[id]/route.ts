@@ -22,7 +22,8 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 		const booking = await prisma.booking.findUnique({
 			include: {
 				Lapangan: {
-					include: {
+					select: {
+						harga: true,
 						JenisLapangan: {
 							select: {
 								jenis_lapangan: true,
@@ -34,9 +35,6 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 								jam_berakhir: true,
 							},
 						},
-					},
-					select: {
-						harga: true,
 					},
 				},
 				User: {
