@@ -3,7 +3,7 @@ interface LayoutPropsInterface {
 }
 
 const Layout = ({ children }: LayoutPropsInterface) => {
-	return <div>layout</div>
+	return <div className="font-system-ui">{children}</div>
 }
 
 export default Layout

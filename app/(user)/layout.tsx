@@ -3,7 +3,7 @@ interface LayoutPropsInterface {
 }
 
 const Layout = ({ children }: LayoutPropsInterface) => {
-	return <div>layout</div>
+	return <>{children}</>
 }
 
 export default Layout
