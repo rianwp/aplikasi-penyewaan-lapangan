@@ -1,6 +1,6 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
-import { IdParamsInterface } from "@/types/params"
+import { IdParamsInterface } from "@/types/IdParamsInterface"
 import checkHourFormat from "@/utils/checkHourFormat"
 import { NextRequest, NextResponse } from "next/server"
 

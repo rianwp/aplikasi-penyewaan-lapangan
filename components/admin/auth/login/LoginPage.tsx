@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { login } from "@/lib/http"
-import { LoginInterface } from "@/types/login"
+import { LoginInterface } from "@/types/LoginInterface"
 import { useMutation } from "@tanstack/react-query"
 import { useState, useEffect } from "react"
 import { useToast } from "@/components/ui/use-toast"
 import { Loader2 } from "lucide-react"
+import handleObjectState from "@/utils/handleObjectState"
 
 const LoginPage = () => {
 	const { toast } = useToast()
@@ -21,15 +22,6 @@ const LoginPage = () => {
 		email: "",
 		password: "",
 	})
-
-	const handleLoginInput = (inputKey: string, newValue: string) => {
-		setLoginInput((existingLoginInput) => {
-			return {
-				...existingLoginInput,
-				[inputKey]: newValue,
-			}
-		})
-	}
 
 	useEffect(() => {
 		if (!isPending && !isIdle) {
@@ -47,21 +39,22 @@ const LoginPage = () => {
 
 	return (
 		<div className="w-full h-screen flex justify-center items-center">
-			<div className="bg-primary-foreground border border-slate-200 rounded-lg flex flex-col gap-y-4 p-10">
+			<div className="bg-primary-foreground border border-slate-200 rounded-lg flex flex-col gap-y-4 p-8">
 				<h1 className="font-bold text-2xl text-center">Login</h1>
 				<div className="flex flex-col gap-y-1">
 					<Label htmlFor="email">Email</Label>
 					<Input
-						onChange={(e) => handleLoginInput("email", e.target.value)}
+						onChange={(e) => handleObjectState("email", e.target.value, setLoginInput)}
 						id="email"
 						type="email"
+						autoComplete="off"
 						placeholder="Masukan Email"
 					/>
 				</div>
 				<div className="flex flex-col gap-y-1">
 					<Label htmlFor="password">Password</Label>
 					<Input
-						onChange={(e) => handleLoginInput("password", e.target.value)}
+						onChange={(e) => handleObjectState("password", e.target.value, setLoginInput)}
 						id="password"
 						type="password"
 						placeholder="Masukan Password"

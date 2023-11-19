@@ -22,7 +22,7 @@ const AdminLayout = ({ children }: AdminLayoutPropsInterface) => {
 			>
 				<Sidebar onClose={() => setOpenSidebar(false)} />
 			</div>
-			<div className="mt-16 p-5 bg-[#F0F4F7] md:ml-[300px] ml-0 overflow-y-auto w-full min-h-[calc(100vh-64px)]">
+			<div className="mt-16 p-5 bg-[#F0F4F7] md:ml-[300px] ml-0 overflow-y-auto w-full md:w-[calc(100%-300px)] min-h-[calc(100vh-64px)]">
 				{children}
 			</div>
 		</div>

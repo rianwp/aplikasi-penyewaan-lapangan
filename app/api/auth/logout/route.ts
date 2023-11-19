@@ -27,7 +27,7 @@ export const POST = async (req: NextRequest) => {
 	return NextResponse.json(
 		{
 			success: true,
-			message: "Sukses login",
+			message: "Sukses logout",
 		},
 		{
 			status: 200,

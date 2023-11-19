@@ -1,4 +1,4 @@
-import { LoginInterface } from "@/types/login"
+import { LoginInterface } from "@/types/LoginInterface"
 import axios, { AxiosError } from "axios"
 
 export const getAdminData = async () => {
@@ -13,9 +13,17 @@ export const getAdminData = async () => {
 
 export const login = async (data: LoginInterface) => {
 	try {
-		const response = await axios.post("/api/auth/login", data, {
-			withCredentials: true,
-		})
+		const response = await axios.post("/api/auth/login", data)
+		return response.data
+	} catch (err) {
+		const error = err as AxiosError
+		throw error.response?.data
+	}
+}
+
+export const logout = async () => {
+	try {
+		const response = await axios.post("/api/auth/logout")
 		return response.data
 	} catch (err) {
 		const error = err as AxiosError
