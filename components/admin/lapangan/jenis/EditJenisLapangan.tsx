@@ -9,37 +9,39 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
-import { editSesiLapangan } from "@/lib/http"
-import { SesiLapanganResponseInterface } from "@/types/SesiLapanganInterface"
+import { editJenisLapangan } from "@/lib/http"
+import { JenisLapanganResponseInterface } from "@/types/JenisLapanganInterface"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 
-interface EditSesiLapanganPropsInterface {
-	currentData: SesiLapanganResponseInterface
+interface EditJenisLapanganPropsInterface {
+	currentData: JenisLapanganResponseInterface
 	isOpen: boolean
 	onOpenChange: (open: boolean) => void
 }
 
-const EditSesiLapangan = ({
+const EditJenisLapangan = ({
 	currentData,
 	isOpen,
 	onOpenChange,
-}: EditSesiLapanganPropsInterface) => {
+}: EditJenisLapanganPropsInterface) => {
 	const queryClient = useQueryClient()
 	const { toast } = useToast()
 
 	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
-		mutationKey: ["editSesiLapangan"],
-		mutationFn: (data: SesiLapanganResponseInterface) =>
-			editSesiLapangan(data.id, {
-				jam_mulai: data.jam_mulai,
-				jam_berakhir: data.jam_berakhir,
+		mutationKey: ["editJenisLapangan"],
+		mutationFn: (data: JenisLapanganResponseInterface) =>
+			editJenisLapangan(data.id, {
+				images: data.images,
+				jenis_lapangan: data.jenis_lapangan,
+				deskripsi: data.deskripsi,
 			}),
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ["getSesiLapangan"] }),
+			queryClient.invalidateQueries({ queryKey: ["getJenisLapangan"] }),
 	})
 
 	const [inputForm, setInputForm] = useState(currentData)
@@ -74,41 +76,44 @@ const EditSesiLapangan = ({
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Edit Data</DialogTitle>
-					<DialogDescription>Edit Sesi Lapangan</DialogDescription>
+					<DialogDescription>Edit Jenis Lapangan</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-y-4 py-4">
 					<div className="flex sm:flex-row flex-col items-center gap-4">
 						<Label
-							htmlFor="jam_mulai"
+							htmlFor="jenis_lapangan"
 							className="sm:text-right sm:w-1/4 w-full"
 						>
-							Jam Mulai
+							Jenis Lapangan
 						</Label>
 						<Input
-							type="time"
-							id="jam_mulai"
-							placeholder="Masukkan Jam Mulai"
-							value={inputForm.jam_mulai}
+							type="text"
+							id="jenis_lapangan"
+							placeholder="Masukkan Jenis Lapangan"
+							value={inputForm.jenis_lapangan}
 							onChange={(e) =>
-								handleObjectState("jam_mulai", e.target.value, setInputForm)
+								handleObjectState(
+									"jenis_lapangan",
+									e.target.value,
+									setInputForm
+								)
 							}
 							className="sm:w-3/4 w-full shrink-0"
 						/>
 					</div>
 					<div className="flex sm:flex-row flex-col items-center gap-4">
 						<Label
-							htmlFor="jam_berakhir"
+							htmlFor="deskripsi"
 							className="sm:text-right sm:w-1/4 w-full"
 						>
-							Jam Berakhir
+							Deskripsi
 						</Label>
-						<Input
-							type="time"
-							id="jam_berakhir"
-							placeholder="Masukkan Jam Berakhir"
-							value={inputForm.jam_berakhir}
+						<Textarea
+							id="deskripsi"
+							placeholder="Masukkan Deskrpsi"
+							value={inputForm.deskripsi}
 							onChange={(e) =>
-								handleObjectState("jam_berakhir", e.target.value, setInputForm)
+								handleObjectState("deskripsi", e.target.value, setInputForm)
 							}
 							className="sm:w-3/4 w-full shrink-0"
 						/>
@@ -132,4 +137,4 @@ const EditSesiLapangan = ({
 	)
 }
 
-export default EditSesiLapangan
+export default EditJenisLapangan

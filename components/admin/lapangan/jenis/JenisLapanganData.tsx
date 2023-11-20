@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react"
 import Table from "../../Table"
-import AddSesiLapangan from "./AddSesiLapangan"
-import EditSesiLapangan from "./EditSesiLapangan"
+import AddJenisLapangan from "./AddJenisLapangan"
+import EditJenisLapangan from "./EditJenisLapangan"
 import handleObjectState from "@/utils/handleObjectState"
 import DeleteData from "../../DeleteData"
-import { deleteSesiLapangan, getSesiLapangan } from "@/lib/http"
+import { deleteJenisLapangan, getJenisLapangan } from "@/lib/http"
 import { useQuery } from "@tanstack/react-query"
-import { SesiLapanganResponseInterface } from "@/types/SesiLapanganInterface"
+import { JenisLapanganResponseInterface } from "@/types/JenisLapanganInterface"
 import { useToast } from "@/components/ui/use-toast"
 
 const header = ["no", "jam mulai", "jam berakhir"]
@@ -17,17 +17,18 @@ const SesiLapanganData = () => {
 	const { toast } = useToast()
 
 	const {
-		data: dataSesiLapangan,
+		data: dataJenisLapangan,
 		isPending,
 		isError,
 		error,
 	} = useQuery({
-		queryKey: ["getSesiLapangan"],
-		queryFn: () => getSesiLapangan(),
+		queryKey: ["getJenisLapangan"],
+		queryFn: () => getJenisLapangan(),
 	})
 
 	const responseData =
-		(dataSesiLapangan?.data.sesi as SesiLapanganResponseInterface[]) ?? []
+		(dataJenisLapangan?.data
+			.jenisLapangan as JenisLapanganResponseInterface[]) ?? []
 	const tableData = responseData.map((data, index) => {
 		const { id, createdAt, updatedAt, ...dataForTable } = data
 		return {
@@ -51,13 +52,14 @@ const SesiLapanganData = () => {
 	const [addDataOpen, setAddDataOpen] = useState(false)
 	const [editData, setEditData] = useState<{
 		open: boolean
-		currentData: SesiLapanganResponseInterface
+		currentData: JenisLapanganResponseInterface
 	}>({
 		open: false,
 		currentData: {
 			id: "",
-			jam_berakhir: "",
-			jam_mulai: "",
+			images: [],
+			jenis_lapangan: "",
+			deskripsi: "",
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		},
@@ -90,11 +92,11 @@ const SesiLapanganData = () => {
 				tableData={tableData}
 				isLoading={isPending}
 			/>
-			<AddSesiLapangan
+			<AddJenisLapangan
 				isOpen={addDataOpen}
 				onOpenChange={(open) => setAddDataOpen(open)}
 			/>
-			<EditSesiLapangan
+			<EditJenisLapangan
 				currentData={editData.currentData}
 				isOpen={editData.open}
 				onOpenChange={(open) => handleObjectState("open", open, setEditData)}
@@ -103,7 +105,7 @@ const SesiLapanganData = () => {
 				onOpenChange={(open) => handleObjectState("open", open, setDeleteData)}
 				isOpen={deleteData.open}
 				deleteAction={() =>
-					deleteSesiLapangan(responseData[deleteData.index].id)
+					deleteJenisLapangan(responseData[deleteData.index].id)
 				}
 			/>
 		</>

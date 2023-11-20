@@ -29,7 +29,7 @@ const LoginPage = () => {
 				toast({
 					title: "Login Gagal",
 					description: error.message,
-					className: "bg-system-danger text-white",
+					variant: "destructive"
 				})
 			} else {
 				window.location.replace("/admin/dashboard")

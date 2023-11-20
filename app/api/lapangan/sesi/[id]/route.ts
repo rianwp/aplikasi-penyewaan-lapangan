@@ -2,6 +2,7 @@ import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
 import checkHourFormat from "@/utils/checkHourFormat"
+import checkValidHours from "@/utils/checkValidHours"
 import { NextRequest, NextResponse } from "next/server"
 
 export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
@@ -56,6 +57,23 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				},
 				{
 					status: 404,
+				}
+			)
+		}
+
+		if (
+			!checkValidHours(
+				jam_mulai || findId.jam_mulai,
+				jam_berakhir || findId.jam_berakhir
+			)
+		) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Jam berakhir harus lebih besar dari jam mulai",
+				},
+				{
+					status: 400,
 				}
 			)
 		}

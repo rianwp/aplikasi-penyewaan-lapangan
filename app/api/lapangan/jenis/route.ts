@@ -1,5 +1,6 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
 import checkBody from "@/utils/checkBody"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -19,11 +20,8 @@ export const POST = async (req: NextRequest) => {
 	const body = await req.json()
 	checkBody(["jenis_lapangan", "deskripsi"], body)
 
-	const { jenis_lapangan, deskripsi, images } = body as {
-		jenis_lapangan: string
-		deskripsi: string
-		images: string[]
-	}
+	const { jenis_lapangan, deskripsi, images } =
+		body as JenisLapanganRequestInterface
 
 	const imageIdMap = images.map((image) => {
 		return {
@@ -79,13 +77,29 @@ export const GET = async (req: NextRequest) => {
 		)
 	}
 	try {
-		const jenisLapangan = await prisma.jenisLapangan.findMany()
+		const jenisLapangan = await prisma.jenisLapangan.findMany({
+			include: {
+				Image: {
+					select: {
+						imageUrl: true,
+					},
+				},
+			},
+		})
+
+		const returnedData = jenisLapangan.map((data) => {
+			const { Image, ...dataWithoutImage } = data
+			return {
+				...dataWithoutImage,
+				images: Image.map((data) => data.imageUrl),
+			}
+		})
 
 		return NextResponse.json(
 			{
 				success: true,
 				data: {
-					jenisLapangan,
+					jenisLapangan: returnedData,
 				},
 			},
 			{

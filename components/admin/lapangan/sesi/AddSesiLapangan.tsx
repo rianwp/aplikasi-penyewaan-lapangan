@@ -9,6 +9,13 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useToast } from "@/components/ui/use-toast"
+import { addSesiLapangan } from "@/lib/http"
+import { SesiLapanganRequestInterface } from "@/types/SesiLapanganInterface"
+import handleObjectState from "@/utils/handleObjectState"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface AddSesiLapanganPropsInterface {
 	isOpen: boolean
@@ -19,6 +26,38 @@ const AddSesiLapangan = ({
 	isOpen,
 	onOpenChange,
 }: AddSesiLapanganPropsInterface) => {
+	const queryClient = useQueryClient()
+	const { toast } = useToast()
+
+	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
+		mutationKey: ["addSesiLapangan"],
+		mutationFn: (data: SesiLapanganRequestInterface) => addSesiLapangan(data),
+		onSuccess: () =>
+			queryClient.invalidateQueries({ queryKey: ["getSesiLapangan"] }),
+	})
+
+	const [inputForm, setInputForm] = useState({
+		jam_mulai: "",
+		jam_berakhir: "",
+	})
+
+	useEffect(() => {
+		if (!isPending && !isIdle) {
+			if (isError) {
+				toast({
+					title: "Terjadi Kesalahan",
+					description: error.message,
+					variant: "destructive",
+				})
+			} else {
+				toast({
+					title: "Sukses",
+					description: data.message,
+				})
+			}
+		}
+	}, [isPending, isError, isIdle])
+
 	return (
 		<Dialog open={isOpen} onOpenChange={(open) => onOpenChange(open)}>
 			<DialogContent>
@@ -35,9 +74,13 @@ const AddSesiLapangan = ({
 							Jam Mulai
 						</Label>
 						<Input
-              type="time"
+							type="time"
 							id="jam_mulai"
 							placeholder="Masukkan Jam Mulai"
+							value={inputForm.jam_mulai}
+							onChange={(e) =>
+								handleObjectState("jam_mulai", e.target.value, setInputForm)
+							}
 							className="sm:w-3/4 w-full shrink-0"
 						/>
 					</div>
@@ -49,19 +92,28 @@ const AddSesiLapangan = ({
 							Jam Berakhir
 						</Label>
 						<Input
-              type="time"
+							type="time"
 							id="jam_berakhir"
 							placeholder="Masukkan Jam Berakhir"
+							value={inputForm.jam_berakhir}
+							onChange={(e) =>
+								handleObjectState("jam_berakhir", e.target.value, setInputForm)
+							}
 							className="sm:w-3/4 w-full shrink-0"
 						/>
 					</div>
 				</div>
 				<DialogFooter>
 					<Button
-						className="bg-system-button-primary hover:bg-system-button-primary_hover"
+						disabled={isPending}
+						onClick={() => mutate(inputForm)}
+						className="bg-system-button-primary hover:bg-system-button-primary_hover flex flex-row gap-x-2"
 						type="button"
 					>
-						Simpan
+						{isPending ? (
+							<Loader2 className="h-5 w-5 animate-spin text-white" />
+						) : null}
+						<p>Simpan</p>
 					</Button>
 				</DialogFooter>
 			</DialogContent>

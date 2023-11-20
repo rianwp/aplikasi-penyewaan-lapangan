@@ -1,7 +1,9 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { SesiLapanganRequestInterface } from "@/types/SesiLapanganInterface"
 import checkBody from "@/utils/checkBody"
 import checkHourFormat from "@/utils/checkHourFormat"
+import checkValidHours from "@/utils/checkValidHours"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
@@ -21,9 +23,18 @@ export const POST = async (req: NextRequest) => {
 	const body = await req.json()
 	checkBody(["jam_mulai", "jam_berakhir"], body)
 
-	const { jam_mulai, jam_berakhir } = body as {
-		jam_mulai: string
-		jam_berakhir: string
+	const { jam_mulai, jam_berakhir } = body as SesiLapanganRequestInterface
+
+	if (!checkValidHours(jam_mulai, jam_berakhir)) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Jam berakhir harus lebih besar dari jam mulai",
+			},
+			{
+				status: 400,
+			}
+		)
 	}
 
 	if (!checkHourFormat(jam_mulai) || !checkHourFormat(jam_berakhir)) {

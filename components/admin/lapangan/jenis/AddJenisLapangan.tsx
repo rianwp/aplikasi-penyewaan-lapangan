@@ -9,46 +9,40 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
-import { editSesiLapangan } from "@/lib/http"
-import { SesiLapanganResponseInterface } from "@/types/SesiLapanganInterface"
+import { addJenisLapangan } from "@/lib/http"
+import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
+import ImageUploader from "./ImageUploader"
 
-interface EditSesiLapanganPropsInterface {
-	currentData: SesiLapanganResponseInterface
+interface AddJenisLapanganPropsInterface {
 	isOpen: boolean
 	onOpenChange: (open: boolean) => void
 }
 
-const EditSesiLapangan = ({
-	currentData,
+const AddJenisLapangan = ({
 	isOpen,
 	onOpenChange,
-}: EditSesiLapanganPropsInterface) => {
+}: AddJenisLapanganPropsInterface) => {
 	const queryClient = useQueryClient()
 	const { toast } = useToast()
 
 	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
-		mutationKey: ["editSesiLapangan"],
-		mutationFn: (data: SesiLapanganResponseInterface) =>
-			editSesiLapangan(data.id, {
-				jam_mulai: data.jam_mulai,
-				jam_berakhir: data.jam_berakhir,
-			}),
+		mutationKey: ["addJenisLapangan"],
+		mutationFn: (data: JenisLapanganRequestInterface) => addJenisLapangan(data),
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ["getSesiLapangan"] }),
+			queryClient.invalidateQueries({ queryKey: ["getJenisLapangan"] }),
 	})
 
-	const [inputForm, setInputForm] = useState(currentData)
-	const [isLoading, setIsLoading] = useState(true)
-
-	useEffect(() => {
-		setInputForm(currentData)
-		setIsLoading(false)
-	}, [currentData])
+	const [inputForm, setInputForm] = useState({
+		images: [],
+		jenis_lapangan: "",
+		deskripsi: "",
+	})
 
 	useEffect(() => {
 		if (!isPending && !isIdle) {
@@ -66,52 +60,61 @@ const EditSesiLapangan = ({
 			}
 		}
 	}, [isPending, isError, isIdle])
+
 	return (
-		<Dialog
-			open={isOpen && !isLoading}
-			onOpenChange={(open) => onOpenChange(open)}
-		>
+		<Dialog open={isOpen} onOpenChange={(open) => onOpenChange(open)}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Edit Data</DialogTitle>
-					<DialogDescription>Edit Sesi Lapangan</DialogDescription>
+					<DialogTitle>Tambah Data</DialogTitle>
+					<DialogDescription>Tambakan Jenis Lapangan</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-y-4 py-4">
 					<div className="flex sm:flex-row flex-col items-center gap-4">
 						<Label
-							htmlFor="jam_mulai"
+							htmlFor="jenis_lapangan"
 							className="sm:text-right sm:w-1/4 w-full"
 						>
-							Jam Mulai
+							Jenis Lapangan
 						</Label>
 						<Input
-							type="time"
-							id="jam_mulai"
-							placeholder="Masukkan Jam Mulai"
-							value={inputForm.jam_mulai}
+							type="text"
+							id="jenis_lapangan"
+							placeholder="Masukkan Jenis Lapangan"
+							value={inputForm.jenis_lapangan}
 							onChange={(e) =>
-								handleObjectState("jam_mulai", e.target.value, setInputForm)
+								handleObjectState(
+									"jenis_lapangan",
+									e.target.value,
+									setInputForm
+								)
 							}
 							className="sm:w-3/4 w-full shrink-0"
 						/>
 					</div>
 					<div className="flex sm:flex-row flex-col items-center gap-4">
 						<Label
-							htmlFor="jam_berakhir"
+							htmlFor="deskripsi"
 							className="sm:text-right sm:w-1/4 w-full"
 						>
-							Jam Berakhir
+							Deskripsi
 						</Label>
-						<Input
-							type="time"
-							id="jam_berakhir"
-							placeholder="Masukkan Jam Berakhir"
-							value={inputForm.jam_berakhir}
+						<Textarea
+							id="deskripsi"
+							placeholder="Masukkan Deskrpsi"
+							value={inputForm.deskripsi}
 							onChange={(e) =>
-								handleObjectState("jam_berakhir", e.target.value, setInputForm)
+								handleObjectState("deskripsi", e.target.value, setInputForm)
 							}
 							className="sm:w-3/4 w-full shrink-0"
 						/>
+					</div>
+					<div className="flex sm:flex-row flex-col items-center gap-4">
+						<Label htmlFor="foto" className="sm:text-right sm:w-1/4 w-full">
+							Foto
+						</Label>
+						<div className="sm:w-3/4 w-full shrink-0">
+							<ImageUploader />
+						</div>
 					</div>
 				</div>
 				<DialogFooter>
@@ -132,4 +135,4 @@ const EditSesiLapangan = ({
 	)
 }
 
-export default EditSesiLapangan
+export default AddJenisLapangan
