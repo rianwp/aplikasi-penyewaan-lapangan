@@ -18,7 +18,7 @@ export const POST = async (req: NextRequest) => {
 	const token = req.cookies.get(COOKIE_NAME)?.value || ""
 	const serialized = serialize(COOKIE_NAME, token, {
 		httpOnly: true,
-		secure: false,
+		secure: process.env.NODE_ENV === "production",
 		sameSite: "strict",
 		maxAge: -1,
 		path: "/",

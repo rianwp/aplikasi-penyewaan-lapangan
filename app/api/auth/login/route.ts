@@ -52,7 +52,7 @@ export const POST = async (req: NextRequest) => {
 			expiresIn: MAX_AGE,
 		})
 
-		if (userAgent?.includes("Android")) {
+		if (userAgent === "margajaya-app") {
 			return NextResponse.json(
 				{
 					success: true,
@@ -68,9 +68,8 @@ export const POST = async (req: NextRequest) => {
 		} else {
 			const serialized = serialize(COOKIE_NAME, token, {
 				httpOnly: true,
-
-				secure: false,
-				// sameSite: "strict",
+				secure: process.env.NODE_ENV === "production",
+				sameSite: "strict",
 				maxAge: MAX_AGE,
 				path: "/",
 			})
