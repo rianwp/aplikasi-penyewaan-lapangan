@@ -70,7 +70,7 @@ export const POST = async (req: NextRequest) => {
 				httpOnly: true,
 
 				secure: false,
-				sameSite: "strict",
+				// sameSite: "strict",
 				maxAge: MAX_AGE,
 				path: "/",
 			})
