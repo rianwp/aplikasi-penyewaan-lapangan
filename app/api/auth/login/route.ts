@@ -68,7 +68,8 @@ export const POST = async (req: NextRequest) => {
 		} else {
 			const serialized = serialize(COOKIE_NAME, token, {
 				httpOnly: true,
-				secure: process.env.NODE_ENV === "production",
+
+				// secure: process.env.NODE_ENV === "production",
 				sameSite: "strict",
 				maxAge: MAX_AGE,
 				path: "/",
