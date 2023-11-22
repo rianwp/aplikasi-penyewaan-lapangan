@@ -27,11 +27,21 @@ export const POST = async (req: NextRequest) => {
 					message: "File tidak ditemukan",
 				},
 				{
-					status: 200,
+					status: 404,
 				}
 			)
 		}
-
+		if (file.size > 5000000) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Ukuran file terlalu besar",
+				},
+				{
+					status: 400,
+				}
+			)
+		}
 		const split = file.name.split(".")
 		const extension = split[split.length - 1]
 		const buffer = Buffer.from(await file.arrayBuffer())
@@ -43,6 +53,7 @@ export const POST = async (req: NextRequest) => {
 
 		const createImage = await prisma.image.create({
 			data: {
+				id: uploadedImage.fileId,
 				imageUrl: uploadedImage.url,
 			},
 		})

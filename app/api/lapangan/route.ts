@@ -119,7 +119,20 @@ export const GET = async (req: NextRequest) => {
 				harga: true,
 				createdAt: true,
 				updatedAt: true,
-				JenisLapangan: true,
+				JenisLapangan: {
+					select: {
+						id: true,
+						jenis_lapangan: true,
+						deskripsi: true,
+						createdAt: true,
+						updatedAt: true,
+						Image: {
+							select: {
+								imageUrl: true,
+							},
+						},
+					},
+				},
 				SesiLapangan: true,
 				Booking: {
 					select: {

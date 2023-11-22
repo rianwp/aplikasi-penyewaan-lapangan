@@ -19,9 +19,25 @@ export const getAdminData = async () => {
 	}
 }
 
-export const login = async (data: LoginInterface) => {
+export const loginAdmin = async (data: LoginInterface) => {
 	try {
-		const response = await axios.post("/api/auth/login", data)
+		const response = await axios.post("/api/auth/admins/login", data)
+		return response.data
+	} catch (err) {
+		const error = err as AxiosError
+		if (error.code === "500") {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+		throw error.response?.data
+	}
+}
+
+export const loginUser = async (data: LoginInterface) => {
+	try {
+		const response = await axios.post("/api/auth/users/login", data)
 		return response.data
 	} catch (err) {
 		const error = err as AxiosError
@@ -172,6 +188,28 @@ export const editJenisLapangan = async (
 export const deleteJenisLapangan = async (id: string) => {
 	try {
 		const response = await axios.delete(`/api/lapangan/jenis/${id}`)
+		return response.data
+	} catch (err) {
+		const error = err as AxiosError
+		if (error.code === "500") {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+		throw error.response?.data
+	}
+}
+
+export const uploadImage = async (image: Blob) => {
+	const formData = new FormData()
+	formData.append("images", image)
+	try {
+		const response = await axios.post("/api/lapangan/jenis/images", formData, {
+			headers: {
+				"Content-Type": "multipart/form-data",
+			},
+		})
 		return response.data
 	} catch (err) {
 		const error = err as AxiosError

@@ -20,7 +20,11 @@ const ImageUploader = () => {
 					<DialogTitle>Upload Foto</DialogTitle>
 					<DialogDescription>Upload Foto untuk Lapangan</DialogDescription>
 				</DialogHeader>
-
+				<div className="flex flex-row flex-wrap rounded-lg border border-slate bg-primary-foreground">
+					<div className="p-3">
+						<img src="" />
+					</div>
+				</div>
 				<DialogFooter>
 					<Button
 						// disabled={isPending}

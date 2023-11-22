@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { login } from "@/lib/http"
+import { loginAdmin } from "@/lib/http"
 import { LoginInterface } from "@/types/LoginInterface"
 import { useMutation } from "@tanstack/react-query"
 import { useState, useEffect } from "react"
@@ -15,7 +15,7 @@ const LoginPage = () => {
 	const { toast } = useToast()
 	const { mutate, isPending, isError, error, isIdle } = useMutation({
 		mutationKey: ["login"],
-		mutationFn: (loginData: LoginInterface) => login(loginData),
+		mutationFn: (loginData: LoginInterface) => loginAdmin(loginData),
 	})
 
 	const [loginInput, setLoginInput] = useState({
@@ -29,7 +29,7 @@ const LoginPage = () => {
 				toast({
 					title: "Login Gagal",
 					description: error.message,
-					variant: "destructive"
+					variant: "destructive",
 				})
 			} else {
 				window.location.replace("/admin/dashboard")
@@ -44,7 +44,9 @@ const LoginPage = () => {
 				<div className="flex flex-col gap-y-1">
 					<Label htmlFor="email">Email</Label>
 					<Input
-						onChange={(e) => handleObjectState("email", e.target.value, setLoginInput)}
+						onChange={(e) =>
+							handleObjectState("email", e.target.value, setLoginInput)
+						}
 						id="email"
 						type="email"
 						autoComplete="off"
@@ -54,7 +56,9 @@ const LoginPage = () => {
 				<div className="flex flex-col gap-y-1">
 					<Label htmlFor="password">Password</Label>
 					<Input
-						onChange={(e) => handleObjectState("password", e.target.value, setLoginInput)}
+						onChange={(e) =>
+							handleObjectState("password", e.target.value, setLoginInput)
+						}
 						id="password"
 						type="password"
 						placeholder="Masukan Password"
