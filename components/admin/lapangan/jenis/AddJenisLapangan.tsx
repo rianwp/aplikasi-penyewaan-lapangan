@@ -18,6 +18,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
 import ImageUploader from "./ImageUploader"
+import { ImageLapanganResponseInterface } from "@/types/ImageLapanganInterface"
 
 interface AddJenisLapanganPropsInterface {
 	isOpen: boolean
@@ -37,8 +38,10 @@ const AddJenisLapangan = ({
 		onSuccess: () =>
 			queryClient.invalidateQueries({ queryKey: ["getJenisLapangan"] }),
 	})
-
-	const [inputForm, setInputForm] = useState({
+	const [previewImages, setPreviewImages] = useState<
+		ImageLapanganResponseInterface[]
+	>([])
+	const [inputForm, setInputForm] = useState<JenisLapanganRequestInterface>({
 		images: [],
 		jenis_lapangan: "",
 		deskripsi: "",
@@ -60,6 +63,15 @@ const AddJenisLapangan = ({
 			}
 		}
 	}, [isPending, isError, isIdle])
+
+	const handleNewImages = (images: ImageLapanganResponseInterface[]) => {
+		const filteredId: string[] = []
+		images.map((image) => {
+			filteredId.push(image.id)
+		})
+		handleObjectState("images", filteredId, setInputForm)
+		setPreviewImages(images)
+	}
 
 	return (
 		<Dialog open={isOpen} onOpenChange={(open) => onOpenChange(open)}>
@@ -108,12 +120,31 @@ const AddJenisLapangan = ({
 							className="sm:w-3/4 w-full shrink-0"
 						/>
 					</div>
-					<div className="flex sm:flex-row flex-col items-center gap-4">
+					<div className="flex sm:flex-row flex-col items-start gap-4">
 						<Label htmlFor="foto" className="sm:text-right sm:w-1/4 w-full">
 							Foto
 						</Label>
-						<div className="sm:w-3/4 w-full shrink-0">
-							<ImageUploader />
+						<div className="sm:w-3/4 w-full shrink-0 flex flex-col gap-y-2">
+							<div>
+								<ImageUploader
+									selectedId={inputForm.images}
+									onAddImage={(images) => handleNewImages(images)}
+								/>
+							</div>
+							<div className="flex flex-row flex-wrap">
+								{previewImages.map((data) => {
+									return (
+										<div className="p-2" key={data.id}>
+											<div className="relative w-24 h-24">
+												<img
+													className="aspect-square object-cover w-full h-full"
+													src={data.imageUrl}
+												/>
+											</div>
+										</div>
+									)
+								})}
+							</div>
 						</div>
 					</div>
 				</div>

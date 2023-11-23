@@ -1,5 +1,6 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import imageKit from "@/lib/imageKit"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -39,6 +40,8 @@ export const DELETE = async (
 				}
 			)
 		}
+
+		await imageKit.deleteFile(findId.id)
 
 		await prisma.image.delete({
 			where: {

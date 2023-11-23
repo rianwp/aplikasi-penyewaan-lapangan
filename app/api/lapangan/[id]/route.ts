@@ -74,9 +74,9 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 	const body = await req.json()
 	const { harga, id_jenislap, id_sesilap } = body as {
-		harga: number | undefined
-		id_jenislap: string | undefined
-		id_sesilap: string | undefined
+		harga: number
+		id_jenislap: string
+		id_sesilap: string
 	}
 
 	try {

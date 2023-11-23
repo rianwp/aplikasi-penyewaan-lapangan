@@ -2,6 +2,7 @@ import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
 import checkBody from "@/utils/checkBody"
+import checkEmptyString from "@/utils/checkEmptyString"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
@@ -22,6 +23,18 @@ export const POST = async (req: NextRequest) => {
 
 	const { jenis_lapangan, deskripsi, images } =
 		body as JenisLapanganRequestInterface
+
+	if (checkEmptyString(jenis_lapangan) || checkEmptyString(deskripsi)) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Jenis lapangan dan deskripsi tidak boleh kosong",
+			},
+			{
+				status: 400,
+			}
+		)
+	}
 
 	const imageIdMap = images.map((image) => {
 		return {
@@ -79,27 +92,15 @@ export const GET = async (req: NextRequest) => {
 	try {
 		const jenisLapangan = await prisma.jenisLapangan.findMany({
 			include: {
-				Image: {
-					select: {
-						imageUrl: true,
-					},
-				},
+				Image: true,
 			},
-		})
-
-		const returnedData = jenisLapangan.map((data) => {
-			const { Image, ...dataWithoutImage } = data
-			return {
-				...dataWithoutImage,
-				images: Image.map((data) => data.imageUrl),
-			}
 		})
 
 		return NextResponse.json(
 			{
 				success: true,
 				data: {
-					jenisLapangan: returnedData,
+					jenisLapangan,
 				},
 			},
 			{

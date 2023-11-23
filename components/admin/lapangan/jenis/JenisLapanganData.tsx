@@ -10,8 +10,9 @@ import { deleteJenisLapangan, getJenisLapangan } from "@/lib/http"
 import { useQuery } from "@tanstack/react-query"
 import { JenisLapanganResponseInterface } from "@/types/JenisLapanganInterface"
 import { useToast } from "@/components/ui/use-toast"
+import ImageList from "./ImageList"
 
-const header = ["no", "jam mulai", "jam berakhir"]
+const header = ["no", "jenis lapangan", "deskripsi", "foto"]
 
 const SesiLapanganData = () => {
 	const { toast } = useToast()
@@ -29,11 +30,13 @@ const SesiLapanganData = () => {
 	const responseData =
 		(dataJenisLapangan?.data
 			.jenisLapangan as JenisLapanganResponseInterface[]) ?? []
+
 	const tableData = responseData.map((data, index) => {
-		const { id, createdAt, updatedAt, ...dataForTable } = data
 		return {
 			no: index + 1,
-			...dataForTable,
+			jenis_lapangan: data.jenis_lapangan,
+			deskripsi: data.deskripsi,
+			images: <ImageList images={data.Image} />,
 		}
 	})
 
@@ -57,7 +60,7 @@ const SesiLapanganData = () => {
 		open: false,
 		currentData: {
 			id: "",
-			images: [],
+			Image: [],
 			jenis_lapangan: "",
 			deskripsi: "",
 			createdAt: new Date(),
@@ -107,6 +110,8 @@ const SesiLapanganData = () => {
 				deleteAction={() =>
 					deleteJenisLapangan(responseData[deleteData.index].id)
 				}
+				mutationKey="deleteJenisLapangan"
+				invalidateKey="getJenisLapangan"
 			/>
 		</>
 	)

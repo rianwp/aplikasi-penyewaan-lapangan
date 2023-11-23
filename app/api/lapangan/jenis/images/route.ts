@@ -44,6 +44,20 @@ export const POST = async (req: NextRequest) => {
 		}
 		const split = file.name.split(".")
 		const extension = split[split.length - 1]
+		const allowedExtension = ["jpg", "jpeg", "png"]
+
+		if (!allowedExtension.includes(extension.toLowerCase())) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: `Format file harus ${allowedExtension.toString()}`,
+				},
+				{
+					status: 400,
+				}
+			)
+		}
+
 		const buffer = Buffer.from(await file.arrayBuffer())
 
 		const uploadedImage = await imageKit.upload({
@@ -57,7 +71,6 @@ export const POST = async (req: NextRequest) => {
 				imageUrl: uploadedImage.url,
 			},
 		})
-
 		return NextResponse.json(
 			{
 				success: true,

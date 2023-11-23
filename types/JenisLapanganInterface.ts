@@ -1,3 +1,5 @@
+import { ImageLapanganResponseInterface } from "./ImageLapanganInterface"
+
 export interface JenisLapanganRequestInterface {
 	jenis_lapangan: string
 	deskripsi: string
@@ -6,7 +8,7 @@ export interface JenisLapanganRequestInterface {
 
 export interface JenisLapanganResponseInterface {
 	id: string
-	images: string[]
+	Image: ImageLapanganResponseInterface[]
 	jenis_lapangan: string
 	deskripsi: string
 	createdAt: Date

@@ -1,6 +1,7 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
+import { SesiLapanganRequestInterface } from "@/types/SesiLapanganInterface"
 import checkHourFormat from "@/utils/checkHourFormat"
 import checkValidHours from "@/utils/checkValidHours"
 import { NextRequest, NextResponse } from "next/server"
@@ -21,16 +22,21 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	}
 
 	const body = await req.json()
-	const { jam_mulai, jam_berakhir } = body as {
-		jam_mulai: string | undefined
-		jam_berakhir: string | undefined
+	const { jam_mulai, jam_berakhir } = body as SesiLapanganRequestInterface
+
+	if (!checkValidHours(jam_mulai, jam_berakhir)) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Jam berakhir harus lebih besar dari jam mulai",
+			},
+			{
+				status: 400,
+			}
+		)
 	}
 
-	const checkJamMulai = (jam_mulai && checkHourFormat(jam_mulai)) || !jam_mulai
-	const checkJamBerakhir =
-		(jam_berakhir && checkHourFormat(jam_berakhir)) || !jam_berakhir
-
-	if (!checkJamMulai || !checkJamBerakhir) {
+	if (!checkHourFormat(jam_mulai) || !checkHourFormat(jam_berakhir)) {
 		return NextResponse.json(
 			{
 				success: false,
@@ -57,23 +63,6 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				},
 				{
 					status: 404,
-				}
-			)
-		}
-
-		if (
-			!checkValidHours(
-				jam_mulai || findId.jam_mulai,
-				jam_berakhir || findId.jam_berakhir
-			)
-		) {
-			return NextResponse.json(
-				{
-					success: false,
-					message: "Jam berakhir harus lebih besar dari jam mulai",
-				},
-				{
-					status: 400,
 				}
 			)
 		}

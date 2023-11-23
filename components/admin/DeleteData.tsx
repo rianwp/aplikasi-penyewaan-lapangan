@@ -18,21 +18,25 @@ interface DeleteDataPropsInterface {
 	isOpen: boolean
 	onOpenChange: (open: boolean) => void
 	deleteAction: () => Promise<any>
+	mutationKey: string
+	invalidateKey: string
 }
 
 const DeleteData = ({
 	isOpen,
 	onOpenChange,
 	deleteAction,
+	mutationKey,
+	invalidateKey,
 }: DeleteDataPropsInterface) => {
 	const queryClient = useQueryClient()
 	const { toast } = useToast()
 
 	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
-		mutationKey: ["deleteSesiLapangan"],
+		mutationKey: [mutationKey],
 		mutationFn: deleteAction,
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ["getSesiLapangan"] }),
+			queryClient.invalidateQueries({ queryKey: [invalidateKey] }),
 	})
 
 	useEffect(() => {

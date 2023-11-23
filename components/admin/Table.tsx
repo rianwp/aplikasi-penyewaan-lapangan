@@ -156,23 +156,24 @@ const Table = ({
 				</div>
 			</div>
 			<div className="flex flex-row gap-x-2 items-center">
-				{!isMaxPageButtonShowed ? (
-					[...Array(pageLength)].map((data, index) => {
-						return (
-							<Button
-								className={
-									currentPageIndex === index
-										? ""
-										: "bg-system-button-primary hover:bg-system-button-primary_hover"
-								}
-								onClick={() => handlePageChange(index)}
-								key={index}
-							>
-								{index + 1}
-							</Button>
-						)
-					})
-				) : (
+				{!isMaxPageButtonShowed && pageLength > 1
+					? [...Array(pageLength)].map((data, index) => {
+							return (
+								<Button
+									className={
+										currentPageIndex === index
+											? ""
+											: "bg-system-button-primary hover:bg-system-button-primary_hover"
+									}
+									onClick={() => handlePageChange(index)}
+									key={index}
+								>
+									{index + 1}
+								</Button>
+							)
+					  })
+					: null}
+				{isMaxPageButtonShowed && pageLength > 1 ? (
 					<>
 						{currentPageIndex > 1 ? (
 							<Button
@@ -216,7 +217,7 @@ const Table = ({
 							</Button>
 						) : null}
 					</>
-				)}
+				) : null}
 				<p className="text-system-text-primary/60">
 					Menampilkan {filteredData.length} data
 				</p>

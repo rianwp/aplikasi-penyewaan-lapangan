@@ -201,15 +201,47 @@ export const deleteJenisLapangan = async (id: string) => {
 	}
 }
 
-export const uploadImage = async (image: Blob) => {
+export const uploadImageLapangan = async (image: Blob) => {
 	const formData = new FormData()
-	formData.append("images", image)
+	formData.append("image", image)
 	try {
 		const response = await axios.post("/api/lapangan/jenis/images", formData, {
 			headers: {
 				"Content-Type": "multipart/form-data",
 			},
 		})
+		return response.data
+	} catch (err) {
+		const error = err as AxiosError
+		if (error.code === "500") {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+		throw error.response?.data
+	}
+}
+
+export const deleteImageLapangan = async (id: string) => {
+	try {
+		const response = await axios.delete(`/api/lapangan/jenis/images/${id}`)
+		return response.data
+	} catch (err) {
+		const error = err as AxiosError
+		if (error.code === "500") {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+		throw error.response?.data
+	}
+}
+
+export const getImageLapangan = async () => {
+	try {
+		const response = await axios.get("/api/lapangan/jenis/images")
 		return response.data
 	} catch (err) {
 		const error = err as AxiosError

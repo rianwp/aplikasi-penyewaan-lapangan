@@ -1,6 +1,8 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
+import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
+import checkEmptyString from "@/utils/checkEmptyString"
 import { NextRequest, NextResponse } from "next/server"
 
 export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
@@ -19,10 +21,19 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	}
 
 	const body = await req.json()
-	const { jenis_lapangan, deskripsi, images } = body as {
-		jenis_lapangan: string | undefined
-		deskripsi: string | undefined
-		images: string[] | undefined
+	const { jenis_lapangan, deskripsi, images } =
+		body as JenisLapanganRequestInterface
+
+	if (checkEmptyString(jenis_lapangan) || checkEmptyString(deskripsi)) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Jenis lapangan dan deskripsi tidak boleh kosong",
+			},
+			{
+				status: 400,
+			}
+		)
 	}
 
 	const imageMap = images?.map((image) => {
@@ -55,7 +66,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				jenis_lapangan,
 				deskripsi,
 				Image: {
-					connect: imageMap,
+					set: imageMap,
 				},
 			},
 			where: {

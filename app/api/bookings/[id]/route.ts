@@ -21,13 +21,11 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 	const body = await req.json()
 	const { tanggal, id_lapangan } = body as {
-		tanggal: string | undefined
-		id_lapangan: string | undefined
+		tanggal: string
+		id_lapangan: string
 	}
 
-	const isValidDate = (tanggal && checkDate(tanggal)) || !tanggal
-
-	if (!isValidDate) {
+	if (!checkDate(tanggal)) {
 		return NextResponse.json(
 			{
 				success: false,
@@ -78,7 +76,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		const tanggalNotAvailable = await prisma.booking.findFirst({
 			where: {
-				tanggal: new Date(tanggal || ""),
+				tanggal: new Date(tanggal),
 				id_lapangan,
 			},
 		})

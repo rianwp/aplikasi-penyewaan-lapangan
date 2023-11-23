@@ -28,11 +28,12 @@ const SesiLapanganData = () => {
 
 	const responseData =
 		(dataSesiLapangan?.data.sesi as SesiLapanganResponseInterface[]) ?? []
+
 	const tableData = responseData.map((data, index) => {
-		const { id, createdAt, updatedAt, ...dataForTable } = data
 		return {
 			no: index + 1,
-			...dataForTable,
+			jam_mulai: data.jam_mulai,
+			jam_berakhir: data.jam_berakhir
 		}
 	})
 
@@ -105,6 +106,8 @@ const SesiLapanganData = () => {
 				deleteAction={() =>
 					deleteSesiLapangan(responseData[deleteData.index].id)
 				}
+				mutationKey="deleteSesiLapangan"
+				invalidateKey="getSesiLapangan"
 			/>
 		</>
 	)

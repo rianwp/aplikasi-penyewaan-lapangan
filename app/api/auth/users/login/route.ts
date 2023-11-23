@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
 import { compare } from "bcrypt"
 import { sign } from "jsonwebtoken"
-import { COOKIE_NAME, MAX_AGE } from "@/constants"
+import { COOKIE_NAME, MAX_AGE, USER_AGENT_ANDROID } from "@/constants"
 import { serialize } from "cookie"
 
 export const POST = async (req: NextRequest) => {
@@ -40,7 +40,7 @@ export const POST = async (req: NextRequest) => {
 			)
 		}
 
-		if(user.role !== "user") {
+		if (user.role !== "user") {
 			return NextResponse.json(
 				{
 					success: false,
@@ -64,7 +64,7 @@ export const POST = async (req: NextRequest) => {
 			expiresIn: MAX_AGE,
 		})
 
-		if (userAgent === "margajaya-app") {
+		if (userAgent === USER_AGENT_ANDROID) {
 			return NextResponse.json(
 				{
 					success: true,
