@@ -1,6 +1,7 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
+import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
@@ -73,11 +74,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	}
 
 	const body = await req.json()
-	const { harga, id_jenislap, id_sesilap } = body as {
-		harga: number
-		id_jenislap: string
-		id_sesilap: string
-	}
+	const { harga, id_jenislap, id_sesilap } = body as LapanganRequestInterface
 
 	try {
 		const findId = await prisma.lapangan.findUnique({
@@ -137,8 +134,12 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 		await prisma.lapangan.update({
 			data: {
 				harga,
-				id_jenislap,
-				id_sesilap,
+				id_jenislap: {
+					set: id_jenislap,
+				},
+				id_sesilap: {
+					set: id_sesilap,
+				},
 			},
 			where: {
 				id,

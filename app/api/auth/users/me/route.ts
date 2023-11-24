@@ -27,7 +27,7 @@ export const GET = async (req: NextRequest) => {
 		{
 			success: true,
 			data: {
-				user: { ...payload },
+				user: payload,
 			},
 		},
 		{

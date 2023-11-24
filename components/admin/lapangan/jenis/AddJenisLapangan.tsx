@@ -78,7 +78,7 @@ const AddJenisLapangan = ({
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Tambah Data</DialogTitle>
-					<DialogDescription>Tambakan Jenis Lapangan</DialogDescription>
+					<DialogDescription>Tambahkan Jenis Lapangan</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-y-4 py-4">
 					<div className="flex sm:flex-row flex-col items-center gap-4">

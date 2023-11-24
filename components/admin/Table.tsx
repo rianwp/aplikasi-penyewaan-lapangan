@@ -4,12 +4,13 @@ import { BsPlus } from "react-icons/bs"
 import { Button } from "../ui/button"
 import { useState } from "react"
 import { Skeleton } from "../ui/skeleton"
+import { TableDataInterface } from "@/types/TableDataInterface"
 
 interface TablePropsInterface {
 	header: string[]
-	tableData: any[]
-	onEdit: (index: number) => void
-	onDelete: (index: number) => void
+	tableData: TableDataInterface[]
+	onEdit: (id: string) => void
+	onDelete: (id: string) => void
 	onAdd: () => void
 	isLoading: boolean
 }
@@ -115,23 +116,23 @@ const Table = ({
 										</>
 									) : null}
 									{!isLoading
-										? filteredData.map((data, index) => {
+										? filteredData.map((data) => {
 												return (
-													<tr key={index}>
-														{Object.keys(data).map((dataKey, indexKey) => {
+													<tr key={data.id}>
+														{Object.keys(data.fields).map((dataKey, indexKey) => {
 															return (
 																<td
 																	key={indexKey}
 																	className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"
 																>
-																	{data[dataKey]}
+																	{data.fields[dataKey]}
 																</td>
 															)
 														})}
 														<td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-row gap-x-1 justify-end">
 															<button
 																type="button"
-																onClick={() => onEdit(index)}
+																onClick={() => onEdit(data.id)}
 																className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none"
 															>
 																Edit
@@ -139,7 +140,7 @@ const Table = ({
 															<p>|</p>
 															<button
 																type="button"
-																onClick={() => onDelete(index)}
+																onClick={() => onDelete(data.id)}
 																className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-system-danger hover:text-red-800 disabled:opacity-50 disabled:pointer-events-none"
 															>
 																Delete

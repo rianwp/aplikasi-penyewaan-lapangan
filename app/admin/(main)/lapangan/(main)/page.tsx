@@ -1,11 +1,7 @@
+import LapanganPage from "@/components/admin/lapangan/main/LapanganPage"
+
 const Page = () => {
-	return (
-		<>
-			<h1 className="font-semibold text-4xl text-system-text-primary">
-				Dashboard
-			</h1>
-		</>
-	)
+	return <LapanganPage />
 }
 
 export default Page

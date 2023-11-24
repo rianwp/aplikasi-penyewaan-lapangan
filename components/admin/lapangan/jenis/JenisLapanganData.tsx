@@ -27,19 +27,6 @@ const SesiLapanganData = () => {
 		queryFn: () => getJenisLapangan(),
 	})
 
-	const responseData =
-		(dataJenisLapangan?.data
-			.jenisLapangan as JenisLapanganResponseInterface[]) ?? []
-
-	const tableData = responseData.map((data, index) => {
-		return {
-			no: index + 1,
-			jenis_lapangan: data.jenis_lapangan,
-			deskripsi: data.deskripsi,
-			images: <ImageList images={data.Image} />,
-		}
-	})
-
 	useEffect(() => {
 		if (!isPending) {
 			if (isError) {
@@ -51,6 +38,22 @@ const SesiLapanganData = () => {
 			}
 		}
 	}, [isPending, isError])
+
+	const responseData =
+		(dataJenisLapangan?.data
+			.jenisLapangan as JenisLapanganResponseInterface[]) ?? []
+
+	const tableData = responseData.map((data, index) => {
+		return {
+			id: data.id,
+			fields: {
+				no: index + 1,
+				jenis_lapangan: data.jenis_lapangan,
+				deskripsi: data.deskripsi,
+				images: <ImageList images={data.Image} />,
+			},
+		}
+	})
 
 	const [addDataOpen, setAddDataOpen] = useState(false)
 	const [editData, setEditData] = useState<{
@@ -69,28 +72,32 @@ const SesiLapanganData = () => {
 	})
 	const [deleteData, setDeleteData] = useState({
 		open: false,
-		index: 0,
+		id: "",
 	})
 
-	const handleEdit = (index: number) => {
+	const handleEdit = (id: string) => {
 		setEditData({
 			open: true,
-			currentData: responseData[index],
+			currentData: responseData.find(
+				(data) => data.id === id
+			) as JenisLapanganResponseInterface,
 		})
+		console.log(responseData.find((data) => data.id === id))
+		console.log(id)
 	}
 
-	const handleDelete = (index: number) => {
+	const handleDelete = (id: string) => {
 		setDeleteData({
 			open: true,
-			index,
+			id,
 		})
 	}
 	return (
 		<>
 			<Table
 				header={header}
-				onDelete={(index) => handleDelete(index)}
-				onEdit={(index) => handleEdit(index)}
+				onDelete={(id) => handleDelete(id)}
+				onEdit={(id) => handleEdit(id)}
 				onAdd={() => setAddDataOpen(true)}
 				tableData={tableData}
 				isLoading={isPending}
@@ -108,7 +115,13 @@ const SesiLapanganData = () => {
 				onOpenChange={(open) => handleObjectState("open", open, setDeleteData)}
 				isOpen={deleteData.open}
 				deleteAction={() =>
-					deleteJenisLapangan(responseData[deleteData.index].id)
+					deleteJenisLapangan(
+						(
+							responseData.find(
+								(data) => data.id === deleteData.id
+							) as JenisLapanganResponseInterface
+						).id
+					)
 				}
 				mutationKey="deleteJenisLapangan"
 				invalidateKey="getJenisLapangan"

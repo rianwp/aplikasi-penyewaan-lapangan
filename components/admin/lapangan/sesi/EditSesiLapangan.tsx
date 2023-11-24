@@ -11,7 +11,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
 import { editSesiLapangan } from "@/lib/http"
-import { SesiLapanganResponseInterface } from "@/types/SesiLapanganInterface"
+import {
+	SesiLapanganRequestInterface,
+	SesiLapanganResponseInterface,
+} from "@/types/SesiLapanganInterface"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
@@ -33,16 +36,20 @@ const EditSesiLapangan = ({
 
 	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
 		mutationKey: ["editSesiLapangan"],
-		mutationFn: (data: SesiLapanganResponseInterface) =>
+		mutationFn: (data: {
+			id: string
+			dataSesiLapangan: SesiLapanganRequestInterface
+		}) =>
 			editSesiLapangan(data.id, {
-				jam_mulai: data.jam_mulai,
-				jam_berakhir: data.jam_berakhir,
+				jam_mulai: data.dataSesiLapangan.jam_mulai,
+				jam_berakhir: data.dataSesiLapangan.jam_berakhir,
 			}),
 		onSuccess: () =>
 			queryClient.invalidateQueries({ queryKey: ["getSesiLapangan"] }),
 	})
 
-	const [inputForm, setInputForm] = useState(currentData)
+	const [inputForm, setInputForm] =
+		useState<SesiLapanganRequestInterface>(currentData)
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
@@ -117,7 +124,9 @@ const EditSesiLapangan = ({
 				<DialogFooter>
 					<Button
 						disabled={isPending}
-						onClick={() => mutate(inputForm)}
+						onClick={() =>
+							mutate({ id: currentData.id, dataSesiLapangan: inputForm })
+						}
 						className="bg-system-button-primary hover:bg-system-button-primary_hover flex flex-row gap-x-2"
 						type="button"
 					>

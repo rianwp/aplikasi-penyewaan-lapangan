@@ -1,5 +1,6 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import checkBody from "@/utils/checkBody"
 import checkDate from "@/utils/checkDate"
 import { NextRequest, NextResponse } from "next/server"
@@ -21,11 +22,7 @@ export const POST = async (req: NextRequest) => {
 	const body = await req.json()
 	checkBody(["harga", "id_jenislap", "id_sesilap"], body)
 
-	const { harga, id_jenislap, id_sesilap } = body as {
-		harga: number
-		id_jenislap: string
-		id_sesilap: string
-	}
+	const { harga, id_jenislap, id_sesilap } = body as LapanganRequestInterface
 
 	try {
 		const sesi = await prisma.sesiLapangan.findUnique({
@@ -124,8 +121,6 @@ export const GET = async (req: NextRequest) => {
 						id: true,
 						jenis_lapangan: true,
 						deskripsi: true,
-						createdAt: true,
-						updatedAt: true,
 						Image: {
 							select: {
 								imageUrl: true,
@@ -133,7 +128,13 @@ export const GET = async (req: NextRequest) => {
 						},
 					},
 				},
-				SesiLapangan: true,
+				SesiLapangan: {
+					select: {
+						id: true,
+						jam_mulai: true,
+						jam_berakhir: true,
+					},
+				},
 				Booking: {
 					select: {
 						tanggal: true,

@@ -41,8 +41,8 @@ const EditJenisLapangan = ({
 		mutationKey: ["editJenisLapangan"],
 		mutationFn: (data: {
 			id: string
-			dataLapangan: JenisLapanganRequestInterface
-		}) => editJenisLapangan(data.id, data.dataLapangan),
+			dataJenisLapangan: JenisLapanganRequestInterface
+		}) => editJenisLapangan(data.id, data.dataJenisLapangan),
 		onSuccess: () =>
 			queryClient.invalidateQueries({ queryKey: ["getJenisLapangan"] }),
 	})
@@ -93,10 +93,6 @@ const EditJenisLapangan = ({
 		handleObjectState("images", filteredId, setInputForm)
 		setPreviewImages(images)
 	}
-
-	useEffect(() => {
-		console.log(inputForm)
-	}, [inputForm])
 
 	return (
 		<Dialog
@@ -180,7 +176,7 @@ const EditJenisLapangan = ({
 					<Button
 						disabled={isPending}
 						onClick={() =>
-							mutate({ id: currentData.id, dataLapangan: inputForm })
+							mutate({ id: currentData.id, dataJenisLapangan: inputForm })
 						}
 						className="bg-system-button-primary hover:bg-system-button-primary_hover flex flex-row gap-x-2"
 						type="button"

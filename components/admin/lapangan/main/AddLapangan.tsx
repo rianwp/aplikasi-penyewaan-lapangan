@@ -10,35 +10,35 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
-import { addSesiLapangan } from "@/lib/http"
-import { SesiLapanganRequestInterface } from "@/types/SesiLapanganInterface"
+import { addLapangan } from "@/lib/http"
+import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
+import SelectJenisLapangan from "./SelectJenisLapangan"
+import SelectSesiLapangan from "./SelectSesiLapangan"
 
-interface AddSesiLapanganPropsInterface {
+interface AddLapanganPropsInterface {
 	isOpen: boolean
 	onOpenChange: (open: boolean) => void
 }
 
-const AddSesiLapangan = ({
-	isOpen,
-	onOpenChange,
-}: AddSesiLapanganPropsInterface) => {
+const AddLapangan = ({ isOpen, onOpenChange }: AddLapanganPropsInterface) => {
 	const queryClient = useQueryClient()
 	const { toast } = useToast()
 
 	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
-		mutationKey: ["addSesiLapangan"],
-		mutationFn: (data: SesiLapanganRequestInterface) => addSesiLapangan(data),
+		mutationKey: ["addLapangan"],
+		mutationFn: (data: LapanganRequestInterface) => addLapangan(data),
 		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ["getSesiLapangan"] }),
+			queryClient.invalidateQueries({ queryKey: ["getLapangan"] }),
 	})
 
-	const [inputForm, setInputForm] = useState<SesiLapanganRequestInterface>({
-		jam_mulai: "",
-		jam_berakhir: "",
+	const [inputForm, setInputForm] = useState<LapanganRequestInterface>({
+		harga: 0,
+		id_jenislap: "",
+		id_sesilap: "",
 	})
 
 	useEffect(() => {
@@ -58,48 +58,64 @@ const AddSesiLapangan = ({
 		}
 	}, [isPending, isError, isIdle])
 
+	const handleHargaChange = (e: ChangeEvent<HTMLInputElement>) => {
+		if (Number(e.target.value) < 0) {
+			handleObjectState("harga", 0, setInputForm)
+			return
+		}
+		handleObjectState("harga", Number(e.target.value), setInputForm)
+	}
+
 	return (
 		<Dialog open={isOpen} onOpenChange={(open) => onOpenChange(open)}>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Tambah Data</DialogTitle>
-					<DialogDescription>Tambahkan Sesi Lapangan</DialogDescription>
+					<DialogDescription>Tambahkan Lapangan</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-y-4 py-4">
 					<div className="flex sm:flex-row flex-col items-center gap-4">
+						<Label htmlFor="harga" className="sm:text-right sm:w-1/4 w-full">
+							Harga
+						</Label>
+						<div className="sm:w-3/4 w-full shrink-0 flex flex-row gap-x-2 items-center">
+							<p className="shrink-0">Rp</p>
+							<Input
+								type="number"
+								id="harga"
+								placeholder="Masukkan Harga"
+								value={inputForm.harga}
+								onChange={(e) => handleHargaChange(e)}
+								className="w-full"
+							/>
+						</div>
+					</div>
+					<div className="flex sm:flex-row flex-col items-center gap-4">
 						<Label
-							htmlFor="jam_mulai"
+							htmlFor="id_jenislap"
 							className="sm:text-right sm:w-1/4 w-full"
 						>
-							Jam Mulai
+							Jenis Lapangan
 						</Label>
-						<Input
-							type="time"
-							id="jam_mulai"
-							placeholder="Masukkan Jam Mulai"
-							value={inputForm.jam_mulai}
-							onChange={(e) =>
-								handleObjectState("jam_mulai", e.target.value, setInputForm)
+						<SelectJenisLapangan
+							value={inputForm.id_jenislap}
+							onValueChange={(value) =>
+								handleObjectState("id_jenislap", value, setInputForm)
 							}
-							className="sm:w-3/4 w-full shrink-0"
 						/>
 					</div>
 					<div className="flex sm:flex-row flex-col items-center gap-4">
 						<Label
-							htmlFor="jam_berakhir"
+							htmlFor="id_sesilap"
 							className="sm:text-right sm:w-1/4 w-full"
 						>
-							Jam Berakhir
+							Sesi Lapangan
 						</Label>
-						<Input
-							type="time"
-							id="jam_berakhir"
-							placeholder="Masukkan Jam Berakhir"
-							value={inputForm.jam_berakhir}
-							onChange={(e) =>
-								handleObjectState("jam_berakhir", e.target.value, setInputForm)
+						<SelectSesiLapangan
+							value={inputForm.id_sesilap}
+							onValueChange={(value) =>
+								handleObjectState("id_sesilap", value, setInputForm)
 							}
-							className="sm:w-3/4 w-full shrink-0"
 						/>
 					</div>
 				</div>
@@ -121,4 +137,4 @@ const AddSesiLapangan = ({
 	)
 }
 
-export default AddSesiLapangan
+export default AddLapangan
