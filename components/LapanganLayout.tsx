@@ -1,11 +1,11 @@
 import { BsPlus } from "react-icons/bs"
-import { Button } from "../ui/button"
+import { Button } from "./ui/button"
 import LapanganCard from "./LapanganCard"
 import { LapanganResponseInterface } from "@/types/LapanganInterface"
 import { Loader2 } from "lucide-react"
 
 interface LapanganLayoutPropsInterface {
-	onAdd: () => void
+	onAdd?: () => void
 	onEdit?: (id: string) => void
 	onDelete?: (id: string) => void
 	dataLapangan: LapanganResponseInterface[]
@@ -20,15 +20,17 @@ const LapanganLayout = ({
 	isLoading,
 }: LapanganLayoutPropsInterface) => {
 	return (
-		<div className="mt-5 flex flex-col gap-y-2">
-			<Button
-				onClick={onAdd}
-				className="w-fit flex flex-row items-center gap-x-1 bg-system-button-primary hover:bg-system-button-primary_hover text-white self-end"
-				size="sm"
-			>
-				<BsPlus className="w-5 h-5" />
-				<p>Tambah</p>
-			</Button>
+		<div className="flex flex-col gap-y-2">
+			{onAdd ? (
+				<Button
+					onClick={onAdd}
+					className="w-fit flex flex-row items-center gap-x-1 bg-system-button-primary hover:bg-system-button-primary_hover text-white self-end"
+					size="sm"
+				>
+					<BsPlus className="w-5 h-5" />
+					<p>Tambah</p>
+				</Button>
+			) : null}
 			{isLoading ? (
 				<div className="w-full flex flex-row justify-center items-center h-40">
 					<Loader2 className="h-10 w-10 animate-spin text-system-primary" />

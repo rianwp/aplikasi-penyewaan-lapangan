@@ -361,8 +361,12 @@ export const getImageLapangan = async () => {
 	}
 }
 
-export const getLapangan = async () => {
+export const getLapangan = async (query?: string) => {
 	try {
+		if (query) {
+			const response = await axios.get(`/api/lapangan?tanggal=${query}`)
+			return response.data
+		}
 		const response = await axios.get("/api/lapangan")
 		return response.data
 	} catch (err) {

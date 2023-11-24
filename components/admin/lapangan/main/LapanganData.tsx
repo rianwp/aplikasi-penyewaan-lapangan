@@ -1,7 +1,7 @@
 "use client"
 
 import { useToast } from "@/components/ui/use-toast"
-import LapanganLayout from "../../LapanganLayout"
+import LapanganLayout from "../../../LapanganLayout"
 import { useQuery } from "@tanstack/react-query"
 import { deleteLapangan, getLapangan } from "@/lib/http"
 import { LapanganResponseInterface } from "@/types/LapanganInterface"
@@ -86,7 +86,7 @@ const LapanganData = () => {
 	}
 
 	return (
-		<>
+		<div className="mt-5">
 			<LapanganLayout
 				onAdd={() => setAddDataOpen(true)}
 				dataLapangan={responseData}
@@ -118,7 +118,7 @@ const LapanganData = () => {
 				mutationKey="deleteLapangan"
 				invalidateKey="getLapangan"
 			/>
-		</>
+		</div>
 	)
 }
 

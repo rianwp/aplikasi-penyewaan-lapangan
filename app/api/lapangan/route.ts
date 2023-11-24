@@ -163,16 +163,17 @@ export const GET = async (req: NextRequest) => {
 			if (!tanggal) {
 				return lapWithoutBooking
 			}
-			if (lap.Booking.includes({ tanggal: new Date(tanggal) })) {
-				return {
-					...lapWithoutBooking,
-					available: false,
+			lap.Booking.map((data) => {
+				if (data.tanggal === new Date(tanggal)) {
+					return {
+						...lapWithoutBooking,
+						available: false,
+					}
 				}
-			} else {
-				return {
-					...lapWithoutBooking,
-					available: true,
-				}
+			})
+			return {
+				...lapWithoutBooking,
+				available: true,
 			}
 		})
 

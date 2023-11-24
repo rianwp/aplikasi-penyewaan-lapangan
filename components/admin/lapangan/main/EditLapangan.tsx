@@ -99,8 +99,8 @@ const EditLapangan = ({
 		>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Tambah Data</DialogTitle>
-					<DialogDescription>Tambahkan Lapangan</DialogDescription>
+					<DialogTitle>Edit Data</DialogTitle>
+					<DialogDescription>Edit Lapangan</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-y-4 py-4">
 					<div className="flex sm:flex-row flex-col items-center gap-4">
