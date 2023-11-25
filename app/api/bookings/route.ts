@@ -67,9 +67,7 @@ export const POST = async (req: NextRequest) => {
 
 		if (
 			new Date(
-				`${new Date(tanggal).toLocaleDateString("id-ID")} ${
-					lapangan.SesiLapangan.jam_berakhir
-				}`
+				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
 			) < new Date()
 		) {
 			return NextResponse.json(
@@ -86,7 +84,7 @@ export const POST = async (req: NextRequest) => {
 
 		const tanggalNotAvailable = await prisma.booking.findFirst({
 			where: {
-				tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
+				tanggal: new Date(formatDate(new Date(tanggal))),
 				id_lapangan,
 			},
 		})
@@ -115,7 +113,7 @@ export const POST = async (req: NextRequest) => {
 
 		const bookingPayload: Prisma.BookingUncheckedCreateInput = {
 			id: orderId,
-			tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
+			tanggal: new Date(formatDate(new Date(tanggal))),
 			id_lapangan,
 			id_user: user.data?.id || "",
 			amount: lapangan.harga,

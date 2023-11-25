@@ -64,8 +64,8 @@ const BookingData = () => {
 				harga: data.harga,
 				status: data.status,
 				payment_type: data.payment_type,
-				createdAt: new Date(data.createdAt).toLocaleDateString("id-ID"),
-				tanggal: new Date(data.tanggal).toLocaleDateString("id-ID"),
+				createdAt: formatDate(new Date(data.createdAt)),
+				tanggal: formatDate(new Date(data.tanggal)),
 			},
 		}
 	})
@@ -84,9 +84,9 @@ const BookingData = () => {
 			harga: 0,
 			status: "pending",
 			payment_type: "",
-			createdAt: new Date().toLocaleDateString("id-ID"),
-			updatedAt: new Date().toLocaleDateString("id-ID"),
-			tanggal: new Date().toLocaleDateString("id-ID"),
+			createdAt: formatDate(new Date()),
+			updatedAt: formatDate(new Date()),
+			tanggal: formatDate(new Date()),
 		},
 	})
 	const [deleteData, setDeleteData] = useState({

@@ -99,7 +99,7 @@ const EditBooking = ({
 							onDateChange={(date) =>
 								handleObjectState(
 									"tanggal",
-									(date as Date).toLocaleDateString("id-ID"),
+									formatDate(new Date(date as Date)),
 									setInputForm
 								)
 							}

@@ -38,7 +38,7 @@ const AddBooking = ({ isOpen, onOpenChange }: AddBookingPropsInterface) => {
 	})
 
 	const [inputForm, setInputForm] = useState<BookingRequestInterface>({
-		tanggal: new Date().toLocaleDateString("id-ID"),
+		tanggal: formatDate(new Date()),
 		id_lapangan: "",
 	})
 
@@ -78,7 +78,7 @@ const AddBooking = ({ isOpen, onOpenChange }: AddBookingPropsInterface) => {
 							onDateChange={(date) =>
 								handleObjectState(
 									"tanggal",
-									(date as Date).toLocaleDateString("id-ID"),
+									formatDate(new Date(date as Date)),
 									setInputForm
 								)
 							}

@@ -29,7 +29,7 @@ const KetersediaanLapanganData = () => {
 	} = useQuery({
 		queryKey: ["getLapangan"],
 		refetchOnWindowFocus: false,
-		queryFn: () => getLapangan(dateFilter?.toLocaleDateString("id-ID")),
+		queryFn: () => getLapangan(formatDate(dateFilter || new Date())),
 	})
 
 	const responseData =

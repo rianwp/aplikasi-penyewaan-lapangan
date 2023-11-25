@@ -82,9 +82,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		if (
 			new Date(
-				`${new Date(tanggal).toLocaleDateString("id-ID")} ${
-					lapangan.SesiLapangan.jam_berakhir
-				}`
+				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
 			) < new Date()
 		) {
 			return NextResponse.json(
@@ -101,7 +99,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		const tanggalNotAvailable = await prisma.booking.findFirst({
 			where: {
-				tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
+				tanggal: new Date(formatDate(new Date(tanggal))),
 				id_lapangan,
 			},
 		})
@@ -120,7 +118,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		await prisma.booking.update({
 			data: {
-				tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
+				tanggal: new Date(formatDate(new Date(tanggal))),
 				id_lapangan: {
 					set: id_lapangan,
 				},
