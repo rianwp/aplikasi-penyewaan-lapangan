@@ -119,7 +119,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		await prisma.booking.update({
 			data: {
-				atas_nama: name,
+				atas_nama: !name || name === "" ? user.data?.name : name,
 				tanggal: new Date(formatDate(new Date(tanggal))),
 				id_lapangan: {
 					set: id_lapangan,

@@ -117,7 +117,12 @@ export const POST = async (req: NextRequest) => {
 			tanggal: new Date(formatDate(new Date(tanggal))),
 			id_lapangan,
 			id_user: user.data?.id || "",
-			atas_nama: user.data?.role === "admin" ? name || user.data.name : user.data?.name || "",
+			atas_nama:
+				user.data?.role === "admin"
+					? !name || name === ""
+						? user.data.name
+						: name
+					: user.data?.name || "",
 			amount: lapangan.harga,
 			gross_amount: lapangan.harga,
 			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
