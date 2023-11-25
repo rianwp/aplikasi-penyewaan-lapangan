@@ -1,8 +1,9 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { BookingRequestInterface } from "@/types/BookingInterface"
 import checkBody from "@/utils/checkBody"
 import checkDate from "@/utils/checkDate"
-import { Lapangan, Prisma } from "@prisma/client"
+import { Prisma } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
@@ -23,10 +24,7 @@ export const POST = async (req: NextRequest) => {
 	const body = await req.json()
 	checkBody(["tanggal", "id_lapangan"], body)
 
-	const { tanggal, id_lapangan } = body as {
-		tanggal: string
-		id_lapangan: string
-	}
+	const { tanggal, id_lapangan } = body as BookingRequestInterface
 
 	if (!checkDate(tanggal)) {
 		return NextResponse.json(
@@ -45,6 +43,14 @@ export const POST = async (req: NextRequest) => {
 			where: {
 				id: id_lapangan,
 			},
+			select: {
+				harga: true,
+				SesiLapangan: {
+					select: {
+						jam_berakhir: true,
+					},
+				},
+			},
 		})
 
 		if (!lapangan) {
@@ -59,9 +65,28 @@ export const POST = async (req: NextRequest) => {
 			)
 		}
 
+		if (
+			new Date(
+				`${new Date(tanggal).toLocaleDateString("id-ID")} ${
+					lapangan.SesiLapangan.jam_berakhir
+				}`
+			) < new Date()
+		) {
+			return NextResponse.json(
+				{
+					success: false,
+					message:
+						"Sesi yang di booking sudah terlewat, silahkan booking sesi selanjutnya",
+				},
+				{
+					status: 400,
+				}
+			)
+		}
+
 		const tanggalNotAvailable = await prisma.booking.findFirst({
 			where: {
-				tanggal: new Date(tanggal),
+				tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
 				id_lapangan,
 			},
 		})
@@ -90,7 +115,7 @@ export const POST = async (req: NextRequest) => {
 
 		const bookingPayload: Prisma.BookingUncheckedCreateInput = {
 			id: orderId,
-			tanggal: new Date(tanggal),
+			tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
 			id_lapangan,
 			id_user: user.data?.id || "",
 			amount: lapangan.harga,
@@ -213,6 +238,7 @@ export const GET = async (req: NextRequest) => {
 				updatedAt: data.updatedAt,
 				status: data.status,
 				payment_type: data.payment_type,
+				tanggal: data.tanggal,
 			}
 		})
 

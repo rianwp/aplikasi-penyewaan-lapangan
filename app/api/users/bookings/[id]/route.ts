@@ -76,6 +76,7 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 						updatedAt: booking.updatedAt,
 						status: booking.status,
 						payment_type: booking.payment_type,
+						tanggal: booking.tanggal,
 					},
 				},
 			},

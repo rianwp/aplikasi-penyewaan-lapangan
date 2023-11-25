@@ -1,3 +1,4 @@
+import { BookingRequestInterface } from "@/types/BookingInterface"
 import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import { LoginInterface } from "@/types/LoginInterface"
@@ -440,6 +441,124 @@ export const editLapangan = async (
 export const deleteLapangan = async (id: string) => {
 	try {
 		const response = await axios.delete(`/api/lapangan/${id}`)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const getBooking = async () => {
+	try {
+		const response = await axios.get("/api/bookings")
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const getBookingById = async (id: string) => {
+	try {
+		const response = await axios.get(`/api/bookings/${id}`)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const addBooking = async (data: BookingRequestInterface) => {
+	try {
+		const response = await axios.post("/api/bookings", data)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const editBooking = async (
+	id: string,
+	data: BookingRequestInterface
+) => {
+	try {
+		const response = await axios.put(`/api/bookings/${id}`, data)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const deleteBooking = async (id: string) => {
+	try {
+		const response = await axios.delete(`/api/bookings/${id}`)
 		return response.data
 	} catch (err) {
 		if (err instanceof AxiosError) {

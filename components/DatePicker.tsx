@@ -14,17 +14,26 @@ import {
 interface DatePickerPropsInterface {
 	date: Date | undefined
 	onDateChange: React.Dispatch<React.SetStateAction<Date | undefined>>
+	className?: string
+	htmlId: string
 }
 
-const DatePicker = ({ date, onDateChange }: DatePickerPropsInterface) => {
+const DatePicker = ({
+	date,
+	onDateChange,
+	className,
+	htmlId,
+}: DatePickerPropsInterface) => {
 	return (
 		<Popover>
 			<PopoverTrigger asChild>
 				<Button
+					id={htmlId}
 					variant={"outline"}
 					className={cn(
-						"w-[280px] max-w-full justify-start text-left font-normal",
-						!date && "text-muted-foreground"
+						"max-w-full justify-start text-left font-normal",
+						!date && "text-muted-foreground",
+						className
 					)}
 				>
 					<CalendarIcon className="mr-2 h-4 w-4" />
@@ -35,6 +44,8 @@ const DatePicker = ({ date, onDateChange }: DatePickerPropsInterface) => {
 				<Calendar
 					mode="single"
 					selected={date}
+					required={true}
+					fromDate={new Date()}
 					onSelect={onDateChange}
 					initialFocus
 				/>

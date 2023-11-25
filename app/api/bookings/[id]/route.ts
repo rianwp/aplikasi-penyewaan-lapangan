@@ -1,5 +1,6 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { BookingRequestInterface } from "@/types/BookingInterface"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
 import checkDate from "@/utils/checkDate"
 import { NextRequest, NextResponse } from "next/server"
@@ -20,10 +21,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	}
 
 	const body = await req.json()
-	const { tanggal, id_lapangan } = body as {
-		tanggal: string
-		id_lapangan: string
-	}
+	const { tanggal, id_lapangan } = body as BookingRequestInterface
 
 	if (!checkDate(tanggal)) {
 		return NextResponse.json(
@@ -60,6 +58,14 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 			where: {
 				id: id_lapangan,
 			},
+			select: {
+				harga: true,
+				SesiLapangan: {
+					select: {
+						jam_berakhir: true,
+					},
+				},
+			},
 		})
 
 		if (!lapangan) {
@@ -74,9 +80,28 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 			)
 		}
 
+		if (
+			new Date(
+				`${new Date(tanggal).toLocaleDateString("id-ID")} ${
+					lapangan.SesiLapangan.jam_berakhir
+				}`
+			) < new Date()
+		) {
+			return NextResponse.json(
+				{
+					success: false,
+					message:
+						"Sesi yang di booking sudah terlewat, silahkan booking sesi selanjutnya",
+				},
+				{
+					status: 400,
+				}
+			)
+		}
+
 		const tanggalNotAvailable = await prisma.booking.findFirst({
 			where: {
-				tanggal: new Date(tanggal),
+				tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
 				id_lapangan,
 			},
 		})
@@ -95,7 +120,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		await prisma.booking.update({
 			data: {
-				tanggal,
+				tanggal: new Date(new Date(tanggal).toLocaleDateString("id-ID")),
 				id_lapangan: {
 					set: id_lapangan,
 				},

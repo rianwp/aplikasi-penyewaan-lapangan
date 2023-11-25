@@ -57,6 +57,7 @@ export const GET = async (req: NextRequest) => {
 				updatedAt: data.updatedAt,
 				status: data.status,
 				payment_type: data.payment_type,
+				tanggal: data.tanggal,
 			}
 		})
 

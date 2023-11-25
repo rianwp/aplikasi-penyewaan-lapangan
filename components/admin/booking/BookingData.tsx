@@ -1,30 +1,40 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import Table from "../../Table"
-import AddJenisLapangan from "./AddJenisLapangan"
-import EditJenisLapangan from "./EditJenisLapangan"
-import handleObjectState from "@/utils/handleObjectState"
-import DeleteData from "../../DeleteData"
-import { deleteJenisLapangan, getJenisLapangan } from "@/lib/http"
-import { useQuery } from "@tanstack/react-query"
-import { JenisLapanganResponseInterface } from "@/types/JenisLapanganInterface"
 import { useToast } from "@/components/ui/use-toast"
-import ImageList from "./ImageList"
+import DeleteData from "../DeleteData"
+import Table from "../Table"
+import { useQuery } from "@tanstack/react-query"
+import { deleteBooking, getBooking } from "@/lib/http"
+import { BookingResponseInterface } from "@/types/BookingInterface"
+import { useEffect, useState } from "react"
+import handleObjectState from "@/utils/handleObjectState"
+import AddBooking from "./AddBooking"
+import EditBooking from "./EditBooking"
 
-const header = ["no", "jenis lapangan", "deskripsi", "foto"]
+const header = [
+	"id",
+	"atas nama",
+	"jenis lapangan",
+	"jam mulai",
+	"jam berakhir",
+	"harga",
+	"status transaksi",
+	"tipe pembayaran",
+	"tgl_transaksi",
+	"tgl_booking",
+]
 
-const JenisLapanganData = () => {
+const BookingData = () => {
 	const { toast } = useToast()
 
 	const {
-		data: dataJenisLapangan,
+		data: dataBooking,
 		isPending,
 		isError,
 		error,
 	} = useQuery({
-		queryKey: ["getJenisLapangan"],
-		queryFn: () => getJenisLapangan(),
+		queryKey: ["getBooking"],
+		queryFn: () => getBooking(),
 	})
 
 	useEffect(() => {
@@ -40,34 +50,43 @@ const JenisLapanganData = () => {
 	}, [isPending, isError])
 
 	const responseData =
-		(dataJenisLapangan?.data
-			.jenisLapangan as JenisLapanganResponseInterface[]) ?? []
+		(dataBooking?.data.booking as BookingResponseInterface[]) ?? []
 
-	const tableData = responseData.map((data, index) => {
+	const tableData = responseData.map((data) => {
 		return {
 			id: data.id,
 			fields: {
-				no: index + 1,
+				id: data.id,
+				name: data.name,
 				jenis_lapangan: data.jenis_lapangan,
-				deskripsi: data.deskripsi,
-				images: <ImageList images={data.Image} />,
+				jam_mulai: data.jam_mulai,
+				jam_berakhir: data.jam_berakhir,
+				harga: data.harga,
+				status: data.status,
+				payment_type: data.payment_type,
+				createdAt: new Date(data.createdAt).toLocaleDateString("id-ID"),
+				tanggal: new Date(data.tanggal).toLocaleDateString("id-ID"),
 			},
 		}
 	})
-
 	const [addDataOpen, setAddDataOpen] = useState(false)
 	const [editData, setEditData] = useState<{
 		open: boolean
-		currentData: JenisLapanganResponseInterface
+		currentData: BookingResponseInterface
 	}>({
 		open: false,
 		currentData: {
 			id: "",
-			Image: [],
+			name: "",
 			jenis_lapangan: "",
-			deskripsi: "",
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			jam_mulai: "",
+			jam_berakhir: "",
+			harga: 0,
+			status: "pending",
+			payment_type: "",
+			createdAt: new Date().toLocaleDateString("id-ID"),
+			updatedAt: new Date().toLocaleDateString("id-ID"),
+			tanggal: new Date().toLocaleDateString("id-ID"),
 		},
 	})
 	const [deleteData, setDeleteData] = useState({
@@ -80,10 +99,8 @@ const JenisLapanganData = () => {
 			open: true,
 			currentData: responseData.find(
 				(data) => data.id === id
-			) as JenisLapanganResponseInterface,
+			) as BookingResponseInterface,
 		})
-		console.log(responseData.find((data) => data.id === id))
-		console.log(id)
 	}
 
 	const handleDelete = (id: string) => {
@@ -92,6 +109,7 @@ const JenisLapanganData = () => {
 			id,
 		})
 	}
+
 	return (
 		<>
 			<Table
@@ -102,11 +120,11 @@ const JenisLapanganData = () => {
 				tableData={tableData}
 				isLoading={isPending}
 			/>
-			<AddJenisLapangan
+			<AddBooking
 				isOpen={addDataOpen}
 				onOpenChange={(open) => setAddDataOpen(open)}
 			/>
-			<EditJenisLapangan
+			<EditBooking
 				currentData={editData.currentData}
 				isOpen={editData.open}
 				onOpenChange={(open) => handleObjectState("open", open, setEditData)}
@@ -115,19 +133,19 @@ const JenisLapanganData = () => {
 				onOpenChange={(open) => handleObjectState("open", open, setDeleteData)}
 				isOpen={deleteData.open}
 				deleteAction={() =>
-					deleteJenisLapangan(
+					deleteBooking(
 						(
 							responseData.find(
 								(data) => data.id === deleteData.id
-							) as JenisLapanganResponseInterface
+							) as BookingResponseInterface
 						).id
 					)
 				}
-				mutationKey="deleteJenisLapangan"
-				invalidateKey="getJenisLapangan"
+				mutationKey="deleteBooking"
+				invalidateKey="getBooking"
 			/>
 		</>
 	)
 }
 
-export default JenisLapanganData
+export default BookingData

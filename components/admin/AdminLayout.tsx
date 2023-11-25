@@ -18,7 +18,7 @@ const AdminLayout = ({ children }: AdminLayoutPropsInterface) => {
 		<div className="overflow-hidden">
 			<Navbar onOpenSidebar={() => setOpenSidebar(true)} />
 			<div
-				className={`${openSidebarClassName} fixed md:top-16 top-0 md:left-0 sm:w-[300px] w-full sm:-left-[300px] -left-full md:translate-x-0 shrink-0 md:h-[calc(100vh-64px)] h-screen transition md:transition-none duration-300`}
+				className={`${openSidebarClassName} fixed md:top-16 top-0 md:left-0 sm:w-[300px] w-full sm:-left-[300px] -left-full md:translate-x-0 shrink-0 md:h-[calc(100vh-64px)] h-screen transition md:transition-none duration-300 z-50`}
 			>
 				<Sidebar onClose={() => setOpenSidebar(false)} />
 			</div>

@@ -29,7 +29,7 @@ const KetersediaanLapanganData = () => {
 	} = useQuery({
 		queryKey: ["getLapangan"],
 		refetchOnWindowFocus: false,
-		queryFn: () => getLapangan(dateFilter?.toString()),
+		queryFn: () => getLapangan(dateFilter?.toLocaleDateString("id-ID")),
 	})
 
 	const responseData =
@@ -62,8 +62,13 @@ const KetersediaanLapanganData = () => {
 	return (
 		<div className="mt-5 flex flex-col gap-y-2">
 			<div className="flex flex-col gap-y-2">
-				<Label>Pilih Tanggal</Label>
-				<DatePicker date={dateFilter} onDateChange={setDateFilter} />
+				<Label htmlFor="tanggal">Pilih Tanggal</Label>
+				<DatePicker
+					htmlId="tanggal"
+					date={dateFilter}
+					onDateChange={setDateFilter}
+					className="w-[280px]"
+				/>
 			</div>
 			<LapanganLayout
 				dataLapangan={responseData}
