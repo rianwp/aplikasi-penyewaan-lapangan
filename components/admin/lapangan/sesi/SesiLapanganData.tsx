@@ -31,7 +31,7 @@ const SesiLapanganData = () => {
 			if (isError) {
 				toast({
 					title: "Terjadi Kesalahan",
-					description: error.message,
+					description: error?.message ?? "",
 					variant: "destructive",
 				})
 			}
@@ -48,7 +48,7 @@ const SesiLapanganData = () => {
 				no: index + 1,
 				jam_mulai: data.jam_mulai,
 				jam_berakhir: data.jam_berakhir,
-			}
+			},
 		}
 	})
 

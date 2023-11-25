@@ -40,7 +40,7 @@ const KetersediaanLapanganData = () => {
 			if (isError) {
 				toast({
 					title: "Terjadi Kesalahan",
-					description: error.message,
+					description: error?.message ?? "",
 					variant: "destructive",
 				})
 			}
@@ -52,7 +52,7 @@ const KetersediaanLapanganData = () => {
 			if (isRefetchError) {
 				toast({
 					title: "Terjadi Kesalahan",
-					description: error.message,
+					description: error?.message ?? "",
 					variant: "destructive",
 				})
 			}

@@ -65,7 +65,7 @@ const EditBooking = ({
 			if (isError) {
 				toast({
 					title: "Terjadi Kesalahan",
-					description: error.message,
+					description: error?.message ?? "",
 					variant: "destructive",
 				})
 			} else {

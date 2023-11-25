@@ -28,7 +28,7 @@ const LoginPage = () => {
 			if (isError) {
 				toast({
 					title: "Login Gagal",
-					description: error.message,
+					description: error?.message ?? "",
 					variant: "destructive",
 				})
 			} else {
