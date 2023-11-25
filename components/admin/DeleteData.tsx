@@ -8,7 +8,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { buttonVariants } from "../ui/button"
+import { Button, buttonVariants } from "../ui/button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useToast } from "../ui/use-toast"
 import { useEffect } from "react"
@@ -32,7 +32,7 @@ const DeleteData = ({
 	const queryClient = useQueryClient()
 	const { toast } = useToast()
 
-	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
+	const { mutateAsync, data, isPending, isError, error, isIdle } = useMutation({
 		mutationKey: [mutationKey],
 		mutationFn: deleteAction,
 		onSuccess: () =>
@@ -56,6 +56,11 @@ const DeleteData = ({
 		}
 	}, [isPending, isError, isIdle])
 
+	const handleDelete = async () => {
+		await mutateAsync()
+		onOpenChange(false)
+	}
+
 	return (
 		<AlertDialog open={isOpen} onOpenChange={(open) => onOpenChange(open)}>
 			<AlertDialogContent>
@@ -69,12 +74,16 @@ const DeleteData = ({
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogCancel>Batal</AlertDialogCancel>
-					<AlertDialogAction
-						onClick={() => mutate()}
-						className={buttonVariants({ variant: "destructive" })}
+					<Button
+						disabled={isPending}
+						onClick={() => handleDelete()}
+						variant="destructive"
 					>
-						Hapus
-					</AlertDialogAction>
+						{isPending ? (
+							<Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+						) : null}
+						<p>Hapus</p>
+					</Button>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
