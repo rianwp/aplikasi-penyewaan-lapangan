@@ -72,7 +72,7 @@ const DeleteData = ({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel>Batal</AlertDialogCancel>
+					<AlertDialogCancel disabled={isPending}>Batal</AlertDialogCancel>
 					<Button
 						disabled={isPending}
 						onClick={() => handleDelete()}
