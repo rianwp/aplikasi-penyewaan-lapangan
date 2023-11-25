@@ -67,7 +67,7 @@ const LoginPage = () => {
 				<Button
 					disabled={isPending}
 					size="lg"
-					className="flex flex-row space-x-2 justify-center items-center w-full"
+					className="flex flex-row gap-x-2 justify-center items-center w-full"
 					onClick={() => mutate(loginInput)}
 				>
 					{isPending ? (

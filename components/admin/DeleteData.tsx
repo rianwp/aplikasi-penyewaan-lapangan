@@ -1,6 +1,5 @@
 import {
 	AlertDialog,
-	AlertDialogAction,
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
@@ -8,7 +7,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { Button, buttonVariants } from "../ui/button"
+import { Button } from "../ui/button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useToast } from "../ui/use-toast"
 import { useEffect } from "react"
@@ -78,6 +77,7 @@ const DeleteData = ({
 						disabled={isPending}
 						onClick={() => handleDelete()}
 						variant="destructive"
+						className="flex flex-row gap-x-2 justify-center items-center"
 					>
 						{isPending ? (
 							<Loader2 className="h-5 w-5 animate-spin text-gray-400" />
