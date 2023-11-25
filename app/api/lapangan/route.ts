@@ -164,17 +164,14 @@ export const GET = async (req: NextRequest) => {
 			if (!tanggal) {
 				return lapWithoutBooking
 			}
-			lap.Booking.map((data) => {
-				if (formatDate(data.tanggal) === formatDate(new Date(tanggal))) {
-					return {
-						...lapWithoutBooking,
-						available: false,
-					}
-				}
-			})
+			const isLapanganBooked = lap.Booking.some(
+				(data) =>
+					new Date(formatDate(data.tanggal)) ===
+					new Date(formatDate(new Date(tanggal)))
+			)
 			return {
 				...lapWithoutBooking,
-				available: true,
+				available: !isLapanganBooked,
 			}
 		})
 
