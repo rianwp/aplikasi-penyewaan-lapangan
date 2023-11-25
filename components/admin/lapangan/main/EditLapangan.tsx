@@ -113,6 +113,7 @@ const EditLapangan = ({
 								type="number"
 								id="harga"
 								placeholder="Masukkan Harga"
+								autoComplete="off"
 								value={inputForm.harga}
 								onChange={(e) => handleHargaChange(e)}
 								className="w-full"

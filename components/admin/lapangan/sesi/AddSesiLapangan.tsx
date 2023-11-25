@@ -77,6 +77,7 @@ const AddSesiLapangan = ({
 							type="time"
 							id="jam_mulai"
 							placeholder="Masukkan Jam Mulai"
+							autoComplete="off"
 							value={inputForm.jam_mulai}
 							onChange={(e) =>
 								handleObjectState("jam_mulai", e.target.value, setInputForm)
@@ -95,6 +96,7 @@ const AddSesiLapangan = ({
 							type="time"
 							id="jam_berakhir"
 							placeholder="Masukkan Jam Berakhir"
+							autoComplete="off"
 							value={inputForm.jam_berakhir}
 							onChange={(e) =>
 								handleObjectState("jam_berakhir", e.target.value, setInputForm)

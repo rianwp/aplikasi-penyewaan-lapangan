@@ -98,6 +98,7 @@ const EditBooking = ({
 							type="text"
 							id="name"
 							placeholder="Masukkan Nama"
+							autoComplete="off"
 							value={inputForm.name}
 							onChange={(e) =>
 								handleObjectState("name", e.target.value, setInputForm)

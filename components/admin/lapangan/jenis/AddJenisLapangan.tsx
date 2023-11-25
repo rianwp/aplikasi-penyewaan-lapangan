@@ -92,6 +92,7 @@ const AddJenisLapangan = ({
 							type="text"
 							id="jenis_lapangan"
 							placeholder="Masukkan Jenis Lapangan"
+							autoComplete="off"
 							value={inputForm.jenis_lapangan}
 							onChange={(e) =>
 								handleObjectState(
