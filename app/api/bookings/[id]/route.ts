@@ -22,7 +22,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	}
 
 	const body = await req.json()
-	const { tanggal, id_lapangan } = body as BookingRequestInterface
+	const { tanggal, id_lapangan, name } = body as BookingRequestInterface
 
 	if (!checkDate(tanggal)) {
 		return NextResponse.json(
@@ -119,6 +119,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 
 		await prisma.booking.update({
 			data: {
+				atas_nama: name,
 				tanggal: new Date(formatDate(new Date(tanggal))),
 				id_lapangan: {
 					set: id_lapangan,

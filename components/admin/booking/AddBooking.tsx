@@ -9,11 +9,8 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
-import { addBooking, editBooking } from "@/lib/http"
-import {
-	BookingRequestInterface,
-	BookingResponseInterface,
-} from "@/types/BookingInterface"
+import { addBooking } from "@/lib/http"
+import { BookingRequestInterface } from "@/types/BookingInterface"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
@@ -21,6 +18,7 @@ import { useEffect, useState } from "react"
 import SelectLapangan from "./SelectLapangan"
 import DatePicker from "@/components/DatePicker"
 import formatDate from "@/utils/formatDate"
+import { Input } from "@/components/ui/input"
 
 interface AddBookingPropsInterface {
 	isOpen: boolean
@@ -68,6 +66,19 @@ const AddBooking = ({ isOpen, onOpenChange }: AddBookingPropsInterface) => {
 					<DialogDescription>Tambahkan Booking</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-y-4 py-4">
+					<Label htmlFor="name" className="sm:text-right sm:w-1/4 w-full">
+						Atas Nama
+					</Label>
+					<Input
+						type="text"
+						id="name"
+						placeholder="Masukkan Nama"
+						value={inputForm.name}
+						onChange={(e) =>
+							handleObjectState("name", e.target.value, setInputForm)
+						}
+						className="sm:w-3/4 w-full shrink-0"
+					/>
 					<div className="flex sm:flex-row flex-col items-center gap-4">
 						<Label htmlFor="tanggal" className="sm:text-right sm:w-1/4 w-full">
 							Tanggal

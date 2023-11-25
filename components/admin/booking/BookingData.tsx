@@ -82,6 +82,7 @@ const BookingData = () => {
 			jenis_lapangan: "",
 			jam_mulai: "",
 			jam_berakhir: "",
+			id_lapangan: "",
 			harga: 0,
 			status: "pending",
 			payment_type: "",

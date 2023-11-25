@@ -24,6 +24,7 @@ model Booking {
   id              String            @id
   amount          Int
   gross_amount    Int
+  atas_nama       String            @db.VarChar(255)
   status          TransactionStatus @default(pending)
   tanggal         DateTime          @default(now()) 
   payment_type    String            @db.VarChar(255)

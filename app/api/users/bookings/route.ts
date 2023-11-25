@@ -20,6 +20,7 @@ export const GET = async (req: NextRequest) => {
 			include: {
 				Lapangan: {
 					select: {
+						id: true,
 						harga: true,
 						JenisLapangan: {
 							select: {
@@ -34,11 +35,6 @@ export const GET = async (req: NextRequest) => {
 						},
 					},
 				},
-				User: {
-					select: {
-						name: true,
-					},
-				},
 			},
 			where: {
 				id_user: user.data?.id,
@@ -48,10 +44,11 @@ export const GET = async (req: NextRequest) => {
 		const returnedData = booking.map((data) => {
 			return {
 				id: data.id,
-				name: data.User.name,
+				name: data.atas_nama,
 				jenis_lapangan: data.Lapangan.JenisLapangan.jenis_lapangan,
 				jam_mulai: data.Lapangan.SesiLapangan.jam_mulai,
 				jam_berakhir: data.Lapangan.SesiLapangan.jam_berakhir,
+				id_lapangan: data.Lapangan.id,
 				harga: data.Lapangan.harga,
 				createdAt: data.createdAt,
 				updatedAt: data.updatedAt,

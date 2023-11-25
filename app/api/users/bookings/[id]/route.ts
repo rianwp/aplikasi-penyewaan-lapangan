@@ -23,6 +23,7 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 			include: {
 				Lapangan: {
 					select: {
+						id: true,
 						harga: true,
 						JenisLapangan: {
 							select: {
@@ -35,11 +36,6 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 								jam_berakhir: true,
 							},
 						},
-					},
-				},
-				User: {
-					select: {
-						name: true,
 					},
 				},
 			},
@@ -67,10 +63,11 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 				data: {
 					booking: {
 						id: booking.id,
-						name: booking.User.name,
+						name: booking.atas_nama,
 						jenis_lapangan: booking.Lapangan.JenisLapangan.jenis_lapangan,
 						jam_mulai: booking.Lapangan.SesiLapangan.jam_mulai,
 						jam_berakhir: booking.Lapangan.SesiLapangan.jam_berakhir,
+						id_lapangan: booking.Lapangan.id,
 						harga: booking.Lapangan.harga,
 						createdAt: booking.createdAt,
 						updatedAt: booking.updatedAt,
