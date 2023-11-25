@@ -8,6 +8,7 @@ import { getLapangan } from "@/lib/http"
 import { LapanganResponseInterface } from "@/types/LapanganInterface"
 import DatePicker from "@/components/DatePicker"
 import { Label } from "@/components/ui/label"
+import formatDate from "@/utils/formatDate"
 
 const KetersediaanLapanganData = () => {
 	const { toast } = useToast()

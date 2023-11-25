@@ -10,6 +10,7 @@ import { useEffect, useState } from "react"
 import handleObjectState from "@/utils/handleObjectState"
 import AddBooking from "./AddBooking"
 import EditBooking from "./EditBooking"
+import formatDate from "@/utils/formatDate"
 
 const header = [
 	"id",

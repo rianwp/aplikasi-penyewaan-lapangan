@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db"
 import { BookingRequestInterface } from "@/types/BookingInterface"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
 import checkDate from "@/utils/checkDate"
+import formatDate from "@/utils/formatDate"
 import { NextRequest, NextResponse } from "next/server"
 
 export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
