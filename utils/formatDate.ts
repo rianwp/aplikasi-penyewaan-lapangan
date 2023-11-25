@@ -1,5 +1,5 @@
 const formatDate = (date: Date) => {
-	return date.toLocaleDateString("id-ID", { dateStyle: "medium" })
+	return date.toDateString()
 }
 
 export default formatDate
