@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import checkBody from "@/utils/checkBody"
 import checkDate from "@/utils/checkDate"
+import formatDate from "@/utils/formatDate"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
@@ -164,7 +165,7 @@ export const GET = async (req: NextRequest) => {
 				return lapWithoutBooking
 			}
 			lap.Booking.map((data) => {
-				if (data.tanggal === new Date(tanggal)) {
+				if (formatDate(data.tanggal) === formatDate(new Date(tanggal))) {
 					return {
 						...lapWithoutBooking,
 						available: false,
