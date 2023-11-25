@@ -144,31 +144,14 @@ export const GET = async (req: NextRequest) => {
 			},
 		})
 
-		// const lapanganNotAvailable = tanggal
-		// 	? await prisma.lapangan.findMany({
-		// 			select: {
-		// 				id: true,
-		// 			},
-		// 			where: {
-		// 				Booking: {
-		// 					every: {
-		// 						tanggal: isDateValid ? new Date(tanggal) : undefined,
-		// 					},
-		// 				},
-		// 			},
-		// 	  })
-		// 	: []
-
 		const filteredLapangan = lapangan.map((lap) => {
 			const { Booking, ...lapWithoutBooking } = lap
 			if (!tanggal) {
 				return lapWithoutBooking
 			}
-			const isLapanganBooked = lap.Booking.some(
-				(data) =>
-					new Date(formatDate(data.tanggal)) ===
-					new Date(formatDate(new Date(tanggal)))
-			)
+			const isLapanganBooked = lap.Booking.some((data) => {
+				return formatDate(data.tanggal) === formatDate(new Date(tanggal))
+			})
 			return {
 				...lapWithoutBooking,
 				available: !isLapanganBooked,

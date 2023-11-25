@@ -15,10 +15,6 @@ const KetersediaanLapanganData = () => {
 
 	const [dateFilter, setDateFilter] = useState<Date | undefined>(new Date())
 
-	useEffect(() => {
-		refetch()
-	}, [dateFilter])
-
 	const {
 		data: dataLapangan,
 		isPending,
@@ -32,6 +28,12 @@ const KetersediaanLapanganData = () => {
 		refetchOnWindowFocus: false,
 		queryFn: () => getLapangan(formatDate(dateFilter || new Date())),
 	})
+
+	useEffect(() => {
+		if (!isPending && !isRefetching) {
+			refetch()
+		}
+	}, [dateFilter])
 
 	const responseData =
 		(dataLapangan?.data.lapangan as LapanganResponseInterface[]) ?? []
