@@ -38,7 +38,7 @@ const LapanganLayout = ({
 			) : (
 				<>
 					<p className="text-black">Menampilkan {dataLapangan.length} data</p>
-					<div className="w-[calc(100%+32px)] -ml-4 flex flex-row flex-wrap">
+					<div className="w-[calc(100%+32px)] -ml-4 flex flex-row flex-wrap -mt-4">
 						{dataLapangan.map((data) => {
 							return (
 								<LapanganCard
