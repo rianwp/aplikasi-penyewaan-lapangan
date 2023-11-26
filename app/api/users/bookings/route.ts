@@ -1,3 +1,4 @@
+import { SUCCESS_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
@@ -52,7 +53,9 @@ export const GET = async (req: NextRequest) => {
 				harga: data.Lapangan.harga,
 				createdAt: data.createdAt,
 				updatedAt: data.updatedAt,
-				status: data.status,
+				status: SUCCESS_TRANSACTION.includes(data.status)
+					? "success"
+					: data.status,
 				payment_type: data.payment_type,
 				tanggal: data.tanggal,
 			}

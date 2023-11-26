@@ -1,3 +1,4 @@
+import { SUCCESS_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
@@ -71,7 +72,9 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 						harga: booking.Lapangan.harga,
 						createdAt: booking.createdAt,
 						updatedAt: booking.updatedAt,
-						status: booking.status,
+						status: SUCCESS_TRANSACTION.includes(booking.status)
+							? "success"
+							: booking.status,
 						payment_type: booking.payment_type,
 						tanggal: booking.tanggal,
 					},
