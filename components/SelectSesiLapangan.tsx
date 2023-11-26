@@ -3,7 +3,6 @@ import {
 	SelectContent,
 	SelectGroup,
 	SelectItem,
-	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
@@ -16,11 +15,13 @@ import { useEffect } from "react"
 interface SelectSesiLapanganPropsInterface {
 	onValueChange: (id: string) => void
 	value: string
+	className: string
 }
 
 const SelectSesiLapangan = ({
 	onValueChange,
 	value,
+	className,
 }: SelectSesiLapanganPropsInterface) => {
 	const { toast } = useToast()
 
@@ -53,11 +54,7 @@ const SelectSesiLapangan = ({
 			onValueChange={(currentId) => onValueChange(currentId)}
 			value={value}
 		>
-			<SelectTrigger
-				disabled={isPending}
-				id="id_sesilap"
-				className="sm:w-3/4 w-full shrink-0"
-			>
+			<SelectTrigger disabled={isPending} id="id_sesilap" className={className}>
 				<SelectValue placeholder="Pilih Sesi Lapangan" />
 			</SelectTrigger>
 			<SelectContent>

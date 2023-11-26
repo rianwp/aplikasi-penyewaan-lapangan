@@ -11,6 +11,7 @@ import handleObjectState from "@/utils/handleObjectState"
 import AddBooking from "./AddBooking"
 import EditBooking from "./EditBooking"
 import formatDate from "@/utils/formatDate"
+import formatCurrency from "@/utils/formatCurrency"
 
 const header = [
 	"id",
@@ -62,7 +63,7 @@ const BookingData = () => {
 				jenis_lapangan: data.jenis_lapangan,
 				jam_mulai: data.jam_mulai,
 				jam_berakhir: data.jam_berakhir,
-				harga: data.harga,
+				harga: `Rp. ${formatCurrency(data.harga)}`,
 				status: data.status,
 				payment_type: data.payment_type,
 				createdAt: formatDate(new Date(data.createdAt)),

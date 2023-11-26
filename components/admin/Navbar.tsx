@@ -1,6 +1,6 @@
 import { BsList } from "react-icons/bs"
 import Brand from "./Brand"
-import ProfileAvatar from "./ProfileAvatar"
+import ProfileAvatar from "../ProfileAvatar"
 
 interface NavbarPropsInterface {
 	onOpenSidebar: () => void
@@ -17,7 +17,7 @@ const Navbar = ({ onOpenSidebar }: NavbarPropsInterface) => {
 					<Brand />
 				</div>
 			</div>
-			<ProfileAvatar />
+			<ProfileAvatar role="admin" />
 		</nav>
 	)
 }

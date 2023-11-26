@@ -1,17 +1,21 @@
 import { LapanganResponseInterface } from "@/types/LapanganInterface"
-import { Button } from "./ui/button"
+import { Button, buttonVariants } from "./ui/button"
 import { BsPencilFill, BsTrash } from "react-icons/bs"
+import Link from "next/link"
+import formatCurrency from "@/utils/formatCurrency"
 
 interface LapanganCardPropsInterface {
 	dataLapangan: LapanganResponseInterface
 	onEdit?: () => void
 	onDelete?: () => void
+	link?: string
 }
 
 const LapanganCard = ({
 	dataLapangan,
 	onEdit,
 	onDelete,
+	link,
 }: LapanganCardPropsInterface) => {
 	return (
 		<div className="p-4 lg:w-1/3 sm:w-1/2 w-full">
@@ -34,7 +38,14 @@ const LapanganCard = ({
 							{dataLapangan.SesiLapangan.jam_mulai} -{" "}
 							{dataLapangan.SesiLapangan.jam_berakhir}
 						</p>
-						<p className="text-sm">Rp {dataLapangan.harga}</p>
+						<p className="text-sm">Rp. {formatCurrency(dataLapangan.harga)}</p>
+						{link ? (
+							<div className="self-end">
+								<Link href={link} className={buttonVariants()}>
+									Lihat
+								</Link>
+							</div>
+						) : null}
 					</div>
 					{dataLapangan.available === undefined ? (
 						<div className="flex flex-row gap-x-1">

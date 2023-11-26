@@ -15,11 +15,13 @@ import { useEffect } from "react"
 interface SelectLapanganPropsInterface {
 	onValueChange: (id: string) => void
 	value: string
+	className: string
 }
 
 const SelectLapangan = ({
 	onValueChange,
 	value,
+	className,
 }: SelectLapanganPropsInterface) => {
 	const { toast } = useToast()
 
@@ -55,7 +57,7 @@ const SelectLapangan = ({
 			<SelectTrigger
 				disabled={isPending}
 				id="id_lapangan"
-				className="sm:w-3/4 w-full shrink-0"
+				className={className}
 			>
 				<SelectValue placeholder="Pilih Lapangan" />
 			</SelectTrigger>

@@ -28,6 +28,29 @@ export const getAdminData = async () => {
 	}
 }
 
+export const getUserData = async () => {
+	try {
+		const response = await axios.get("/api/auth/users/me")
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
 export const loginAdmin = async (data: LoginInterface) => {
 	try {
 		const response = await axios.post("/api/auth/admins/login", data)
@@ -464,29 +487,6 @@ export const deleteLapangan = async (id: string) => {
 export const getBooking = async () => {
 	try {
 		const response = await axios.get("/api/bookings")
-		return response.data
-	} catch (err) {
-		if (err instanceof AxiosError) {
-			const error = err as AxiosError
-			if (error.code === "500") {
-				throw {
-					success: false,
-					message: "Terjadi Kesalahan",
-				}
-			}
-			throw error.response?.data
-		} else {
-			throw {
-				success: false,
-				message: "Terjadi Kesalahan",
-			}
-		}
-	}
-}
-
-export const getBookingById = async (id: string) => {
-	try {
-		const response = await axios.get(`/api/bookings/${id}`)
 		return response.data
 	} catch (err) {
 		if (err instanceof AxiosError) {

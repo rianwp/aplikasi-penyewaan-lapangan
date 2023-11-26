@@ -107,6 +107,7 @@ const AddBooking = ({ isOpen, onOpenChange }: AddBookingPropsInterface) => {
 							Lapangan
 						</Label>
 						<SelectLapangan
+							className="sm:w-3/4 w-full shrink-0"
 							value={inputForm.id_lapangan}
 							onValueChange={(value) =>
 								handleObjectState("id_lapangan", value, setInputForm)

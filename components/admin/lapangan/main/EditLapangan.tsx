@@ -19,8 +19,8 @@ import handleObjectState from "@/utils/handleObjectState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 import { ChangeEvent, useEffect, useState } from "react"
-import SelectJenisLapangan from "./SelectJenisLapangan"
-import SelectSesiLapangan from "./SelectSesiLapangan"
+import SelectJenisLapangan from "../../../SelectJenisLapangan"
+import SelectSesiLapangan from "../../../SelectSesiLapangan"
 
 interface EditLapanganPropsInterface {
 	currentData: LapanganResponseInterface
@@ -128,6 +128,7 @@ const EditLapangan = ({
 							Jenis Lapangan
 						</Label>
 						<SelectJenisLapangan
+							className="sm:w-3/4 w-full shrink-0"
 							value={inputForm.id_jenislap}
 							onValueChange={(value) =>
 								handleObjectState("id_jenislap", value, setInputForm)
@@ -142,6 +143,7 @@ const EditLapangan = ({
 							Sesi Lapangan
 						</Label>
 						<SelectSesiLapangan
+							className="sm:w-3/4 w-full shrink-0"
 							value={inputForm.id_sesilap}
 							onValueChange={(value) =>
 								handleObjectState("id_sesilap", value, setInputForm)

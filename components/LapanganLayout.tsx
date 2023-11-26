@@ -36,18 +36,21 @@ const LapanganLayout = ({
 					<Loader2 className="h-10 w-10 animate-spin text-system-primary" />
 				</div>
 			) : (
-				<div className="w-[calc(100%+32px)] -ml-4 flex flex-row flex-wrap">
-					{dataLapangan.map((data) => {
-						return (
-							<LapanganCard
-								onEdit={() => onEdit?.(data.id)}
-								onDelete={() => onDelete?.(data.id)}
-								dataLapangan={data}
-								key={data.id}
-							/>
-						)
-					})}
-				</div>
+				<>
+					<p className="text-black">Menampilkan {dataLapangan.length} data</p>
+					<div className="w-[calc(100%+32px)] -ml-4 flex flex-row flex-wrap">
+						{dataLapangan.map((data) => {
+							return (
+								<LapanganCard
+									onEdit={() => onEdit?.(data.id)}
+									onDelete={() => onDelete?.(data.id)}
+									dataLapangan={data}
+									key={data.id}
+								/>
+							)
+						})}
+					</div>
+				</>
 			)}
 		</div>
 	)

@@ -65,7 +65,9 @@ const KetersediaanLapanganData = () => {
 	return (
 		<div className="mt-5 flex flex-col gap-y-2">
 			<div className="flex flex-col gap-y-2">
-				<Label htmlFor="tanggal">Pilih Tanggal</Label>
+				<Label htmlFor="tanggal" className="w-fit">
+					Pilih Tanggal
+				</Label>
 				<DatePicker
 					htmlId="tanggal"
 					date={dateFilter}

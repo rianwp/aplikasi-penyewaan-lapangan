@@ -1,22 +1,26 @@
 import initialName from "@/utils/initialName"
-import { Avatar, AvatarFallback } from "../ui/avatar"
+import { Avatar, AvatarFallback } from "./ui/avatar"
 import {
 	Menubar,
 	MenubarContent,
 	MenubarItem,
 	MenubarMenu,
 	MenubarTrigger,
-} from "../ui/menubar"
-import { Separator } from "../ui/separator"
+} from "./ui/menubar"
+import { Separator } from "./ui/separator"
 import ProfileInfo from "./ProfileInfo"
-import { getAdminData, logout } from "@/lib/http"
+import { getAdminData, getUserData, logout } from "@/lib/http"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 
-const ProfileAvatar = () => {
-	const { data: adminData, isLoading: isAdminDataLoading } = useQuery({
-		queryKey: ["adminData"],
-		queryFn: () => getAdminData(),
+interface ProfileAvatarPropsInterface {
+	role: "admin" | "user"
+}
+
+const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
+	const { data, isLoading } = useQuery({
+		queryKey: [role === "admin" ? "adminData" : "userData"],
+		queryFn: () => (role === "admin" ? getAdminData() : getUserData()),
 	})
 	const { mutateAsync, isPending: isLogoutPending } = useMutation({
 		mutationKey: ["logout"],
@@ -34,17 +38,17 @@ const ProfileAvatar = () => {
 				<MenubarTrigger>
 					<Avatar>
 						<AvatarFallback>
-							{initialName(adminData?.data.user.name || "")}
+							{initialName(data?.data.user.name || "")}
 						</AvatarFallback>
 					</Avatar>
 				</MenubarTrigger>
 				<MenubarContent>
-					{isAdminDataLoading ? (
+					{isLoading ? (
 						<Loader2 className="h-5 w-5 animate-spin text-primary py-1" />
 					) : (
 						<ProfileInfo
-							name={adminData?.data.user.name}
-							email={adminData?.data.user.email}
+							name={data?.data.user.name}
+							email={data?.data.user.email}
 						/>
 					)}
 					<Separator />
