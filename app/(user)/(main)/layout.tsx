@@ -1,9 +1,11 @@
+import MainLayout from "@/components/user/MainLayout"
+
 interface LayoutPropsInterface {
 	children: React.ReactNode
 }
 
 const Layout = ({ children }: LayoutPropsInterface) => {
-	return <div>layout</div>
+	return <MainLayout>{children}</MainLayout>
 }
 
 export default Layout

@@ -10,6 +10,7 @@ interface LapanganLayoutPropsInterface {
 	onDelete?: (id: string) => void
 	dataLapangan: LapanganResponseInterface[]
 	isLoading: boolean
+	withLink?: boolean
 }
 
 const LapanganLayout = ({
@@ -18,6 +19,7 @@ const LapanganLayout = ({
 	onDelete,
 	dataLapangan,
 	isLoading,
+	withLink,
 }: LapanganLayoutPropsInterface) => {
 	return (
 		<div className="flex flex-col gap-y-2">
@@ -33,11 +35,13 @@ const LapanganLayout = ({
 			) : null}
 			{isLoading ? (
 				<div className="w-full flex flex-row justify-center items-center h-40">
-					<Loader2 className="h-10 w-10 animate-spin text-system-primary" />
+					<Loader2 className="h-10 w-10 animate-spin text-black" />
 				</div>
 			) : (
 				<>
-					<p className="text-black">Menampilkan {dataLapangan.length} data</p>
+					<p className="text-black text-sm">
+						Menampilkan {dataLapangan.length} data
+					</p>
 					<div className="w-[calc(100%+32px)] -ml-4 flex flex-row flex-wrap -mt-4">
 						{dataLapangan.map((data) => {
 							return (
@@ -46,6 +50,7 @@ const LapanganLayout = ({
 									onDelete={() => onDelete?.(data.id)}
 									dataLapangan={data}
 									key={data.id}
+									link={withLink ? `/lapangan/${data.id}` : undefined}
 								/>
 							)
 						})}

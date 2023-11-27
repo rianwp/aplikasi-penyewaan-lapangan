@@ -1,7 +1,7 @@
+import SewaPage from "@/components/user/sewa/SewaPage"
+
 const Page = () => {
-  return (
-    <div>Page</div>
-  )
+	return <SewaPage />
 }
 
 export default Page

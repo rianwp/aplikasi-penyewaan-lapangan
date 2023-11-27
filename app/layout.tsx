@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Toaster } from "@/components/ui/toaster"
 import { Inter as FontSans } from "next/font/google"
 import { cn } from "@/lib/shadcnUtils"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 export const fontSans = FontSans({
 	subsets: ["latin"],
@@ -21,11 +22,18 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 			<html lang="en">
 				<body
 					className={cn(
-						"min-h-screen bg-background font-sans antialiased",
+						"min-h-screen bg-background font-sans antialiased overflow-y-hidden",
 						fontSans.variable
 					)}
 				>
-					{children}
+					<ScrollArea className="h-screen">
+						{children}
+						<ScrollBar
+							orientation="vertical"
+							hidden={false}
+							className="bg-primary-foreground"
+						/>
+					</ScrollArea>
 					<Toaster />
 				</body>
 			</html>

@@ -119,16 +119,18 @@ const Table = ({
 										? filteredData.map((data) => {
 												return (
 													<tr key={data.id}>
-														{Object.keys(data.fields).map((dataKey, indexKey) => {
-															return (
-																<td
-																	key={indexKey}
-																	className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"
-																>
-																	{data.fields[dataKey]}
-																</td>
-															)
-														})}
+														{Object.keys(data.fields).map(
+															(dataKey, indexKey) => {
+																return (
+																	<td
+																		key={indexKey}
+																		className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"
+																	>
+																		{data.fields[dataKey]}
+																	</td>
+																)
+															}
+														)}
 														<td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex flex-row gap-x-1 justify-end">
 															<button
 																type="button"
@@ -219,7 +221,7 @@ const Table = ({
 						) : null}
 					</>
 				) : null}
-				<p className="text-system-text-primary/60">
+				<p className="text-system-text-primary/60 text-sm">
 					Menampilkan {filteredData.length} data
 				</p>
 			</div>

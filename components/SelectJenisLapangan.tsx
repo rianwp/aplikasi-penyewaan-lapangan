@@ -3,6 +3,7 @@ import {
 	SelectContent,
 	SelectGroup,
 	SelectItem,
+	SelectLabel,
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select"
@@ -52,7 +53,9 @@ const SelectJenisLapangan = ({
 			.jenisLapangan as JenisLapanganResponseInterface[]) ?? []
 	return (
 		<Select
-			onValueChange={(currentId) => onValueChange(currentId)}
+			onValueChange={(currentId) =>
+				onValueChange(currentId === "unassigned" ? "" : currentId)
+			}
 			value={value}
 		>
 			<SelectTrigger
@@ -63,17 +66,16 @@ const SelectJenisLapangan = ({
 				<SelectValue placeholder="Pilih Jenis Lapangan" />
 			</SelectTrigger>
 			<SelectContent>
-				<SelectGroup>
-					{!isPending && !isError
-						? responseData.map((data) => {
-								return (
-									<SelectItem key={data.id} value={data.id}>
-										{data.jenis_lapangan}
-									</SelectItem>
-								)
-						  })
-						: null}
-				</SelectGroup>
+				<SelectItem value="unassigned">Pilih Jenis Lapangan</SelectItem>
+				{!isPending && !isError
+					? responseData.map((data) => {
+							return (
+								<SelectItem key={data.id} value={data.id}>
+									{data.jenis_lapangan}
+								</SelectItem>
+							)
+					  })
+					: null}
 			</SelectContent>
 		</Select>
 	)

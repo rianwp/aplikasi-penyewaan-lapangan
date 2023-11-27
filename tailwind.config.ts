@@ -18,6 +18,9 @@ module.exports = {
 			},
 		},
 		extend: {
+			backgroundImage: {
+				"hero-banner": "url('/bgmarga.png')",
+			},
 			fontFamily: {
 				"system-ui": [
 					"system-ui",
@@ -76,6 +79,7 @@ module.exports = {
 				"system-button-primary_hover": "#5343DB",
 				"system-danger": "#E45353",
 				"system-light": "#EBEDEF",
+				"client-primary": "#B33B3B",
 			},
 			borderRadius: {
 				lg: "var(--radius)",

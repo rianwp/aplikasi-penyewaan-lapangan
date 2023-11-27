@@ -29,8 +29,8 @@ const LapanganCard = ({
 					src={dataLapangan.JenisLapangan.Image[0].imageUrl}
 					className="aspect-video w-full object-cover"
 				/>
-				<div className="p-2 flex flex-row justify-between items-start">
-					<div className="flex flex-col">
+				<div className="p-3 flex flex-row justify-between items-start">
+					<div className="flex flex-col w-full">
 						<h1 className="font-semibold text-lg">
 							{dataLapangan.JenisLapangan.jenis_lapangan}
 						</h1>

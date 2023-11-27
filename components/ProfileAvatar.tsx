@@ -7,11 +7,22 @@ import {
 	MenubarMenu,
 	MenubarTrigger,
 } from "./ui/menubar"
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@/components/ui/sheet"
 import { Separator } from "./ui/separator"
 import ProfileInfo from "./ProfileInfo"
 import { getAdminData, getUserData, logout } from "@/lib/http"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { Loader2 } from "lucide-react"
+import { List, Loader2 } from "lucide-react"
+import { Button, buttonVariants } from "./ui/button"
+import Link from "next/link"
+import Brand from "./user/Brand"
 
 interface ProfileAvatarPropsInterface {
 	role: "admin" | "user"
@@ -33,39 +44,132 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 	}
 
 	return (
-		<Menubar>
-			<MenubarMenu>
-				<MenubarTrigger>
-					<Avatar>
-						<AvatarFallback>
-							{initialName(data?.data.user.name || "")}
-						</AvatarFallback>
-					</Avatar>
-				</MenubarTrigger>
-				<MenubarContent>
-					{isLoading ? (
-						<Loader2 className="h-5 w-5 animate-spin text-primary py-1" />
+		<>
+			{role === "user" ? (
+				<>
+					{!data?.success ? (
+						<>
+							<a href="/auth/register" className="sm:block hidden">
+								<Button variant="link">Login</Button>
+							</a>
+							<a href="/auth/register" className="sm:block hidden">
+								<Button className="bg-client-primary hover:bg-red-800 ">
+									Register
+								</Button>
+							</a>
+							<Sheet>
+								<SheetTrigger
+									className={buttonVariants({
+										variant: "link",
+										className: "sm:hidden block",
+									})}
+								>
+									<List />
+								</SheetTrigger>
+								<SheetContent className="w-[200px] max-w-full">
+									<div className="w-full flex flex-col gap-y-2">
+										<Brand />
+										<a href="/auth/register">
+											<Button variant="link">Login</Button>
+										</a>
+										<a href="/auth/register">
+											<Button className="bg-client-primary hover:bg-red-800 ">
+												Register
+											</Button>
+										</a>
+									</div>
+								</SheetContent>
+							</Sheet>
+						</>
 					) : (
-						<ProfileInfo
-							name={data?.data.user.name}
-							email={data?.data.user.email}
-						/>
+						<Menubar>
+							<MenubarMenu>
+								<MenubarTrigger>
+									<Avatar>
+										<AvatarFallback>
+											{initialName(data?.data.user.name)}
+										</AvatarFallback>
+									</Avatar>
+								</MenubarTrigger>
+								<MenubarContent>
+									{isLoading ? (
+										<Loader2 className="h-5 w-5 animate-spin text-primary py-1" />
+									) : (
+										<ProfileInfo
+											name={data?.data.user.name}
+											email={data?.data.user.email}
+										/>
+									)}
+									<Separator />
+									<MenubarItem>
+										<Link
+											className="w-full flex flex-row justify-start"
+											href="/booking"
+										>
+											Booking
+										</Link>
+									</MenubarItem>
+									<MenubarItem>
+										<Link
+											className="w-full flex flex-row justify-start"
+											href="/profile"
+										>
+											Profile
+										</Link>
+									</MenubarItem>
+									<MenubarItem>
+										<button
+											className="w-full flex flex-row justify-start"
+											onClick={handleLogout}
+										>
+											{isLogoutPending ? (
+												<Loader2 className="h-5 w-5 animate-spin text-primary" />
+											) : null}
+											Logout
+										</button>
+									</MenubarItem>
+								</MenubarContent>
+							</MenubarMenu>
+						</Menubar>
 					)}
-					<Separator />
-					<MenubarItem>
-						<button
-							className="w-full flex flex-row justify-start"
-							onClick={handleLogout}
-						>
-							{isLogoutPending ? (
-								<Loader2 className="h-5 w-5 animate-spin text-primary" />
-							) : null}
-							Logout
-						</button>
-					</MenubarItem>
-				</MenubarContent>
-			</MenubarMenu>
-		</Menubar>
+				</>
+			) : null}
+			{role === "admin" ? (
+				<Menubar>
+					<MenubarMenu>
+						<MenubarTrigger>
+							<Avatar>
+								<AvatarFallback>
+									{initialName(data?.data.user.name || "")}
+								</AvatarFallback>
+							</Avatar>
+						</MenubarTrigger>
+						<MenubarContent>
+							{isLoading ? (
+								<Loader2 className="h-5 w-5 animate-spin text-primary py-1" />
+							) : (
+								<ProfileInfo
+									name={data?.data.user.name}
+									email={data?.data.user.email}
+								/>
+							)}
+							<Separator />
+							<MenubarItem>
+								<button
+									className="w-full flex flex-row justify-start"
+									onClick={handleLogout}
+								>
+									{isLogoutPending ? (
+										<Loader2 className="h-5 w-5 animate-spin text-primary" />
+									) : null}
+									Logout
+								</button>
+							</MenubarItem>
+						</MenubarContent>
+					</MenubarMenu>
+				</Menubar>
+			) : null}
+		</>
 	)
 }
 
