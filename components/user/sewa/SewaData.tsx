@@ -37,6 +37,18 @@ const SewaData = () => {
 	const responseData =
 		(dataLapangan?.data.lapangan as LapanganResponseInterface[]) ?? []
 
+	const filteredData = responseData.filter((data) => {
+		if (
+			(filter.id_jenislap === "" ||
+				filter.id_jenislap === data.JenisLapangan.id) &&
+			(filter.id_sesilap === "" || filter.id_sesilap === data.SesiLapangan.id)
+		) {
+			return true
+		} else {
+			return false
+		}
+	})
+
 	useEffect(() => {
 		if (!isPending) {
 			if (isError) {
@@ -67,7 +79,7 @@ const SewaData = () => {
 			</div>
 			<div className="py-20">
 				<LapanganLayout
-					dataLapangan={responseData}
+					dataLapangan={filteredData}
 					isLoading={isPending || isRefetching}
 					withLink
 				/>

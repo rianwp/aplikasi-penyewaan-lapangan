@@ -16,11 +16,7 @@ const Cart = () => {
 			</SheetTrigger>
 			<SheetContent>
 				<SheetHeader>
-					<SheetTitle>Are you sure absolutely sure?</SheetTitle>
-					<SheetDescription>
-						This action cannot be undone. This will permanently delete your
-						account and remove your data from our servers.
-					</SheetDescription>
+					<SheetTitle>Cart</SheetTitle>
 				</SheetHeader>
 			</SheetContent>
 		</Sheet>
