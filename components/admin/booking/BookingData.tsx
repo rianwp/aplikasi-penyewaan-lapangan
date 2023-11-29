@@ -145,7 +145,7 @@ const BookingData = () => {
 					)
 				}
 				mutationKey="deleteBooking"
-				invalidateKey="getBooking"
+				invalidateKey={["getBooking", "getLapangan"]}
 			/>
 		</>
 	)

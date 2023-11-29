@@ -2,13 +2,13 @@ import { NextRequest } from "next/server"
 import { prisma } from "./db"
 import { verify } from "jsonwebtoken"
 import { Role, User } from "@prisma/client"
-import { COOKIE_NAME } from "@/constants"
+import { COOKIE_AUTH } from "@/constants"
 
 const auth = async (req: NextRequest, role?: Role) => {
 	const secret = process.env.JWT_SECRET || ""
 	const bearerToken = req.headers.get("Authorization")?.split("Bearer ")[1]
 
-	if (!bearerToken && !req.cookies.get(COOKIE_NAME)) {
+	if (!bearerToken && !req.cookies.get(COOKIE_AUTH)) {
 		return {
 			success: false,
 			message: "Unauthorized",
@@ -18,7 +18,7 @@ const auth = async (req: NextRequest, role?: Role) => {
 
 	try {
 		const payload = verify(
-			bearerToken || req.cookies.get(COOKIE_NAME)?.value || "",
+			bearerToken || req.cookies.get(COOKIE_AUTH)?.value || "",
 			secret
 		) as User
 		const user = await prisma.user.findUnique({

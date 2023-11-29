@@ -1,14 +1,14 @@
 import { prisma } from "./db"
 import { verify } from "jsonwebtoken"
 import { Role, User } from "@prisma/client"
-import { COOKIE_NAME } from "@/constants"
+import { COOKIE_AUTH } from "@/constants"
 import { cookies } from "next/headers"
 
 const authPage = async (role?: Role) => {
 	const secret = process.env.JWT_SECRET || ""
 	try {
 		const payload = verify(
-			cookies().get(COOKIE_NAME)?.value || "",
+			cookies().get(COOKIE_AUTH)?.value || "",
 			secret
 		) as User
 		const user = await prisma.user.findUnique({

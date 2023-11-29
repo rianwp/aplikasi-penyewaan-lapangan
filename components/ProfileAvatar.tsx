@@ -111,7 +111,7 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 													className="w-full flex flex-row justify-start"
 													href="/booking"
 												>
-													Booking
+													History Booking
 												</Link>
 											</MenubarItem>
 											<MenubarItem>

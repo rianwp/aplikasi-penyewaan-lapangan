@@ -1,14 +1,14 @@
 "use client"
 
 import { useToast } from "@/components/ui/use-toast"
-import { getLapanganById } from "@/lib/http"
+import { getLapanganById, getUserData } from "@/lib/http"
 import { LapanganResponseInterface } from "@/types/LapanganInterface"
 import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import no_image from "@/public/no-image.png"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { cn } from "@/lib/shadcnUtils"
-import { useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import formatCurrency from "@/utils/formatCurrency"
 import { Button } from "@/components/ui/button"
 import DatePicker from "@/components/DatePicker"
@@ -18,6 +18,11 @@ import { Separator } from "@/components/ui/separator"
 import DetailLapanganSkeleton from "./DetailLapanganSkeleton"
 import PageNotFound from "../../PageNotFound"
 import checkDate from "@/utils/checkDate"
+import LoginAlert from "./LoginAlert"
+import { useRecoilState } from "recoil"
+import { currentOrderState } from "@/store/app-store"
+import BookingConfirmation from "./BookingConfirmation"
+
 interface DetailLapanganPagePropsInterface {
 	id: string
 }
@@ -48,6 +53,14 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 			getLapanganById(id, formatDate(date || new Date()) || undefined),
 	})
 
+	const { data: userData, isFetching: isUserFetching } = useQuery({
+		queryKey: ["userData"],
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+		refetchInterval: false,
+		queryFn: () => getUserData(),
+	})
+
 	useEffect(() => {
 		if (!isPending && !isRefetching) {
 			refetch()
@@ -70,6 +83,25 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 		(dataLapangan?.data.lapangan as LapanganResponseInterface) ?? []
 
 	const [selectedImage, setSelectedImage] = useState(0)
+	const [isLoginAlertOpen, setIsLoginAlertOpen] = useState(false)
+	const [currentOrder, setCurrentOrder] = useRecoilState(currentOrderState)
+	const [isBookingOpen, setIsBookingOpen] = useState(false)
+
+	const handleOrder = () => {
+		if (userData.success) {
+			setCurrentOrder({
+				id_lapangan: responseData.JenisLapangan.id,
+				harga: responseData.harga,
+				jenis_lapangan: responseData.JenisLapangan.jenis_lapangan,
+				jam_mulai: responseData.SesiLapangan.jam_mulai,
+				jam_berakhir: responseData.SesiLapangan.jam_berakhir,
+				tanggal: formatDate(date || new Date()),
+			})
+			setIsBookingOpen(true)
+		} else {
+			setIsLoginAlertOpen(true)
+		}
+	}
 
 	return (
 		<div className="w-full lg:w-9/12 md:w-10/12 mx-auto px-5 flex flex-row flex-wrap gap-y-16">
@@ -137,10 +169,13 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 							</div>
 
 							<Button
-								disabled={!responseData.available || isRefetching}
+								onClick={responseData.available ? handleOrder : undefined}
+								disabled={
+									!responseData.available || isRefetching || isUserFetching
+								}
 								className="w-full bg-client-primary hover:bg-red-800 flex flex-row gap-x-2"
 							>
-								{isRefetching ? (
+								{isRefetching || isUserFetching ? (
 									<Loader2 className="h-5 w-5 animate-spin text-white" />
 								) : null}
 								{responseData.available ? "Pesan" : "Tidak Tersedia"}
@@ -153,6 +188,14 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 			{isError ? (
 				<PageNotFound error={error?.message ?? "Terjadi Kesalahan"} />
 			) : null}
+			<LoginAlert
+				isOpen={isLoginAlertOpen}
+				onOpenChange={setIsLoginAlertOpen}
+			/>
+			<BookingConfirmation
+				isOpen={isBookingOpen}
+				onOpenChange={setIsBookingOpen}
+			/>
 		</div>
 	)
 }

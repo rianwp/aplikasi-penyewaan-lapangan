@@ -18,7 +18,7 @@ interface DeleteDataPropsInterface {
 	onOpenChange: (open: boolean) => void
 	deleteAction: () => Promise<any>
 	mutationKey: string
-	invalidateKey: string
+	invalidateKey: string | string[]
 }
 
 const DeleteData = ({
@@ -34,8 +34,15 @@ const DeleteData = ({
 	const { mutateAsync, data, isPending, isError, error, isIdle } = useMutation({
 		mutationKey: [mutationKey],
 		mutationFn: deleteAction,
-		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: [invalidateKey] }),
+		onSuccess: () => {
+			if (typeof invalidateKey === "string") {
+				queryClient.invalidateQueries({ queryKey: [invalidateKey] })
+			} else {
+				invalidateKey.map((data) => {
+					queryClient.invalidateQueries({ queryKey: [data] })
+				})
+			}
+		},
 	})
 
 	useEffect(() => {

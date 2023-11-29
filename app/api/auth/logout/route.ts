@@ -1,9 +1,9 @@
-import { COOKIE_NAME } from "@/constants"
+import { COOKIE_AUTH } from "@/constants"
 import { serialize } from "cookie"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
-	if (!req.cookies.get(COOKIE_NAME)) {
+	if (!req.cookies.get(COOKIE_AUTH)) {
 		return NextResponse.json(
 			{
 				success: false,
@@ -15,8 +15,8 @@ export const POST = async (req: NextRequest) => {
 		)
 	}
 
-	const token = req.cookies.get(COOKIE_NAME)?.value || ""
-	const serialized = serialize(COOKIE_NAME, token, {
+	const token = req.cookies.get(COOKIE_AUTH)?.value || ""
+	const serialized = serialize(COOKIE_AUTH, token, {
 		httpOnly: true,
 		secure: process.env.NODE_ENV === "production",
 		sameSite: "strict",

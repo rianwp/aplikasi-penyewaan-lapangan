@@ -32,8 +32,10 @@ const AddBooking = ({ isOpen, onOpenChange }: AddBookingPropsInterface) => {
 	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
 		mutationKey: ["addBooking"],
 		mutationFn: (data: BookingRequestInterface) => addBooking(data),
-		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ["getBooking"] }),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["getBooking"] })
+			queryClient.invalidateQueries({ queryKey: ["getLapangan"] })
+		}
 	})
 
 	const [inputForm, setInputForm] = useState<BookingRequestInterface>({

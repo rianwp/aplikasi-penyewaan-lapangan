@@ -1,4 +1,8 @@
-import { SUCCESS_TRANSACTION } from "@/constants"
+import {
+	COOKIE_PAYMENT_STATUS,
+	MAX_AGE,
+	SUCCESS_TRANSACTION,
+} from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { BookingRequestInterface } from "@/types/BookingInterface"
@@ -6,6 +10,8 @@ import checkBody from "@/utils/checkBody"
 import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
 import { Prisma } from "@prisma/client"
+import { serialize } from "cookie"
+import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
@@ -152,6 +158,14 @@ export const POST = async (req: NextRequest) => {
 				},
 			})
 
+			const serialized = serialize(COOKIE_PAYMENT_STATUS, "pending", {
+				httpOnly: true,
+				secure: process.env.NODE_ENV === "production",
+				sameSite: "strict",
+				maxAge: MAX_AGE,
+				path: "/",
+			})
+
 			return NextResponse.json(
 				{
 					success: true,
@@ -161,6 +175,9 @@ export const POST = async (req: NextRequest) => {
 				},
 				{
 					status: 201,
+					headers: {
+						"Set-Cookie": serialized,
+					},
 				}
 			)
 		}

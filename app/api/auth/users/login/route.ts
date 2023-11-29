@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
 import { compare } from "bcrypt"
 import { sign } from "jsonwebtoken"
-import { COOKIE_NAME, MAX_AGE, USER_AGENT_ANDROID } from "@/constants"
+import { COOKIE_AUTH, MAX_AGE, USER_AGENT_ANDROID } from "@/constants"
 import { serialize } from "cookie"
 
 export const POST = async (req: NextRequest) => {
@@ -78,7 +78,7 @@ export const POST = async (req: NextRequest) => {
 				}
 			)
 		} else {
-			const serialized = serialize(COOKIE_NAME, token, {
+			const serialized = serialize(COOKIE_AUTH, token, {
 				httpOnly: true,
 				secure: process.env.NODE_ENV === "production",
 				sameSite: "strict",

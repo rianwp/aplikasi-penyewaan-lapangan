@@ -44,8 +44,10 @@ const EditBooking = ({
 				tanggal: data.dataBooking.tanggal,
 				id_lapangan: data.dataBooking.id_lapangan,
 			}),
-		onSuccess: () =>
-			queryClient.invalidateQueries({ queryKey: ["getBooking"] }),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["getBooking"] })
+			queryClient.invalidateQueries({ queryKey: ["getLapangan"] })
+		},
 	})
 
 	const [inputForm, setInputForm] = useState<BookingRequestInterface>({

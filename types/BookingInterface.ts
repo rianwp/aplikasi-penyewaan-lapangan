@@ -20,3 +20,10 @@ export interface BookingResponseInterface {
 	payment_type: string
 	tanggal: string
 }
+
+export interface BookingConfirmationInterface extends BookingRequestInterface {
+	jenis_lapangan: string
+	jam_mulai: string
+	jam_berakhir: string
+	harga: number
+}
