@@ -88,7 +88,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 	const [isBookingOpen, setIsBookingOpen] = useState(false)
 
 	const handleOrder = () => {
-		if (userData.success) {
+		if (userData?.success) {
 			setCurrentOrder({
 				id_lapangan: responseData.JenisLapangan.id,
 				harga: responseData.harga,
