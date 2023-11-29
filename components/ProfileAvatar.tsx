@@ -21,7 +21,7 @@ interface ProfileAvatarPropsInterface {
 }
 
 const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
-	const { data, isLoading } = useQuery({
+	const { data, isFetching } = useQuery({
 		queryKey: [role === "admin" ? "adminData" : "userData"],
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
@@ -42,7 +42,7 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 		<>
 			{role === "user" ? (
 				<>
-					{isLoading ? (
+					{isFetching ? (
 						<Avatar>
 							<AvatarFallback>
 								<Loader2 className="h-5 w-5 animate-spin text-primary" />
@@ -97,7 +97,7 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 											</Avatar>
 										</MenubarTrigger>
 										<MenubarContent>
-											{isLoading ? (
+											{isFetching ? (
 												<Loader2 className="h-5 w-5 animate-spin text-primary py-1" />
 											) : (
 												<ProfileInfo
@@ -152,7 +152,7 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 							</Avatar>
 						</MenubarTrigger>
 						<MenubarContent>
-							{isLoading ? (
+							{isFetching ? (
 								<Loader2 className="h-5 w-5 animate-spin text-primary py-1" />
 							) : (
 								<ProfileInfo
