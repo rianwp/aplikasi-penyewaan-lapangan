@@ -24,8 +24,9 @@ const DatePicker = ({
 	className,
 	htmlId,
 }: DatePickerPropsInterface) => {
+	const [open, setOpen] = React.useState(false)
 	return (
-		<Popover>
+		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
 				<Button
 					id={htmlId}
@@ -45,6 +46,7 @@ const DatePicker = ({
 					mode="single"
 					selected={date}
 					required={true}
+					onDayClick={() => setOpen(false)}
 					fromDate={new Date()}
 					onSelect={onDateChange}
 					initialFocus

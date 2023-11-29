@@ -97,6 +97,29 @@ export const loginUser = async (data: LoginInterface) => {
 	}
 }
 
+export const registerUser = async (data: RegisterInterface) => {
+	try {
+		const response = await axios.post("/api/auth/register", data)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
 export const logout = async () => {
 	try {
 		const response = await axios.post("/api/auth/logout")
@@ -464,6 +487,33 @@ export const editLapangan = async (
 export const deleteLapangan = async (id: string) => {
 	try {
 		const response = await axios.delete(`/api/lapangan/${id}`)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const getLapanganById = async (id: string, query?: string) => {
+	try {
+		if (query) {
+			const response = await axios.get(`/api/lapangan/${id}?tanggal=${query}`)
+			return response.data
+		}
+		const response = await axios.get(`/api/lapangan/${id}`)
 		return response.data
 	} catch (err) {
 		if (err instanceof AxiosError) {

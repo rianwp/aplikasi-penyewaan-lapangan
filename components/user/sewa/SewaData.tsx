@@ -6,13 +6,15 @@ import { useRecoilValue } from "recoil"
 import { FilterInterface } from "@/types/FilterInterface"
 import { filterState } from "@/store/app-store"
 import { useEffect } from "react"
-import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast"
 import { getLapangan } from "@/lib/http"
 import formatDate from "@/utils/formatDate"
 import { useQuery } from "@tanstack/react-query"
 import { LapanganResponseInterface } from "@/types/LapanganInterface"
 
 const SewaData = () => {
+	const { toast } = useToast()
+
 	const filter = useRecoilValue<FilterInterface>(filterState)
 	const {
 		data: dataLapangan,

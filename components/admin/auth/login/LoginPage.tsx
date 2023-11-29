@@ -15,10 +15,10 @@ const LoginPage = () => {
 	const { toast } = useToast()
 	const { mutate, isPending, isError, error, isIdle } = useMutation({
 		mutationKey: ["login"],
-		mutationFn: (loginData: LoginInterface) => loginAdmin(loginData),
+		mutationFn: (data: LoginInterface) => loginAdmin(data),
 	})
 
-	const [loginInput, setLoginInput] = useState({
+	const [formInput, setFormInput] = useState<LoginInterface>({
 		email: "",
 		password: "",
 	})
@@ -38,40 +38,40 @@ const LoginPage = () => {
 	}, [isPending, isError, isIdle])
 
 	return (
-		<div className="w-full h-screen flex justify-center items-center">
-			<div className="bg-primary-foreground border border-slate-200 rounded-lg flex flex-col gap-y-4 p-8">
+		<div className="w-full h-screen flex justify-center items-center font-sans">
+			<div className="bg-primary-foreground border rounded-lg flex flex-col gap-y-4 p-8">
 				<h1 className="font-bold text-2xl text-center">Login</h1>
 				<div className="flex flex-col gap-y-1">
 					<Label htmlFor="email">Email</Label>
 					<Input
 						onChange={(e) =>
-							handleObjectState("email", e.target.value, setLoginInput)
+							handleObjectState("email", e.target.value, setFormInput)
 						}
 						id="email"
 						type="email"
 						autoComplete="off"
-						placeholder="Masukan Email"
+						placeholder="Masukkan Email"
 					/>
 				</div>
 				<div className="flex flex-col gap-y-1">
 					<Label htmlFor="password">Password</Label>
 					<Input
 						onChange={(e) =>
-							handleObjectState("password", e.target.value, setLoginInput)
+							handleObjectState("password", e.target.value, setFormInput)
 						}
 						id="password"
 						type="password"
-						placeholder="Masukan Password"
+						placeholder="Masukkan Password"
 					/>
 				</div>
 				<Button
 					disabled={isPending}
 					size="lg"
 					className="flex flex-row gap-x-2 justify-center items-center w-full"
-					onClick={() => mutate(loginInput)}
+					onClick={() => mutate(formInput)}
 				>
 					{isPending ? (
-						<Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+						<Loader2 className="h-5 w-5 animate-spin text-white" />
 					) : null}
 					<p>Login</p>
 				</Button>

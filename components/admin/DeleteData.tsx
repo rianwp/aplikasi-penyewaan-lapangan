@@ -80,7 +80,7 @@ const DeleteData = ({
 						className="flex flex-row gap-x-2 justify-center items-center"
 					>
 						{isPending ? (
-							<Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+							<Loader2 className="h-5 w-5 animate-spin text-white" />
 						) : null}
 						<p>Hapus</p>
 					</Button>

@@ -65,7 +65,7 @@ const Table = ({
 				<BsPlus className="w-5 h-5" />
 				<p>Tambah</p>
 			</Button>
-			<div className="flex flex-col bg-primary-foreground border border-slate-200 rounded-lg">
+			<div className="flex flex-col bg-primary-foreground border rounded-lg">
 				<div className="overflow-x-auto">
 					<div className="min-w-full inline-block align-middle">
 						<div className="overflow-hidden">

@@ -49,7 +49,11 @@ const JenisLapanganData = () => {
 			fields: {
 				no: index + 1,
 				jenis_lapangan: data.jenis_lapangan,
-				deskripsi: data.deskripsi,
+				deskripsi: (
+					<p className="w-32 text-clip whitespace-normal line-clamp-3">
+						{data.deskripsi}
+					</p>
+				),
 				images: <ImageList images={data.Image} />,
 			},
 		}

@@ -20,6 +20,7 @@ module.exports = {
 		extend: {
 			backgroundImage: {
 				"hero-banner": "url('/bgmarga.png')",
+				auth: "url('/bg.png')",
 			},
 			fontFamily: {
 				"system-ui": [

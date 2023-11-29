@@ -4,7 +4,6 @@ import {
 	BsChevronLeft,
 	BsFileEarmark,
 	BsJournals,
-	BsPerson,
 	BsSpeedometer2,
 	BsTable,
 } from "react-icons/bs"
@@ -52,11 +51,6 @@ const sidebarItems = [
 		name: "Laporan",
 		link: "/admin/laporan",
 		icon: <BsFileEarmark className="w-full h-full" />,
-	},
-	{
-		name: "Profile",
-		link: "/admin/profile",
-		icon: <BsPerson className="w-full h-full" />,
 	},
 ]
 

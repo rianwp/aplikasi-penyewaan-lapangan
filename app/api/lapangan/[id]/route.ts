@@ -2,9 +2,26 @@ import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
+import checkDate from "@/utils/checkDate"
+import formatDate from "@/utils/formatDate"
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
+	const tanggal = req.nextUrl.searchParams.get("tanggal")
+
+	const isDateValid = (tanggal && checkDate(tanggal)) || !tanggal
+
+	if (!isDateValid) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Format tanggal tidak valid",
+			},
+			{
+				status: 400,
+			}
+		)
+	}
 	const id = params.id
 	try {
 		const lapangan = await prisma.lapangan.findUnique({
@@ -13,14 +30,35 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 				harga: true,
 				createdAt: true,
 				updatedAt: true,
-				JenisLapangan: true,
-				SesiLapangan: true,
+				JenisLapangan: {
+					select: {
+						id: true,
+						jenis_lapangan: true,
+						deskripsi: true,
+						Image: {
+							select: {
+								imageUrl: true,
+							},
+						},
+					},
+				},
+				SesiLapangan: {
+					select: {
+						id: true,
+						jam_mulai: true,
+						jam_berakhir: true,
+					},
+				},
+				Booking: {
+					select: {
+						tanggal: true,
+					},
+				},
 			},
 			where: {
 				id,
 			},
 		})
-
 		if (!lapangan) {
 			return NextResponse.json(
 				{
@@ -31,19 +69,33 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 					status: 404,
 				}
 			)
-		}
-
-		return NextResponse.json(
-			{
-				success: true,
-				data: {
-					lapangan,
-				},
-			},
-			{
-				status: 200,
+		} else {
+			const filterBooking = () => {
+				const { Booking, ...lapWithoutBooking } = lapangan
+				const isLapanganBooked = lapangan.Booking.some((data) => {
+					return (
+						formatDate(data.tanggal) ===
+						formatDate(new Date(tanggal || new Date()))
+					)
+				})
+				return {
+					...lapWithoutBooking,
+					available: !isLapanganBooked,
+				}
 			}
-		)
+
+			return NextResponse.json(
+				{
+					success: true,
+					data: {
+						lapangan: filterBooking(),
+					},
+				},
+				{
+					status: 200,
+				}
+			)
+		}
 	} catch (err) {
 		const error = err as Error
 		return NextResponse.json(

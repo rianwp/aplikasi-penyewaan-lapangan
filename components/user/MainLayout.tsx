@@ -1,8 +1,8 @@
 "use client"
 
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Footer from "./Footer"
 import Navbar from "./Navbar"
-import { RecoilRoot } from "recoil"
 
 interface MainLayoutPropsInterface {
 	children: React.ReactNode
@@ -10,11 +10,11 @@ interface MainLayoutPropsInterface {
 
 const MainLayout = ({ children }: MainLayoutPropsInterface) => {
 	return (
-		<RecoilRoot>
+		<>
 			<Navbar />
-			<div className="mt-16">{children}</div>
+			<div className="mt-16 min-h-[calc(100vh-100px)]">{children}</div>
 			<Footer />
-		</RecoilRoot>
+		</>
 	)
 }
 

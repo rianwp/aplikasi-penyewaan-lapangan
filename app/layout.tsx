@@ -22,16 +22,16 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 			<html lang="en">
 				<body
 					className={cn(
-						"min-h-screen bg-background font-sans antialiased overflow-y-hidden",
+						"min-h-screen bg-background font-sans antialiased overflow-y-auto scroll-smooth",
 						fontSans.variable
 					)}
 				>
-					<ScrollArea className="h-screen">
-						{children}
+					<ScrollArea className="h-screen w-full">
+						<div className="w-screen">{children}</div>
 						<ScrollBar
 							orientation="vertical"
 							hidden={false}
-							className="bg-primary-foreground"
+							className="bg-primary-foreground z-50"
 						/>
 					</ScrollArea>
 					<Toaster />

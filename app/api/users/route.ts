@@ -1,6 +1,7 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import checkEmail from "@/utils/checkEmail"
+import checkEmptyString from "@/utils/checkEmptyString"
 import checkPhoneNumber from "@/utils/checkPhoneNumber"
 import { hash } from "bcrypt"
 import { NextRequest, NextResponse } from "next/server"
@@ -20,10 +21,10 @@ export const PUT = async (req: NextRequest) => {
 	}
 	const body = await req.json()
 	const { name, email, password, no_telp } = body as {
-		name: string | undefined
-		email: string | undefined
-		password: string | undefined
-		no_telp: string | undefined
+		name: string
+		email: string
+		password: string
+		no_telp: string
 	}
 	try {
 		const userEmail = await prisma.user.findUnique({
@@ -44,12 +45,19 @@ export const PUT = async (req: NextRequest) => {
 			)
 		}
 
-		const isValidEmail = (email && checkEmail(email)) || !email
-		const isValidPassword =
-			(password && password.length < 8) || !password
-		const isValidNoTelp = (no_telp && !checkPhoneNumber(no_telp)) || !no_telp
+		if (checkEmptyString(name)) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Nama tidak boleh kosong",
+				},
+				{
+					status: 400,
+				}
+			)
+		}
 
-		if (!isValidEmail) {
+		if (!checkEmail(email)) {
 			return NextResponse.json(
 				{
 					success: false,
@@ -61,11 +69,11 @@ export const PUT = async (req: NextRequest) => {
 			)
 		}
 
-		if (!isValidPassword) {
+		if (!checkPhoneNumber(no_telp)) {
 			return NextResponse.json(
 				{
 					success: false,
-					message: "Password minimal 8 karakter",
+					message: "Nomer telepon tidak valid",
 				},
 				{
 					status: 400,
@@ -73,11 +81,11 @@ export const PUT = async (req: NextRequest) => {
 			)
 		}
 
-		if (!isValidNoTelp) {
+		if (password.length < 8) {
 			return NextResponse.json(
 				{
 					success: false,
-					message: "Nomer telepon tidak valid",
+					message: "Password minimal 8 karakter",
 				},
 				{
 					status: 400,

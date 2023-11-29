@@ -223,7 +223,7 @@ const ImageUploader = ({
 							onChange={(e) => handleImageChange(e)}
 						/>
 						{isUploadImagePending || isDeleteImagePending ? (
-							<Loader2 className="h-6 w-6 animate-spin text-gray-400" />
+							<Loader2 className="h-6 w-6 animate-spin text-white" />
 						) : null}
 					</div>
 				</div>

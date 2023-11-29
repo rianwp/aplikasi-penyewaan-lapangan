@@ -3,6 +3,9 @@ import { Button } from "./ui/button"
 import LapanganCard from "./LapanganCard"
 import { LapanganResponseInterface } from "@/types/LapanganInterface"
 import { Loader2 } from "lucide-react"
+import { useRecoilValue } from "recoil"
+import { filterState } from "@/store/app-store"
+import formatDate from "@/utils/formatDate"
 
 interface LapanganLayoutPropsInterface {
 	onAdd?: () => void
@@ -21,6 +24,7 @@ const LapanganLayout = ({
 	isLoading,
 	withLink,
 }: LapanganLayoutPropsInterface) => {
+	const { tanggal } = useRecoilValue(filterState)
 	return (
 		<div className="flex flex-col gap-y-2">
 			{onAdd ? (
@@ -50,7 +54,11 @@ const LapanganLayout = ({
 									onDelete={() => onDelete?.(data.id)}
 									dataLapangan={data}
 									key={data.id}
-									link={withLink ? `/lapangan/${data.id}` : undefined}
+									link={
+										withLink
+											? `/lapangan/${data.id}?tanggal=${formatDate(tanggal)}`
+											: undefined
+									}
 								/>
 							)
 						})}

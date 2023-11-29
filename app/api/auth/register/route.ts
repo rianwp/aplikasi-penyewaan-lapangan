@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db"
 import checkBody from "@/utils/checkBody"
 import checkEmail from "@/utils/checkEmail"
+import checkEmptyString from "@/utils/checkEmptyString"
 import checkPhoneNumber from "@/utils/checkPhoneNumber"
 import { hash } from "bcrypt"
 import { NextRequest, NextResponse } from "next/server"
@@ -9,12 +10,19 @@ export const POST = async (req: NextRequest) => {
 	const body = await req.json()
 	checkBody(["name", "email", "password", "no_telp", "confirm_password"], body)
 
-	const { name, email, password, no_telp, confirm_password } = body as {
-		name: string
-		email: string
-		password: string
-		no_telp: string
-		confirm_password: string
+	const { name, email, password, no_telp, confirm_password } =
+		body as RegisterInterface
+
+	if (checkEmptyString(name)) {
+		return NextResponse.json(
+			{
+				success: false,
+				message: "Nama tidak boleh kosong",
+			},
+			{
+				status: 400,
+			}
+		)
 	}
 
 	if (!checkEmail(email)) {
