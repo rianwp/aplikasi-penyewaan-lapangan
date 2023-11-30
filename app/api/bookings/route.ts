@@ -1,5 +1,6 @@
 import {
 	COOKIE_PAYMENT_STATUS,
+	FAILED_TRANSACTION,
 	MAX_AGE,
 	SUCCESS_TRANSACTION,
 } from "@/constants"
@@ -94,6 +95,9 @@ export const POST = async (req: NextRequest) => {
 			where: {
 				tanggal: new Date(formatDate(new Date(tanggal))),
 				id_lapangan,
+				status: {
+					notIn: FAILED_TRANSACTION,
+				},
 			},
 		})
 

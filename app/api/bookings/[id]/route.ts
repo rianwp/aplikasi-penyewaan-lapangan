@@ -1,3 +1,4 @@
+import { FAILED_TRANSACTION, SUCCESS_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { BookingRequestInterface } from "@/types/BookingInterface"
@@ -102,6 +103,9 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 			where: {
 				tanggal: new Date(formatDate(new Date(tanggal))),
 				id_lapangan,
+				status: {
+					notIn: FAILED_TRANSACTION,
+				},
 			},
 		})
 

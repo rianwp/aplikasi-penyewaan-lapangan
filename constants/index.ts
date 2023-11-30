@@ -9,3 +9,9 @@ export const SUCCESS_TRANSACTION: $Enums.TransactionStatus[] = [
 	"capture",
 	"offline_payment",
 ]
+export const FAILED_TRANSACTION: $Enums.TransactionStatus[] = [
+	"cancel",
+	"expire",
+	"failure",
+	"deny",
+]

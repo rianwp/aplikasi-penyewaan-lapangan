@@ -1,3 +1,4 @@
+import { FAILED_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
@@ -52,6 +53,7 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 				Booking: {
 					select: {
 						tanggal: true,
+						status: true,
 					},
 				},
 			},
@@ -74,8 +76,9 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 				const { Booking, ...lapWithoutBooking } = lapangan
 				const isLapanganBooked = lapangan.Booking.some((data) => {
 					return (
+						!FAILED_TRANSACTION.includes(data.status) &&
 						formatDate(data.tanggal) ===
-						formatDate(new Date(tanggal || new Date()))
+							formatDate(new Date(tanggal || new Date()))
 					)
 				})
 				return {

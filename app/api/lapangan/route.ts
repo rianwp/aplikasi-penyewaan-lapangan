@@ -1,3 +1,4 @@
+import { FAILED_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
@@ -139,6 +140,7 @@ export const GET = async (req: NextRequest) => {
 				Booking: {
 					select: {
 						tanggal: true,
+						status: true,
 					},
 				},
 			},
@@ -150,7 +152,10 @@ export const GET = async (req: NextRequest) => {
 				return lapWithoutBooking
 			}
 			const isLapanganBooked = lap.Booking.some((data) => {
-				return formatDate(data.tanggal) === formatDate(new Date(tanggal))
+				return (
+					!FAILED_TRANSACTION.includes(data.status) &&
+					formatDate(data.tanggal) === formatDate(new Date(tanggal))
+				)
 			})
 			return {
 				...lapWithoutBooking,
