@@ -84,7 +84,7 @@ const BookingConfirmation = ({
 					</div>
 				</div>
 				<DialogFooter>
-					{isIdle ? (
+					{isIdle || isPending ? (
 						<Button
 							disabled={isPending}
 							onClick={() =>

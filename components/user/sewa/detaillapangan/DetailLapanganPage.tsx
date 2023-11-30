@@ -57,7 +57,6 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 		queryKey: ["userData"],
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
-		refetchInterval: false,
 		retry: 2,
 		queryFn: () => getUserData(),
 	})
