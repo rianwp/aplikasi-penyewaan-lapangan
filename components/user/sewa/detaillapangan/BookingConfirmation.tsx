@@ -64,27 +64,19 @@ const BookingConfirmation = ({
 					</DialogDescription>
 				</DialogHeader>
 				<div className="flex flex-col gap-y-4 py-4">
-					<div className="flex sm:flex-row flex-col items-center gap-4">
-						<Label className="sm:text-right sm:w-1/4 w-full">
-							Jenis Lapangan
-						</Label>
-						<p className="sm:w-3/4 w-full shrink-0 font-bold">
-							{currentOrder.jenis_lapangan}
-						</p>
+					<div className="flex flex-row justify-between items-center gap-4">
+						<Label>Jenis Lapangan</Label>
+						<p className="shrink-0 font-bold">{currentOrder.jenis_lapangan}</p>
 					</div>
-					<div className="flex sm:flex-row flex-col items-center gap-4">
-						<Label className="sm:text-right sm:w-1/4 w-full">
-							Sesi Lapangan
-						</Label>
-						<p className="sm:w-3/4 w-full shrink-0 font-bold">
+					<div className="flex flex-row justify-between items-center gap-4">
+						<Label>Sesi Lapangan</Label>
+						<p className="shrink-0 font-bold">
 							{currentOrder.jam_mulai} - {currentOrder.jam_berakhir}
 						</p>
 					</div>
-					<div className="flex sm:flex-row flex-col items-center gap-4">
-						<Label className="sm:text-right sm:w-1/4 w-full">Harga</Label>
-						<p className="sm:w-3/4 w-full shrink-0 font-bold">
-							{currentOrder.harga}
-						</p>
+					<div className="flex flex-row justify-between items-center gap-4">
+						<Label>Harga</Label>
+						<p className="shrink-0 font-bold">{currentOrder.harga}</p>
 					</div>
 				</div>
 				<DialogFooter>
