@@ -7,6 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
 import { addBooking } from "@/lib/http"
 import { currentOrderState } from "@/store/app-store"
@@ -58,44 +59,51 @@ const BookingConfirmation = ({
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Konfirmasi Booking</DialogTitle>
-					<div className="w-full flex-row items-start justify-between">
-						<div className="flex sm:flex-row flex-col items-center gap-4">
-							<p className="sm:text-right sm:w-1/4 w-full">Jenis Lapangan</p>
-							<p className="sm:w-3/4 w-full shrink-0 font-bold">
-								{currentOrder.jenis_lapangan}
-							</p>
-						</div>
-						<div className="flex sm:flex-row flex-col items-center gap-4">
-							<p className="sm:text-right sm:w-1/4 w-full">Sesi Lapangan</p>
-							<p className="sm:w-3/4 w-full shrink-0 font-bold">
-								{currentOrder.jam_mulai} - {currentOrder.jam_berakhir}
-							</p>
-						</div>
-						<div className="flex sm:flex-row flex-col items-center gap-4">
-							<p className="sm:text-right sm:w-1/4 w-full">Harga</p>
-							<p className="sm:w-3/4 w-full shrink-0 font-bold">
-								{currentOrder.harga}
-							</p>
-						</div>
-					</div>
-					<DialogFooter>
-						<Button
-							disabled={isPending}
-							onClick={() =>
-								mutate({
-									id_lapangan: currentOrder.id_lapangan,
-									tanggal: currentOrder.tanggal,
-								})
-							}
-							className="w-full bg-client-primary hover:bg-red-800 flex flex-row gap-x-2"
-						>
-							{isPending ? (
-								<Loader2 className="h-5 w-5 animate-spin text-white" />
-							) : null}
-							Pesan
-						</Button>
-					</DialogFooter>
+					<DialogDescription>
+						Konfirmasi Pembayaran untuk Booking
+					</DialogDescription>
 				</DialogHeader>
+				<div className="flex flex-col gap-y-4 py-4">
+					<div className="flex sm:flex-row flex-col items-center gap-4">
+						<Label className="sm:text-right sm:w-1/4 w-full">
+							Jenis Lapangan
+						</Label>
+						<p className="sm:w-3/4 w-full shrink-0 font-bold">
+							{currentOrder.jenis_lapangan}
+						</p>
+					</div>
+					<div className="flex sm:flex-row flex-col items-center gap-4">
+						<Label className="sm:text-right sm:w-1/4 w-full">
+							Sesi Lapangan
+						</Label>
+						<p className="sm:w-3/4 w-full shrink-0 font-bold">
+							{currentOrder.jam_mulai} - {currentOrder.jam_berakhir}
+						</p>
+					</div>
+					<div className="flex sm:flex-row flex-col items-center gap-4">
+						<Label className="sm:text-right sm:w-1/4 w-full">Harga</Label>
+						<p className="sm:w-3/4 w-full shrink-0 font-bold">
+							{currentOrder.harga}
+						</p>
+					</div>
+				</div>
+				<DialogFooter>
+					<Button
+						disabled={isPending}
+						onClick={() =>
+							mutate({
+								id_lapangan: currentOrder.id_lapangan,
+								tanggal: currentOrder.tanggal,
+							})
+						}
+						className="w-full bg-client-primary hover:bg-red-800 flex flex-row gap-x-2"
+					>
+						{isPending ? (
+							<Loader2 className="h-5 w-5 animate-spin text-white" />
+						) : null}
+						Pesan
+					</Button>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	)

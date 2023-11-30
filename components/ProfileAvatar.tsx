@@ -26,6 +26,7 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 		refetchOnMount: false,
 		refetchOnWindowFocus: false,
 		refetchInterval: false,
+		retry: 2,
 		queryFn: () => (role === "admin" ? getAdminData() : getUserData()),
 	})
 	const { mutateAsync, isPending: isLogoutPending } = useMutation({
