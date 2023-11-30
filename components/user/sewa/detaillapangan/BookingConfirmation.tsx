@@ -67,17 +67,17 @@ const BookingConfirmation = ({
 				<div className="flex flex-col gap-y-4 py-4">
 					<div className="flex flex-row justify-between items-center gap-4">
 						<Label>Jenis Lapangan</Label>
-						<p className="shrink-0 font-bold">{currentOrder.jenis_lapangan}</p>
+						<p className="font-bold text-sm">{currentOrder.jenis_lapangan}</p>
 					</div>
 					<div className="flex flex-row justify-between items-center gap-4">
 						<Label>Sesi Lapangan</Label>
-						<p className="shrink-0 font-bold">
+						<p className="font-bold text-sm">
 							{currentOrder.jam_mulai} - {currentOrder.jam_berakhir}
 						</p>
 					</div>
 					<div className="flex flex-row justify-between items-start gap-4">
 						<Label>Harga</Label>
-						<p className="shrink-0 font-bold text-lg">
+						<p className="font-bold text-xl">
 							Rp. {formatCurrency(currentOrder.harga)}
 						</p>
 					</div>
