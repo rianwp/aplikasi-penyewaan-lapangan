@@ -1,4 +1,4 @@
-import { FAILED_TRANSACTION, SUCCESS_TRANSACTION } from "@/constants"
+import { FAILED_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { BookingRequestInterface } from "@/types/BookingInterface"
