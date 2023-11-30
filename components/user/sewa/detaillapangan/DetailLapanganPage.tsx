@@ -91,7 +91,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 	const handleOrder = () => {
 		if (userData?.success) {
 			setCurrentOrder({
-				id_lapangan: responseData.JenisLapangan.id,
+				id_lapangan: responseData.id,
 				harga: responseData.harga,
 				jenis_lapangan: responseData.JenisLapangan.jenis_lapangan,
 				jam_mulai: responseData.SesiLapangan.jam_mulai,
