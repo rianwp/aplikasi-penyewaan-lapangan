@@ -47,7 +47,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 		refetch,
 		isRefetchError,
 	} = useQuery({
-		queryKey: ["getLapangan", id],
+		queryKey: ["getLapanganById"],
 		refetchOnWindowFocus: true,
 		queryFn: () =>
 			getLapanganById(id, formatDate(date || new Date()) || undefined),
