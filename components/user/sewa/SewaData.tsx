@@ -27,6 +27,7 @@ const SewaData = () => {
 	} = useQuery({
 		queryKey: ["getLapangan"],
 		refetchOnWindowFocus: false,
+		refetchOnMount: false,
 		queryFn: () => getLapangan(formatDate(filter.tanggal)),
 	})
 
