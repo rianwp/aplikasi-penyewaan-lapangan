@@ -12,6 +12,7 @@ import { toast } from "@/components/ui/use-toast"
 import { addBooking } from "@/lib/http"
 import { currentOrderState } from "@/store/app-store"
 import { BookingRequestInterface } from "@/types/BookingInterface"
+import formatCurrency from "@/utils/formatCurrency"
 import formatDate from "@/utils/formatDate"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
@@ -74,9 +75,11 @@ const BookingConfirmation = ({
 							{currentOrder.jam_mulai} - {currentOrder.jam_berakhir}
 						</p>
 					</div>
-					<div className="flex flex-row justify-between items-center gap-4">
+					<div className="flex flex-row justify-between items-start gap-4">
 						<Label>Harga</Label>
-						<p className="shrink-0 font-bold">{currentOrder.harga}</p>
+						<p className="shrink-0 font-bold text-lg">
+							Rp. {formatCurrency(currentOrder.harga)}
+						</p>
 					</div>
 				</div>
 				<DialogFooter>
