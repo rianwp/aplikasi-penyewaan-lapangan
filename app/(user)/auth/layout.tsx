@@ -11,7 +11,7 @@ const Layout = async ({ children }: LayoutPropsInterface) => {
 		redirect("/")
 	}
 	return (
-		<div className="w-full h-screen flex justify-center items-center bg-auth bg-cover">
+		<div className="w-screen h-screen flex justify-center items-center bg-auth bg-cover">
 			{children}
 		</div>
 	)

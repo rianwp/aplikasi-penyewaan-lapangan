@@ -5,6 +5,7 @@ import { Button } from "../ui/button"
 import { useState } from "react"
 import { Skeleton } from "../ui/skeleton"
 import { TableDataInterface } from "@/types/TableDataInterface"
+import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 
 interface TablePropsInterface {
 	header: string[]
@@ -65,7 +66,7 @@ const Table = ({
 				<BsPlus className="w-5 h-5" />
 				<p>Tambah</p>
 			</Button>
-			<div className="flex flex-col bg-primary-foreground border rounded-lg">
+			<ScrollArea className="flex flex-col bg-primary-foreground border rounded-lg">
 				<div className="overflow-x-auto">
 					<div className="min-w-full inline-block align-middle">
 						<div className="overflow-hidden">
@@ -157,7 +158,8 @@ const Table = ({
 						</div>
 					</div>
 				</div>
-			</div>
+				<ScrollBar orientation="horizontal" />
+			</ScrollArea>
 			<div className="flex flex-row gap-x-2 items-center">
 				{!isMaxPageButtonShowed && pageLength > 1
 					? [...Array(pageLength)].map((data, index) => {

@@ -81,7 +81,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 	}, [isRefetching, isRefetchError])
 
 	const responseData =
-		(dataLapangan?.data.lapangan as LapanganResponseInterface) ?? []
+		(dataLapangan?.data.lapangan as LapanganResponseInterface)
 
 	const [selectedImage, setSelectedImage] = useState(0)
 	const [isLoginAlertOpen, setIsLoginAlertOpen] = useState(false)

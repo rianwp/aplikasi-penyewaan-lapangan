@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
@@ -9,6 +9,7 @@ import { LoginInterface } from "@/types/LoginInterface"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 
 const LoginPage = () => {
@@ -18,7 +19,7 @@ const LoginPage = () => {
 		mutationFn: (data: LoginInterface) => loginUser(data),
 	})
 
-	const [formInput, setFormInput] = useState<LoginInterface>({
+	const [inputForm, setInputForm] = useState<LoginInterface>({
 		email: "",
 		password: "",
 	})
@@ -44,8 +45,9 @@ const LoginPage = () => {
 				<Label htmlFor="email">Email</Label>
 				<Input
 					onChange={(e) =>
-						handleObjectState("email", e.target.value, setFormInput)
+						handleObjectState("email", e.target.value, setInputForm)
 					}
+					value={inputForm.email}
 					id="email"
 					type="email"
 					autoComplete="off"
@@ -56,18 +58,26 @@ const LoginPage = () => {
 				<Label htmlFor="password">Password</Label>
 				<Input
 					onChange={(e) =>
-						handleObjectState("password", e.target.value, setFormInput)
+						handleObjectState("password", e.target.value, setInputForm)
 					}
+					value={inputForm.password}
 					id="password"
 					type="password"
+					autoComplete="off"
 					placeholder="Masukkan Password"
 				/>
 			</div>
+			<Link
+				href="/auth/register"
+				className={buttonVariants({ variant: "link" })}
+			>
+				Belum Memiliki Akun? Register
+			</Link>
 			<Button
 				disabled={isPending}
 				size="lg"
 				className="flex flex-row gap-x-2 justify-center items-center bg-client-primary hover:bg-red-800 w-full"
-				onClick={() => mutate(formInput)}
+				onClick={() => mutate(inputForm)}
 			>
 				{isPending ? (
 					<Loader2 className="h-5 w-5 animate-spin text-white" />

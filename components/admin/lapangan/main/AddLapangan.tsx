@@ -15,9 +15,10 @@ import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
-import { ChangeEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import SelectJenisLapangan from "../../../SelectJenisLapangan"
 import SelectSesiLapangan from "../../../SelectSesiLapangan"
+import handleNegativeNumber from "@/utils/handleNegativeNumber"
 
 interface AddLapanganPropsInterface {
 	isOpen: boolean
@@ -58,14 +59,6 @@ const AddLapangan = ({ isOpen, onOpenChange }: AddLapanganPropsInterface) => {
 		}
 	}, [isPending, isError, isIdle])
 
-	const handleHargaChange = (e: ChangeEvent<HTMLInputElement>) => {
-		if (Number(e.target.value) < 0) {
-			handleObjectState("harga", 0, setInputForm)
-			return
-		}
-		handleObjectState("harga", Number(e.target.value), setInputForm)
-	}
-
 	return (
 		<Dialog open={isOpen} onOpenChange={(open) => onOpenChange(open)}>
 			<DialogContent>
@@ -86,7 +79,8 @@ const AddLapangan = ({ isOpen, onOpenChange }: AddLapanganPropsInterface) => {
 								placeholder="Masukkan Harga"
 								autoComplete="off"
 								value={inputForm.harga}
-								onChange={(e) => handleHargaChange(e)}
+								onChange={(e) =>
+									handleObjectState("harga", handleNegativeNumber(Number(e.target.value)), setInputForm)}
 								className="w-full"
 							/>
 						</div>

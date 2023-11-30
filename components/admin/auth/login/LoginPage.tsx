@@ -18,7 +18,7 @@ const LoginPage = () => {
 		mutationFn: (data: LoginInterface) => loginAdmin(data),
 	})
 
-	const [formInput, setFormInput] = useState<LoginInterface>({
+	const [inputForm, setInputForm] = useState<LoginInterface>({
 		email: "",
 		password: "",
 	})
@@ -45,10 +45,11 @@ const LoginPage = () => {
 					<Label htmlFor="email">Email</Label>
 					<Input
 						onChange={(e) =>
-							handleObjectState("email", e.target.value, setFormInput)
+							handleObjectState("email", e.target.value, setInputForm)
 						}
 						id="email"
 						type="email"
+						value={inputForm.email}
 						autoComplete="off"
 						placeholder="Masukkan Email"
 					/>
@@ -57,10 +58,12 @@ const LoginPage = () => {
 					<Label htmlFor="password">Password</Label>
 					<Input
 						onChange={(e) =>
-							handleObjectState("password", e.target.value, setFormInput)
+							handleObjectState("password", e.target.value, setInputForm)
 						}
 						id="password"
 						type="password"
+						value={inputForm.password}
+						autoComplete="off"
 						placeholder="Masukkan Password"
 					/>
 				</div>
@@ -68,7 +71,7 @@ const LoginPage = () => {
 					disabled={isPending}
 					size="lg"
 					className="flex flex-row gap-x-2 justify-center items-center w-full"
-					onClick={() => mutate(formInput)}
+					onClick={() => mutate(inputForm)}
 				>
 					{isPending ? (
 						<Loader2 className="h-5 w-5 animate-spin text-white" />

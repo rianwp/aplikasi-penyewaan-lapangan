@@ -2,7 +2,9 @@ import { BookingRequestInterface } from "@/types/BookingInterface"
 import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import { LoginInterface } from "@/types/LoginInterface"
+import { RegisterInterface } from "@/types/RegisterInterface"
 import { SesiLapanganRequestInterface } from "@/types/SesiLapanganInterface"
+import { UserEditRequestInterface } from "@/types/UserInterface"
 import axios, { AxiosError } from "axios"
 
 export const getAdminData = async () => {
@@ -609,6 +611,29 @@ export const editBooking = async (
 export const deleteBooking = async (id: string) => {
 	try {
 		const response = await axios.delete(`/api/bookings/${id}`)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const editUser = async (data: UserEditRequestInterface) => {
+	try {
+		const response = await axios.put("/api/users", data)
 		return response.data
 	} catch (err) {
 		if (err instanceof AxiosError) {

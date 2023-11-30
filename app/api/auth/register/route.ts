@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db"
+import { RegisterInterface } from "@/types/RegisterInterface"
 import checkBody from "@/utils/checkBody"
 import checkEmail from "@/utils/checkEmail"
 import checkEmptyString from "@/utils/checkEmptyString"

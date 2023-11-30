@@ -1,14 +1,16 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/components/ui/use-toast"
-import { loginUser, registerUser } from "@/lib/http"
-import { LoginInterface } from "@/types/LoginInterface"
+import { registerUser } from "@/lib/http"
+import { RegisterInterface } from "@/types/RegisterInterface"
+import handleNegativeNumber from "@/utils/handleNegativeNumber"
 import handleObjectState from "@/utils/handleObjectState"
 import { useMutation } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 
 const RegisterPage = () => {
@@ -18,7 +20,7 @@ const RegisterPage = () => {
 		mutationFn: (data: RegisterInterface) => registerUser(data),
 	})
 
-	const [formInput, setFormInput] = useState<RegisterInterface>({
+	const [inputForm, setInputForm] = useState<RegisterInterface>({
 		email: "",
 		password: "",
 		confirm_password: "",
@@ -47,10 +49,11 @@ const RegisterPage = () => {
 				<Label htmlFor="name">Nama</Label>
 				<Input
 					onChange={(e) =>
-						handleObjectState("name", e.target.value, setFormInput)
+						handleObjectState("name", e.target.value, setInputForm)
 					}
 					id="name"
 					type="text"
+					value={inputForm.name}
 					autoComplete="off"
 					placeholder="Masukkan Nama"
 				/>
@@ -59,22 +62,24 @@ const RegisterPage = () => {
 				<Label htmlFor="no_telp">No Telepon</Label>
 				<Input
 					onChange={(e) =>
-						handleObjectState("no_telp", e.target.value, setFormInput)
+						handleObjectState("no_telp", e.target.value, setInputForm)
 					}
 					id="no_telp"
 					type="number"
+					value={inputForm.no_telp}
 					autoComplete="off"
-					placeholder="Masukkan Nomor Telepon"
+					placeholder="Masukkan Nomor Telepon (ex: 081365237823)"
 				/>
 			</div>
 			<div className="flex flex-col gap-y-1">
 				<Label htmlFor="email">Email</Label>
 				<Input
 					onChange={(e) =>
-						handleObjectState("email", e.target.value, setFormInput)
+						handleObjectState("email", e.target.value, setInputForm)
 					}
 					id="email"
 					type="email"
+					value={inputForm.email}
 					autoComplete="off"
 					placeholder="Masukkan Email"
 				/>
@@ -83,10 +88,12 @@ const RegisterPage = () => {
 				<Label htmlFor="password">Password</Label>
 				<Input
 					onChange={(e) =>
-						handleObjectState("password", e.target.value, setFormInput)
+						handleObjectState("password", e.target.value, setInputForm)
 					}
 					id="password"
+					value={inputForm.password}
 					type="password"
+					autoComplete="off"
 					placeholder="Masukkan Password"
 				/>
 			</div>
@@ -94,18 +101,23 @@ const RegisterPage = () => {
 				<Label htmlFor="confirm_password">Konfirmasi Password</Label>
 				<Input
 					onChange={(e) =>
-						handleObjectState("confirm_password", e.target.value, setFormInput)
+						handleObjectState("confirm_password", e.target.value, setInputForm)
 					}
 					id="confirm_password"
+					value={inputForm.confirm_password}
 					type="password"
+					autoComplete="off"
 					placeholder="Tulis Ulang Password"
 				/>
 			</div>
+			<Link href="/auth/login" className={buttonVariants({ variant: "link" })}>
+				Sudah Memiliki Akun? Login
+			</Link>
 			<Button
 				disabled={isPending}
 				size="lg"
 				className="flex flex-row gap-x-2 justify-center items-center bg-client-primary hover:bg-red-800 w-full"
-				onClick={() => mutate(formInput)}
+				onClick={() => mutate(inputForm)}
 			>
 				{isPending ? (
 					<Loader2 className="h-5 w-5 animate-spin text-white" />

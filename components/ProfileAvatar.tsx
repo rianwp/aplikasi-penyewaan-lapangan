@@ -109,23 +109,23 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 											<Separator />
 											<MenubarItem>
 												<Link
-													className="w-full flex flex-row justify-start"
-													href="/booking"
-												>
-													History Booking
-												</Link>
-											</MenubarItem>
-											<MenubarItem>
-												<Link
-													className="w-full flex flex-row justify-start"
+													className="w-full flex flex-row justify-start text-sm"
 													href="/profile"
 												>
 													Profile
 												</Link>
 											</MenubarItem>
 											<MenubarItem>
+												<Link
+													className="w-full flex flex-row justify-start text-sm"
+													href="/booking"
+												>
+													Booking
+												</Link>
+											</MenubarItem>
+											<MenubarItem>
 												<button
-													className="w-full flex flex-row justify-start"
+													className="w-full flex flex-row justify-start text-sm"
 													onClick={handleLogout}
 												>
 													{isLogoutPending ? (
@@ -164,7 +164,7 @@ const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
 							<Separator />
 							<MenubarItem>
 								<button
-									className="w-full flex flex-row justify-start"
+									className="w-full flex flex-row justify-start text-sm"
 									onClick={handleLogout}
 								>
 									{isLogoutPending ? (

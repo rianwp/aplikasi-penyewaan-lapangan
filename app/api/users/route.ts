@@ -1,9 +1,10 @@
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import { UserEditRequestInterface } from "@/types/UserInterface"
 import checkEmail from "@/utils/checkEmail"
 import checkEmptyString from "@/utils/checkEmptyString"
 import checkPhoneNumber from "@/utils/checkPhoneNumber"
-import { hash } from "bcrypt"
+import { compare, hash } from "bcrypt"
 import { NextRequest, NextResponse } from "next/server"
 
 export const PUT = async (req: NextRequest) => {
@@ -20,12 +21,8 @@ export const PUT = async (req: NextRequest) => {
 		)
 	}
 	const body = await req.json()
-	const { name, email, password, no_telp } = body as {
-		name: string
-		email: string
-		password: string
-		no_telp: string
-	}
+	const { name, email, password, no_telp, new_password } =
+		body as UserEditRequestInterface
 	try {
 		const userEmail = await prisma.user.findUnique({
 			where: {
@@ -33,7 +30,7 @@ export const PUT = async (req: NextRequest) => {
 			},
 		})
 
-		if (userEmail) {
+		if (userEmail && userEmail.email !== user.data?.email) {
 			return NextResponse.json(
 				{
 					success: false,
@@ -81,7 +78,7 @@ export const PUT = async (req: NextRequest) => {
 			)
 		}
 
-		if (password.length < 8) {
+		if (new_password && new_password.length < 8) {
 			return NextResponse.json(
 				{
 					success: false,
@@ -94,13 +91,30 @@ export const PUT = async (req: NextRequest) => {
 		}
 
 		const saltRounds = 10
-		const hashedPassword = await hash(password || "", saltRounds)
+		const hashedNewPassword = await hash(new_password || "", saltRounds)
+		const isPasswordValid = await compare(
+			password || "",
+			user.data?.password || ""
+		)
+		const isUpdatePassword = new_password && password && isPasswordValid
+
+		if (new_password && password && !isPasswordValid) {
+			return NextResponse.json(
+				{
+					success: false,
+					message: "Password Salah",
+				},
+				{
+					status: 400,
+				}
+			)
+		}
 
 		await prisma.user.update({
 			data: {
 				email,
 				name,
-				password: password ? hashedPassword : undefined,
+				password: isUpdatePassword ? hashedNewPassword : undefined,
 				no_telp,
 			},
 			where: {
