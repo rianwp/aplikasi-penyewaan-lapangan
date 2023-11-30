@@ -116,7 +116,15 @@ export const POST = async (req: NextRequest) => {
 				order_id: orderId,
 				gross_amount: lapangan.harga,
 			},
-			customer_details: {},
+			customer_details: {
+				first_name:
+					user.data?.role === "admin"
+						? !name || name === ""
+							? user.data.name
+							: name
+						: user.data?.name || "",
+				email: user.data?.email,
+			},
 		}
 
 		const bookingPayload: Prisma.BookingUncheckedCreateInput = {
