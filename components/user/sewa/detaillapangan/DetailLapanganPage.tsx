@@ -193,10 +193,12 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 				isOpen={isLoginAlertOpen}
 				onOpenChange={setIsLoginAlertOpen}
 			/>
-			<BookingConfirmation
-				isOpen={isBookingOpen}
-				onOpenChange={setIsBookingOpen}
-			/>
+			{isBookingOpen ? (
+				<BookingConfirmation
+					isOpen={isBookingOpen}
+					onOpenChange={setIsBookingOpen}
+				/>
+			) : null}
 		</div>
 	)
 }

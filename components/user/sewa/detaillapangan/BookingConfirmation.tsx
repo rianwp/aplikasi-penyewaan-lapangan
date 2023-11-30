@@ -13,7 +13,6 @@ import { addBooking } from "@/lib/http"
 import { currentOrderState } from "@/store/app-store"
 import { BookingRequestInterface } from "@/types/BookingInterface"
 import formatCurrency from "@/utils/formatCurrency"
-import formatDate from "@/utils/formatDate"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
 import { useEffect } from "react"
@@ -85,21 +84,30 @@ const BookingConfirmation = ({
 					</div>
 				</div>
 				<DialogFooter>
-					<Button
-						disabled={isPending}
-						onClick={() =>
-							mutate({
-								id_lapangan: currentOrder.id_lapangan,
-								tanggal: currentOrder.tanggal,
-							})
-						}
-						className="w-full bg-client-primary hover:bg-red-800 flex flex-row gap-x-2"
-					>
-						{isPending ? (
-							<Loader2 className="h-5 w-5 animate-spin text-white" />
-						) : null}
-						Pesan
-					</Button>
+					{isIdle ? (
+						<Button
+							disabled={isPending}
+							onClick={() =>
+								mutate({
+									id_lapangan: currentOrder.id_lapangan,
+									tanggal: currentOrder.tanggal,
+								})
+							}
+							className="w-full bg-client-primary hover:bg-red-800 flex flex-row gap-x-2"
+						>
+							{isPending ? (
+								<Loader2 className="h-5 w-5 animate-spin text-white" />
+							) : null}
+							Pesan
+						</Button>
+					) : null}
+					{!isIdle && !isPending ? (
+						<Button variant="outline" className="w-full" disabled>
+							{isError
+								? "Terjadi Kesalahan"
+								: "Silahkan Melanjutkan Pembayaran"}
+						</Button>
+					) : null}
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
