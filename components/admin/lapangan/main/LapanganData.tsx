@@ -17,6 +17,7 @@ const LapanganData = () => {
 	const {
 		data: dataLapangan,
 		isPending,
+		isRefetching,
 		isError,
 		error,
 	} = useQuery({
@@ -92,7 +93,7 @@ const LapanganData = () => {
 				dataLapangan={responseData}
 				onDelete={(id) => handleDelete(id)}
 				onEdit={(id) => handleEdit(id)}
-				isLoading={isPending}
+				isLoading={isPending || isRefetching}
 			/>
 			<AddLapangan
 				isOpen={addDataOpen}

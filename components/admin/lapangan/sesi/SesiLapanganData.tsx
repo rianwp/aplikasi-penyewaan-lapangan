@@ -19,6 +19,7 @@ const SesiLapanganData = () => {
 	const {
 		data: dataSesiLapangan,
 		isPending,
+		isRefetching,
 		isError,
 		error,
 	} = useQuery({
@@ -94,7 +95,7 @@ const SesiLapanganData = () => {
 				onEdit={(id) => handleEdit(id)}
 				onAdd={() => setAddDataOpen(true)}
 				tableData={tableData}
-				isLoading={isPending}
+				isLoading={isPending || isRefetching}
 			/>
 			<AddSesiLapangan
 				isOpen={addDataOpen}
