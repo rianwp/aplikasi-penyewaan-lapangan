@@ -93,7 +93,7 @@ const Table = ({
 									</tr>
 								</thead>
 								<tbody className="divide-y divide-gray-200">
-									{tableData.length === 0 ? (
+									{tableData.length === 0 && !isLoading ? (
 										<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
 											Tidak ada data
 										</td>
