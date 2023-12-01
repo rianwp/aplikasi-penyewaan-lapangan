@@ -2,6 +2,7 @@ import { FAILED_TRANSACTION, SUCCESS_TRANSACTION } from "@/constants"
 import { cn } from "@/lib/shadcnUtils"
 import { BookingResponseInterface } from "@/types/BookingInterface"
 import formatDate from "@/utils/formatDate"
+import statusColor from "@/utils/statusColor"
 import { $Enums } from "@prisma/client"
 
 interface ItemBookingPropsInterface {
@@ -9,15 +10,6 @@ interface ItemBookingPropsInterface {
 }
 
 const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
-	const statusColor = () => {
-		if (data.status === "success") {
-			return "bg-green-500"
-		}
-		if (FAILED_TRANSACTION.includes(data.status as $Enums.TransactionStatus)) {
-			return "bg-red-600"
-		}
-		return "bg-yellow-400"
-	}
 	return (
 		<div className="w-full p-4 rounded-lg border flex flex-col gap-y-4 bg-white">
 			<div className="flex fex-row justify-between">
@@ -25,7 +17,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 					<p
 						className={cn([
 							"text-sm font-semibold px-2.5 text-white rounded-full",
-							statusColor(),
+							statusColor(data.status),
 						])}
 					>
 						{data.status}

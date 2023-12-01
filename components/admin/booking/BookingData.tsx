@@ -12,6 +12,8 @@ import AddBooking from "./AddBooking"
 import EditBooking from "./EditBooking"
 import formatDate from "@/utils/formatDate"
 import formatCurrency from "@/utils/formatCurrency"
+import statusColor from "@/utils/statusColor"
+import { cn } from "@/lib/shadcnUtils"
 
 const header = [
 	"id",
@@ -66,7 +68,16 @@ const BookingData = () => {
 				jam_mulai: data.jam_mulai,
 				jam_berakhir: data.jam_berakhir,
 				harga: `Rp. ${formatCurrency(data.harga)}`,
-				status: data.status,
+				status: (
+					<p
+						className={cn([
+							"px-2.5 text-white rounded-full",
+							statusColor(data.status),
+						])}
+					>
+						{data.status}
+					</p>
+				),
 				payment_type: data.payment_type,
 				transaction_time: data.transaction_time
 					? formatDate(new Date(data.transaction_time), true)
