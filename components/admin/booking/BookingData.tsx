@@ -36,6 +36,7 @@ const BookingData = () => {
 		isError,
 		error,
 	} = useQuery({
+		refetchOnWindowFocus: false,
 		queryKey: ["getBooking"],
 		queryFn: () => getBooking(),
 	})

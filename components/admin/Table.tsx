@@ -93,6 +93,11 @@ const Table = ({
 									</tr>
 								</thead>
 								<tbody className="divide-y divide-gray-200">
+									{tableData.length === 0 ? (
+										<div className="w-full py-10 flex items-center justify-center font-bold text-center">
+											Tidak Ada Data
+										</div>
+									) : null}
 									{isLoading ? (
 										<>
 											{[...Array(dataLengthPerPage)].map((data, index) => {

@@ -21,6 +21,7 @@ const LapanganData = () => {
 		isError,
 		error,
 	} = useQuery({
+		refetchOnWindowFocus: false,
 		queryKey: ["getLapangan"],
 		queryFn: () => getLapangan(),
 	})

@@ -24,6 +24,7 @@ const JenisLapanganData = () => {
 		isError,
 		error,
 	} = useQuery({
+		refetchOnWindowFocus: false,
 		queryKey: ["getJenisLapangan"],
 		queryFn: () => getJenisLapangan(),
 	})

@@ -23,6 +23,7 @@ const SesiLapanganData = () => {
 		isError,
 		error,
 	} = useQuery({
+		refetchOnWindowFocus: false,
 		queryKey: ["getSesiLapangan"],
 		queryFn: () => getSesiLapangan(),
 	})
