@@ -12,8 +12,9 @@ import AddBooking from "./AddBooking"
 import EditBooking from "./EditBooking"
 import formatDate from "@/utils/formatDate"
 import formatCurrency from "@/utils/formatCurrency"
-import statusColor from "@/utils/statusColor"
 import { cn } from "@/lib/shadcnUtils"
+import { FAILED_TRANSACTION } from "@/constants"
+import { $Enums } from "@prisma/client"
 
 const header = [
 	"id",
@@ -57,6 +58,16 @@ const BookingData = () => {
 
 	const responseData =
 		(dataBooking?.data.booking as BookingResponseInterface[]) ?? []
+
+	const statusColor = (status: string) => {
+		if (status === "success") {
+			return "bg-green-500"
+		}
+		if (FAILED_TRANSACTION.includes(status as $Enums.TransactionStatus)) {
+			return "bg-red-600"
+		}
+		return "bg-yellow-400"
+	}
 
 	const tableData = responseData.map((data) => {
 		return {
