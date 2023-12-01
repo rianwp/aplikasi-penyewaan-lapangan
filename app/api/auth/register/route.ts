@@ -1,3 +1,4 @@
+import { COOKIE_AUTH, MAX_AGE } from "@/constants"
 import { prisma } from "@/lib/db"
 import { RegisterInterface } from "@/types/RegisterInterface"
 import checkBody from "@/utils/checkBody"
@@ -5,6 +6,8 @@ import checkEmail from "@/utils/checkEmail"
 import checkEmptyString from "@/utils/checkEmptyString"
 import checkPhoneNumber from "@/utils/checkPhoneNumber"
 import { hash } from "bcrypt"
+import { serialize } from "cookie"
+import { sign } from "jsonwebtoken"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
@@ -96,13 +99,34 @@ export const POST = async (req: NextRequest) => {
 		const saltRounds = 10
 		const hashedPassword = await hash(password, saltRounds)
 
-		await prisma.user.create({
+		const newUser = await prisma.user.create({
 			data: {
 				email,
 				name,
 				password: hashedPassword,
 				no_telp,
 			},
+		})
+
+		const payload = {
+			id: newUser.id,
+			email: newUser.email,
+			role: newUser.role,
+			name: newUser.name,
+			no_telp: newUser.no_telp,
+		}
+
+		const secret = process.env.JWT_SECRET || ""
+		const token = sign(payload, secret, {
+			expiresIn: MAX_AGE,
+		})
+
+		const serialized = serialize(COOKIE_AUTH, token, {
+			httpOnly: true,
+			secure: process.env.NODE_ENV === "production",
+			sameSite: "strict",
+			maxAge: MAX_AGE,
+			path: "/",
 		})
 
 		return NextResponse.json(
@@ -112,6 +136,9 @@ export const POST = async (req: NextRequest) => {
 			},
 			{
 				status: 201,
+				headers: {
+					"Set-Cookie": serialized,
+				},
 			}
 		)
 	} catch (err) {

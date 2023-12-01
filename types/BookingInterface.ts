@@ -16,7 +16,8 @@ export interface BookingResponseInterface {
 	id_lapangan: string
 	createdAt: string
 	updatedAt: string
-	status: $Enums.TransactionStatus
+	transaction_time?: string
+	status: string
 	payment_type: string
 	tanggal: string
 }

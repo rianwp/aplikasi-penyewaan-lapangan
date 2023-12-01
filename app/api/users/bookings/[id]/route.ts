@@ -72,6 +72,7 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 						harga: booking.Lapangan.harga,
 						createdAt: booking.createdAt,
 						updatedAt: booking.updatedAt,
+						transaction_time: booking.transaction_time,
 						status: SUCCESS_TRANSACTION.includes(booking.status)
 							? "success"
 							: booking.status,

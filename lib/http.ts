@@ -653,3 +653,26 @@ export const editUser = async (data: UserEditRequestInterface) => {
 		}
 	}
 }
+
+export const getUserBooking = async () => {
+	try {
+		const response = await axios.get("/api/users/bookings")
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}

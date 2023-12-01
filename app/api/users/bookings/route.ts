@@ -53,6 +53,7 @@ export const GET = async (req: NextRequest) => {
 				harga: data.Lapangan.harga,
 				createdAt: data.createdAt,
 				updatedAt: data.updatedAt,
+				transaction_time: data.transaction_time,
 				status: SUCCESS_TRANSACTION.includes(data.status)
 					? "success"
 					: data.status,

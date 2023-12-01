@@ -66,8 +66,10 @@ const BookingData = () => {
 				harga: `Rp. ${formatCurrency(data.harga)}`,
 				status: data.status,
 				payment_type: data.payment_type,
-				createdAt: formatDate(new Date(data.createdAt)),
-				tanggal: formatDate(new Date(data.tanggal)),
+				transaction_time: data.transaction_time
+					? formatDate(new Date(data.transaction_time), true)
+					: "",
+				tanggal: formatDate(new Date(data.tanggal), true),
 			},
 		}
 	})

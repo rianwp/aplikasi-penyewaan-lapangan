@@ -15,10 +15,8 @@ const UserLayout = ({ children }: UserLayoutPropsInterface) => {
 					<UserItem link="/profile">Profile</UserItem>
 					<UserItem link="/booking">Booking</UserItem>
 				</div>
-				<ScrollArea className="p-4 md:w-4/5 w-full">
-					{children}
-					<ScrollBar orientation="vertical" />
-				</ScrollArea>
+				{children}
+				
 			</div>
 		</div>
 	)

@@ -12,7 +12,6 @@ import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
 import { Prisma } from "@prisma/client"
 import { serialize } from "cookie"
-import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
@@ -268,6 +267,7 @@ export const GET = async (req: NextRequest) => {
 				harga: data.Lapangan.harga,
 				createdAt: data.createdAt,
 				updatedAt: data.updatedAt,
+				transaction_time: data.transaction_time,
 				status: SUCCESS_TRANSACTION.includes(data.status)
 					? "success"
 					: data.status,
