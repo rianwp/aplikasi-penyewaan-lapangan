@@ -2,6 +2,11 @@ import { buttonVariants } from "@/components/ui/button"
 import { COOKIE_PAYMENT_STATUS } from "@/constants"
 import { cn } from "@/lib/shadcnUtils"
 import { cookies } from "next/headers"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+	title: "Payment Status",
+}
 
 const deleteCookies = async () => {
 	await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/reset`)
