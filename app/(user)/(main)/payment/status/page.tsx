@@ -59,7 +59,7 @@ const Page = async ({
 					</h1>
 				) : (
 					<h1 className="text-3xl font-bold mb-4 text-red-500">
-						Tidak Terdeteksi Pembayaran
+						Tidak Terdeteksi Pembayaran atau Terjadi Kesalahan
 					</h1>
 				)}
 				<a className={buttonVariants({ variant: "link" })} href="/">
