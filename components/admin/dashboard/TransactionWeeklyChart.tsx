@@ -3,7 +3,7 @@
 import { getDashboardWeeklyChart } from "@/lib/http"
 import { DashboardWeeklyChartInterface } from "@/types/DashboardInterface"
 import { useQuery } from "@tanstack/react-query"
-import { Chart as ChartJS, ChartData } from "chart.js/auto"
+import { Chart, ChartData } from "chart.js/auto"
 import { useEffect } from "react"
 import { Bar } from "react-chartjs-2"
 
