@@ -1,7 +1,5 @@
 import {
-	COOKIE_PAYMENT_STATUS,
 	FAILED_TRANSACTION,
-	MAX_AGE,
 	SUCCESS_TRANSACTION,
 } from "@/constants"
 import auth from "@/lib/auth"
@@ -11,8 +9,6 @@ import checkBody from "@/utils/checkBody"
 import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
 import { Prisma } from "@prisma/client"
-import { serialize } from "cookie"
-import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
@@ -169,8 +165,6 @@ export const POST = async (req: NextRequest) => {
 					...bookingPayload,
 				},
 			})
-
-			cookies().set(COOKIE_PAYMENT_STATUS, "pending")
 
 			return NextResponse.json(
 				{

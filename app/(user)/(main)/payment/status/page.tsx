@@ -1,24 +1,20 @@
 import { buttonVariants } from "@/components/ui/button"
-import { COOKIE_PAYMENT_STATUS } from "@/constants"
+import { FAILED_TRANSACTION, SUCCESS_TRANSACTION } from "@/constants"
 import { cn } from "@/lib/shadcnUtils"
-import { cookies } from "next/headers"
 import { Metadata } from "next"
+import { $Enums } from "@prisma/client"
 
 export const metadata: Metadata = {
 	title: "Payment Status",
 }
 
-const deleteCookies = async () => {
-	await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payments/reset`)
-}
-
-const Page = async () => {
-	const status = cookies().get(COOKIE_PAYMENT_STATUS)?.value as
-		| "success"
-		| "pending"
-		| "failed"
-		| undefined
-
+const Page = async ({
+	searchParams,
+}: {
+	searchParams?: {
+		transaction_status?: $Enums.TransactionStatus
+	}
+}) => {
 	const message = {
 		success: {
 			message: "Pembayaran Berhasil",
@@ -34,16 +30,32 @@ const Page = async () => {
 		},
 	}
 
-	await deleteCookies()
+	const status = () => {
+		if (searchParams?.transaction_status) {
+			if (SUCCESS_TRANSACTION.includes(searchParams?.transaction_status)) {
+				return "success"
+			}
+			if (FAILED_TRANSACTION.includes(searchParams?.transaction_status)) {
+				return "failed"
+			}
+			if (searchParams?.transaction_status === "pending") {
+				return "pending"
+			}
+		}
+		return undefined
+	}
 
 	return (
 		<div className="w-full min-h-[calc(100vh-100px)] flex justify-center items-center">
 			<div className="md:w-1/2 w-4/5 text-center">
 				{status ? (
 					<h1
-						className={cn(["text-3xl font-bold mb-4", message[status].color])}
+						className={cn([
+							"text-3xl font-bold mb-4",
+							message[status() as "success" | "failed" | "pending"].color,
+						])}
 					>
-						{message[status].message}
+						{message[status() as "success" | "failed" | "pending"].message}
 					</h1>
 				) : (
 					<h1 className="text-3xl font-bold mb-4 text-red-500">
