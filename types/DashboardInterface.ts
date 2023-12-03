@@ -1,11 +1,9 @@
 export interface DashboardHeaderInterface {
-	successTransaction: number
-	amountTransaction: number
-	totalBooking: number
-	totalUser: number
+	title: string
+	value: any
 }
 
-export interface DashboardWeeklyChartInterface {
+export interface WeeklyTransactionInterface {
 	sun: number
 	mon: number
 	tue: number
@@ -13,4 +11,10 @@ export interface DashboardWeeklyChartInterface {
 	thu: number
 	fri: number
 	sat: number
+}
+
+export interface DashboardWeeklyChartInterface {
+	weeklyTransaction: WeeklyTransactionInterface
+	startAt: string
+	endAt: string
 }

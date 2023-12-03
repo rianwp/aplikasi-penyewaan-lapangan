@@ -1,4 +1,5 @@
 import Breadcrumb from "../Breadcrumb"
+import DashboardHeader from "./DashboardHeader"
 import TransactionWeeklyChart from "./TransactionWeeklyChart"
 
 const DashboardPage = () => {
@@ -8,6 +9,7 @@ const DashboardPage = () => {
 				Dashboard
 			</h1>
 			<Breadcrumb name="Dashboard" />
+			<DashboardHeader />
 			<TransactionWeeklyChart />
 		</>
 	)

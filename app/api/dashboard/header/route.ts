@@ -1,6 +1,7 @@
 import { SUCCESS_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import formatCurrency from "@/utils/formatCurrency"
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (req: NextRequest) => {
@@ -42,12 +43,28 @@ export const GET = async (req: NextRequest) => {
 			{
 				success: true,
 				data: {
-					successTransaction: transaction._count._all,
-					amountTransaction: transaction._sum.gross_amount
-						? transaction._sum.gross_amount
-						: 0,
-					totalBooking,
-					totalUser,
+					header: [
+						{
+							title: "Transaksi Sukses",
+							value: transaction._count._all,
+						},
+						{
+							title: "Jumlah Transaksi",
+							value: `Rp. ${formatCurrency(
+								transaction._sum.gross_amount
+									? transaction._sum.gross_amount
+									: 0
+							)}`,
+						},
+						{
+							title: "Total Booking",
+							value: totalBooking,
+						},
+						{
+							title: "Total User",
+							value: totalUser,
+						},
+					],
 				},
 			},
 			{

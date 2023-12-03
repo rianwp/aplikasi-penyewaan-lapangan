@@ -1,6 +1,7 @@
 import { SUCCESS_TRANSACTION } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
+import formatDate from "@/utils/formatDate"
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (req: NextRequest) => {
@@ -17,10 +18,24 @@ export const GET = async (req: NextRequest) => {
 		)
 	}
 	try {
+		const firstDayOfThisWeek = () => {
+			const currentDate = new Date()
+			currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+			return new Date(formatDate(currentDate))
+		}
+		const lastDayOfThisWeek = () => {
+			const firstDay = firstDayOfThisWeek()
+			firstDay.setDate(firstDay.getDate() + 6)
+			return new Date(formatDate(firstDay))
+		}
 		const booking = await prisma.booking.findMany({
 			where: {
 				status: {
 					in: SUCCESS_TRANSACTION,
+				},
+				createdAt: {
+					gte: firstDayOfThisWeek(),
+					lte: lastDayOfThisWeek(),
 				},
 			},
 			select: {
@@ -53,6 +68,8 @@ export const GET = async (req: NextRequest) => {
 				success: true,
 				data: {
 					weeklyTransaction: weeklyTransaction(),
+					startAt: firstDayOfThisWeek(),
+					endAt: lastDayOfThisWeek(),
 				},
 			},
 			{

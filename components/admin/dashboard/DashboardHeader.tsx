@@ -1,12 +1,11 @@
 "use client"
 
-import { useToast } from "@/components/ui/use-toast"
 import { getDashboardHeader } from "@/lib/http"
 import { DashboardHeaderInterface } from "@/types/DashboardInterface"
 import { useQuery } from "@tanstack/react-query"
+import DashboardCard from "./DashboardCard"
 
 const DashboardHeader = () => {
-	const { toast } = useToast()
 	const {
 		data: dataHeader,
 		isPending,
@@ -16,8 +15,25 @@ const DashboardHeader = () => {
 		queryKey: ["getDashboardHeader"],
 		queryFn: () => getDashboardHeader(),
 	})
-	const responseData = dataHeader?.data as DashboardHeaderInterface
-	return <div>DashboardHeader</div>
+	const responseData = (dataHeader?.data
+		.header as DashboardHeaderInterface[]) ?? [...Array(4)]
+	return (
+		<div className="w-full">
+			<div className="flex flex-row flex-wrap w-[calc(100%+32px)] -ml-[16px]">
+				{responseData.map((data, index) => {
+					return (
+						<DashboardCard
+							key={index}
+							data={data}
+							isLoading={isPending}
+							isError={isError}
+							error={error}
+						/>
+					)
+				})}
+			</div>
+		</div>
+	)
 }
 
 export default DashboardHeader
