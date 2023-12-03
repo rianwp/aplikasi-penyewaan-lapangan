@@ -18,8 +18,9 @@ const TransactionWeeklyChart = () => {
 		queryFn: () => getDashboardWeeklyChart(),
 	})
 
-	const responseData = dataWeeklyChart?.data
-		.weeklyTransaction as DashboardWeeklyChartInterface
+	const responseData =
+		(dataWeeklyChart?.data
+			.weeklyTransaction as DashboardWeeklyChartInterface) ?? {}
 
 	const chartData: ChartData<
 		"bar",
