@@ -45,6 +45,16 @@ const ListBooking = () => {
 				: [...Array(5)].map((data, index) => {
 						return <ItemBookingSkeleton key={index} />
 				  })}
+			{!isPending && responseData.length === 0 ? (
+				<div className="w-full py-10 flex items-center justify-center gap-y-2">
+					<p className="text-center text-gray-400 text-lg font-semibold">
+						Belum ada Booking
+					</p>
+					<p className="text-center text-gray-400 text-sm">
+						Booking kamu akan muncul disini
+					</p>
+				</div>
+			) : null}
 		</div>
 	)
 }
