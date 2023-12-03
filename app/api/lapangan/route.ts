@@ -68,6 +68,8 @@ export const POST = async (req: NextRequest) => {
 				harga,
 				id_jenislap,
 				id_sesilap,
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			},
 		})
 

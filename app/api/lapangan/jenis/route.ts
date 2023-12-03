@@ -50,6 +50,8 @@ export const POST = async (req: NextRequest) => {
 				Image: {
 					connect: imageIdMap,
 				},
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			},
 		})
 

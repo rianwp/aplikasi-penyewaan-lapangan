@@ -142,6 +142,8 @@ export const POST = async (req: NextRequest) => {
 			gross_amount: lapangan.harga,
 			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
 			status: user.data?.role === "admin" ? "offline_payment" : undefined,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		}
 
 		if (user.data?.role === "user") {

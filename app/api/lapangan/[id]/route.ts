@@ -195,6 +195,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				id_sesilap: {
 					set: id_sesilap,
 				},
+				updatedAt: new Date(),
 			},
 			where: {
 				id,

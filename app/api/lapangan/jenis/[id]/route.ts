@@ -68,6 +68,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				Image: {
 					set: imageMap,
 				},
+				updatedAt: new Date(),
 			},
 			where: {
 				id,
