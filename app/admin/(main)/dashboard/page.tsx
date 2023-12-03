@@ -1,3 +1,4 @@
+import DashboardPage from "@/components/admin/dashboard/DashboardPage"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -5,13 +6,7 @@ export const metadata: Metadata = {
 }
 
 const Page = () => {
-	return (
-		<>
-			<h1 className="font-semibold text-4xl text-system-text-primary">
-				Dashboard
-			</h1>
-		</>
-	)
+	return <DashboardPage />
 }
 
 export default Page

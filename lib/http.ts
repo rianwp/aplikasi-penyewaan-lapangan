@@ -676,3 +676,49 @@ export const getUserBooking = async () => {
 		}
 	}
 }
+
+export const getDashboardHeader = async () => {
+	try {
+		const response = await axios.get("/api/dashboard/header")
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const getDashboardWeeklyChart = async () => {
+	try {
+		const response = await axios.get("/api/dashboard/weekly-chart")
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}

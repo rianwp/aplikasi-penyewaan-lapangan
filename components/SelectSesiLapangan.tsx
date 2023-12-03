@@ -52,7 +52,9 @@ const SelectSesiLapangan = ({
 		(dataSesiLapangan?.data.sesi as SesiLapanganResponseInterface[]) ?? []
 	return (
 		<Select
-			onValueChange={(currentId) => onValueChange(currentId === "unassigned" ? "" : currentId)}
+			onValueChange={(currentId) =>
+				onValueChange(currentId === "unassigned" ? "" : currentId)
+			}
 			value={value}
 		>
 			<SelectTrigger disabled={isPending} id="id_sesilap" className={className}>

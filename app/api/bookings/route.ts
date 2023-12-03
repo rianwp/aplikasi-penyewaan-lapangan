@@ -12,6 +12,7 @@ import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
 import { Prisma } from "@prisma/client"
 import { serialize } from "cookie"
+import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
 import { v4 as uuidv4 } from "uuid"
 
@@ -169,13 +170,7 @@ export const POST = async (req: NextRequest) => {
 				},
 			})
 
-			const serialized = serialize(COOKIE_PAYMENT_STATUS, "pending", {
-				httpOnly: true,
-				secure: process.env.NODE_ENV === "production",
-				sameSite: "strict",
-				maxAge: MAX_AGE,
-				path: "/",
-			})
+			cookies().set(COOKIE_PAYMENT_STATUS, "pending")
 
 			return NextResponse.json(
 				{
@@ -185,10 +180,7 @@ export const POST = async (req: NextRequest) => {
 					},
 				},
 				{
-					status: 201,
-					headers: {
-						"Set-Cookie": serialized,
-					},
+					status: 201
 				}
 			)
 		}
