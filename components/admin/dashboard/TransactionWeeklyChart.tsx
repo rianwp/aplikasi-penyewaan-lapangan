@@ -84,7 +84,7 @@ const TransactionWeeklyChart = () => {
 				) : null}
 				{!isPending && isError ? (
 					<p className="text-sm font-semibold text-gray-400">
-						{error.message ?? "Terjadi Kesalahan"}
+						{error?.message ?? "Terjadi Kesalahan"}
 					</p>
 				) : null}
 			</div>
