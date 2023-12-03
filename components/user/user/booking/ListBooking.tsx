@@ -46,7 +46,7 @@ const ListBooking = () => {
 						return <ItemBookingSkeleton key={index} />
 				  })}
 			{!isPending && responseData.length === 0 ? (
-				<div className="w-full py-10 flex items-center justify-center gap-y-2">
+				<div className="w-full py-20 flex flex-col items-center justify-center gap-y-2">
 					<p className="text-center text-gray-400 text-lg font-semibold">
 						Belum ada Booking
 					</p>
