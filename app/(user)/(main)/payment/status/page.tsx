@@ -21,7 +21,7 @@ const Page = async ({
 			color: "text-green-500",
 		},
 		pending: {
-			message: "Pembayaran Sedang Diproses",
+			message: "Pembayaran Pending",
 			color: "text-yellow-500",
 		},
 		failed: {
