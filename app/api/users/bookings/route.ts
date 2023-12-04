@@ -58,6 +58,7 @@ export const GET = async (req: NextRequest) => {
 					? "success"
 					: data.status,
 				payment_type: data.payment_type,
+				payment_link: data.payment_link,
 				tanggal: data.tanggal,
 			}
 		})
