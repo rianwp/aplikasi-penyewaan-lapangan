@@ -36,11 +36,11 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 				<p className="text-sm text-gray-400 text-right pl-2">
 					{data.transaction_time
 						? formatDate(new Date(data.transaction_time), true)
-						: "Belum Dibayar"}
+						: formatDate(new Date(data.createdAt), true)}
 				</p>
 			</div>
 			<p className="text-xs font-bold pt-2 border-t">Detail Booking</p>
-			<div className="flex flex-row justify-between">
+			<div className="flex flex-row justify-between flex-wrap">
 				<div className="flex flex-row">
 					<div className="flex flex-col gap-y-1 text-gray-400 text-sm border-r pr-4 items-center justify-center">
 						<p>{data.jam_mulai}</p>
@@ -55,7 +55,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 					</div>
 				</div>
 				{data.status === "pending" ? (
-					<div className="justify-self-end">
+					<div className="">
 						<a
 							href={data.payment_link || ""}
 							className={buttonVariants({ variant: "link" })}
