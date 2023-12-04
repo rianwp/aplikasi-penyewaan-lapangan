@@ -40,7 +40,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 				</p>
 			</div>
 			<p className="text-xs font-bold pt-2 border-t">Detail Booking</p>
-			<div className="flex flex-row justify-between flex-wrap">
+			<div className="flex flex-row justify-between flex-wrap gap-y-2">
 				<div className="flex flex-row">
 					<div className="flex flex-col gap-y-1 text-gray-400 text-sm border-r pr-4 items-center justify-center">
 						<p>{data.jam_mulai}</p>
@@ -55,7 +55,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 					</div>
 				</div>
 				{data.status === "pending" ? (
-					<div className="">
+					<div className="self-center">
 						<a
 							href={data.payment_link || ""}
 							className="text-sm transition duration-300 hover:text-client-primary hover:underline"
