@@ -47,7 +47,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 						<p>-</p>
 						<p>{data.jam_berakhir}</p>
 					</div>
-					<div className="flex flex-col gap-y-2 pl-4">
+					<div className="flex flex-col gap-y-4 pl-4">
 						<h1 className="text-lg font-bold">{data.jenis_lapangan}</h1>
 						<p className="text-gray-400 text-sm">
 							{formatDate(new Date(data.tanggal), true)}
