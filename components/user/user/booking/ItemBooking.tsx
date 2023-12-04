@@ -55,7 +55,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 					</div>
 				</div>
 				{data.status === "pending" ? (
-					<div className="self-center">
+					<div>
 						<a
 							href={data.payment_link || ""}
 							className="text-sm transition duration-300 hover:text-client-primary hover:underline"
