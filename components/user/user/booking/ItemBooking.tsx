@@ -36,7 +36,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 				<p className="text-sm text-gray-400 text-right pl-2">
 					{data.transaction_time
 						? formatDate(new Date(data.transaction_time), true)
-						: formatDate(new Date(data.createdAt), true)}
+						: "Belum Dibayar"}
 				</p>
 			</div>
 			<p className="text-xs font-bold pt-2 border-t">Detail Booking</p>
