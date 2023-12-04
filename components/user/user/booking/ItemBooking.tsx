@@ -58,7 +58,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 					<div className="">
 						<a
 							href={data.payment_link || ""}
-							className={buttonVariants({ variant: "link" })}
+							className="text-sm transition duration-300 hover:text-client-primary hover:underline"
 						>
 							Lanjutkan Pembayaran
 						</a>
