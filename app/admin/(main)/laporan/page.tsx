@@ -1,3 +1,4 @@
+import LaporanPage from "@/components/admin/laporan/LaporanPage"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
@@ -5,13 +6,7 @@ export const metadata: Metadata = {
 }
 
 const Page = () => {
-	return (
-		<>
-			<h1 className="font-semibold text-4xl text-system-text-primary">
-				Laporan
-			</h1>
-		</>
-	)
+	return <LaporanPage />
 }
 
 export default Page

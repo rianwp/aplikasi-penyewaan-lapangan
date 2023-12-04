@@ -53,7 +53,8 @@
 		"tailwindcss": "3.3.3",
 		"tailwindcss-animate": "^1.0.7",
 		"typescript": "5.2.2",
-		"uuid": "^9.0.1"
+		"uuid": "^9.0.1",
+		"xlsx": "^0.18.5"
 	},
 	"devDependencies": {
 		"@types/bcrypt": "^5.0.1",
