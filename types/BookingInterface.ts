@@ -19,6 +19,7 @@ export interface BookingResponseInterface {
 	transaction_time?: string
 	status: string
 	payment_type: string
+	payment_link?: string
 	tanggal: string
 }
 

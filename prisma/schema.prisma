@@ -28,7 +28,8 @@ model Booking {
   status            TransactionStatus @default(pending)
   tanggal           DateTime          @default(now()) 
   payment_type      String            @db.VarChar(255)
-  transaction_time  DateTime?             
+  transaction_time  DateTime?
+  payment_link      String?           @db.VarChar(255)          
   id_user           String            @db.VarChar(255)
   id_lapangan       String            @db.VarChar(255)
   createdAt         DateTime          @default(now())

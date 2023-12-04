@@ -163,6 +163,7 @@ export const POST = async (req: NextRequest) => {
 			await prisma.booking.create({
 				data: {
 					...bookingPayload,
+					payment_link: redirect_url
 				},
 			})
 

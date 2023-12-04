@@ -49,7 +49,7 @@ const BookingConfirmation = ({
 				})
 			} else {
 				const redirectUrl = data.data.redirectUrl
-				window.open(redirectUrl)
+				window.open(redirectUrl, "_self")
 			}
 		}
 	}, [isPending, isError, isIdle])

@@ -38,7 +38,7 @@ const TransactionWeeklyChart = () => {
 		isError,
 		error,
 	} = useQuery({
-		queryKey: ["getDashboardChart"],
+		queryKey: ["getDashboardWeeklyChart"],
 		queryFn: () => getDashboardWeeklyChart(),
 	})
 

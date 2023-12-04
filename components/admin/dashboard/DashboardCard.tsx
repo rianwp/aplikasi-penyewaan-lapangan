@@ -1,6 +1,5 @@
 import { Skeleton } from "@/components/ui/skeleton"
 import { DashboardHeaderInterface } from "@/types/DashboardInterface"
-import { Loader2 } from "lucide-react"
 
 interface DashboardCardPropsInterface {
 	data: DashboardHeaderInterface

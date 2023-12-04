@@ -1,4 +1,5 @@
-import { FAILED_TRANSACTION, SUCCESS_TRANSACTION } from "@/constants"
+import { buttonVariants } from "@/components/ui/button"
+import { FAILED_TRANSACTION } from "@/constants"
 import { cn } from "@/lib/shadcnUtils"
 import { BookingResponseInterface } from "@/types/BookingInterface"
 import formatDate from "@/utils/formatDate"
@@ -39,18 +40,30 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 				</p>
 			</div>
 			<p className="text-xs font-bold pt-2 border-t">Detail Booking</p>
-			<div className="flex flex-row">
-				<div className="flex flex-col gap-y-1 text-gray-400 text-sm border-r pr-4 items-center justify-center">
-					<p>{data.jam_mulai}</p>
-					<p>-</p>
-					<p>{data.jam_berakhir}</p>
+			<div className="flex flex-row justify-between">
+				<div className="flex flex-row">
+					<div className="flex flex-col gap-y-1 text-gray-400 text-sm border-r pr-4 items-center justify-center">
+						<p>{data.jam_mulai}</p>
+						<p>-</p>
+						<p>{data.jam_berakhir}</p>
+					</div>
+					<div className="flex flex-col gap-y-2 pl-4">
+						<h1 className="text-lg font-bold">{data.jenis_lapangan}</h1>
+						<p className="text-gray-400 text-sm">
+							{formatDate(new Date(data.tanggal), true)}
+						</p>
+					</div>
 				</div>
-				<div className="flex flex-col gap-y-2 pl-4">
-					<h1 className="text-lg font-bold">{data.jenis_lapangan}</h1>
-					<p className="text-gray-400 text-sm">
-						{formatDate(new Date(data.tanggal), true)}
-					</p>
-				</div>
+				{data.status === "pending" ? (
+					<div className="justify-self-end">
+						<a
+							href={data.payment_link || ""}
+							className={buttonVariants({ variant: "link" })}
+						>
+							Lanjutkan Pembayaran
+						</a>
+					</div>
+				) : null}
 			</div>
 		</div>
 	)
