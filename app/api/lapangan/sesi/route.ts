@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
 
 	const { jam_mulai, jam_berakhir } = body as SesiLapanganRequestInterface
 
-	if (!checkValidHours(jam_mulai, jam_berakhir)) {
+	if (!checkValidHours(jam_mulai, jam_berakhir) && jam_berakhir !== "00:00") {
 		return NextResponse.json(
 			{
 				success: false,

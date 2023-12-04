@@ -24,7 +24,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 	const body = await req.json()
 	const { jam_mulai, jam_berakhir } = body as SesiLapanganRequestInterface
 
-	if (!checkValidHours(jam_mulai, jam_berakhir)) {
+	if (!checkValidHours(jam_mulai, jam_berakhir) && jam_berakhir !== "00:00") {
 		return NextResponse.json(
 			{
 				success: false,
