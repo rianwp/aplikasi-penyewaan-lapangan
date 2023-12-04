@@ -40,14 +40,14 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 				</p>
 			</div>
 			<p className="text-xs font-bold pt-2 border-t">Detail Booking</p>
-			<div className="flex flex-row justify-between flex-wrap gap-y-2">
+			<div className="flex flex-row justify-between flex-wrap gap-y-4">
 				<div className="flex flex-row">
 					<div className="flex flex-col gap-y-1 text-gray-400 text-sm border-r pr-4 items-center justify-center">
 						<p>{data.jam_mulai}</p>
 						<p>-</p>
 						<p>{data.jam_berakhir}</p>
 					</div>
-					<div className="flex flex-col gap-y-4 pl-4">
+					<div className="flex flex-col gap-y-2 pl-4">
 						<h1 className="text-lg font-bold">{data.jenis_lapangan}</h1>
 						<p className="text-gray-400 text-sm">
 							{formatDate(new Date(data.tanggal), true)}
