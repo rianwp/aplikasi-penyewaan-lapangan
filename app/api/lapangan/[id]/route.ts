@@ -5,6 +5,7 @@ import { IdParamsInterface } from "@/types/IdParamsInterface"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
+import { utcToZonedTime } from "date-fns-tz"
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
@@ -78,7 +79,12 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 					return (
 						!FAILED_TRANSACTION.includes(data.status) &&
 						formatDate(data.tanggal) ===
-							formatDate(new Date(tanggal || new Date()))
+							formatDate(new Date(tanggal || new Date())) &&
+						new Date(
+							`${formatDate(new Date(data.tanggal))} ${
+								lapangan.SesiLapangan.jam_berakhir
+							}`
+						) < utcToZonedTime(new Date(), "Asia/Jakarta")
 					)
 				})
 				return {

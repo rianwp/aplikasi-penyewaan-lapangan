@@ -5,6 +5,7 @@ import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import checkBody from "@/utils/checkBody"
 import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
+import { utcToZonedTime } from "date-fns-tz"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
@@ -156,7 +157,12 @@ export const GET = async (req: NextRequest) => {
 			const isLapanganBooked = lap.Booking.some((data) => {
 				return (
 					!FAILED_TRANSACTION.includes(data.status) &&
-					formatDate(data.tanggal) === formatDate(new Date(tanggal))
+					formatDate(data.tanggal) === formatDate(new Date(tanggal)) &&
+					new Date(
+						`${formatDate(new Date(data.tanggal))} ${
+							lap.SesiLapangan.jam_berakhir
+						}`
+					) < utcToZonedTime(new Date(), "Asia/Jakarta")
 				)
 			})
 			return {
