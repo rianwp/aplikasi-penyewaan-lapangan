@@ -1,3 +1,4 @@
+import { currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
@@ -68,7 +69,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				Image: {
 					set: imageMap,
 				},
-				updatedAt: new Date(),
+				updatedAt: currentDateTZ,
 			},
 			where: {
 				id,

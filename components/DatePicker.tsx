@@ -10,6 +10,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover"
+import { currentDateTZ } from "@/constants"
 
 interface DatePickerPropsInterface {
 	date: Date | undefined
@@ -47,7 +48,7 @@ const DatePicker = ({
 					selected={date}
 					required={true}
 					onDayClick={() => setOpen(false)}
-					fromDate={new Date()}
+					fromDate={currentDateTZ}
 					onSelect={onDateChange}
 					initialFocus
 				/>

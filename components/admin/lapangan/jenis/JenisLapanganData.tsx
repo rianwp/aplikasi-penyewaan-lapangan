@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query"
 import { JenisLapanganResponseInterface } from "@/types/JenisLapanganInterface"
 import { useToast } from "@/components/ui/use-toast"
 import ImageList from "./ImageList"
+import { currentDateTZ } from "@/constants"
 
 const header = ["no", "jenis lapangan", "deskripsi", "foto"]
 
@@ -72,8 +73,8 @@ const JenisLapanganData = () => {
 			Image: [],
 			jenis_lapangan: "",
 			deskripsi: "",
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			createdAt: currentDateTZ,
+			updatedAt: currentDateTZ,
 		},
 	})
 	const [deleteData, setDeleteData] = useState({

@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
+import { currentDateTZ } from "@/constants"
+import { utcToZonedTime } from "date-fns-tz"
 
 export const POST = async (req: NextRequest) => {
 	const {
@@ -52,9 +54,9 @@ export const POST = async (req: NextRequest) => {
 				status: transaction_status,
 				amount: Number(gross_amount),
 				gross_amount: Number(gross_amount),
-				updatedAt: new Date(),
+				updatedAt: currentDateTZ,
 				payment_type: payment_type,
-				transaction_time: new Date(transaction_time),
+				transaction_time: utcToZonedTime(transaction_time, "Asia/Jakarta"),
 			},
 		})
 		return NextResponse.json({})

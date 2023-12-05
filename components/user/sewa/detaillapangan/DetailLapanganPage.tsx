@@ -22,6 +22,7 @@ import LoginAlert from "./LoginAlert"
 import { useRecoilState } from "recoil"
 import { currentOrderState } from "@/store/app-store"
 import BookingConfirmation from "./BookingConfirmation"
+import { currentDateTZ } from "@/constants"
 
 interface DetailLapanganPagePropsInterface {
 	id: string
@@ -33,8 +34,8 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 	const [date, setDate] = useState<Date | undefined>(
 		new Date(
 			checkDate(searchParams.get("tanggal"))
-				? new Date(searchParams.get("tanggal") || new Date())
-				: new Date()
+				? new Date(searchParams.get("tanggal") || currentDateTZ)
+				: currentDateTZ
 		)
 	)
 
@@ -50,7 +51,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 		queryKey: ["getLapangan", id],
 		refetchOnWindowFocus: true,
 		queryFn: () =>
-			getLapanganById(id, formatDate(date || new Date()) || undefined),
+			getLapanganById(id, formatDate(date || currentDateTZ) || undefined),
 	})
 
 	const { data: userData, isFetching: isUserFetching } = useQuery({
@@ -80,8 +81,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 		}
 	}, [isRefetching, isRefetchError])
 
-	const responseData =
-		(dataLapangan?.data.lapangan as LapanganResponseInterface)
+	const responseData = dataLapangan?.data.lapangan as LapanganResponseInterface
 
 	const [selectedImage, setSelectedImage] = useState(0)
 	const [isLoginAlertOpen, setIsLoginAlertOpen] = useState(false)
@@ -96,7 +96,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 				jenis_lapangan: responseData.JenisLapangan.jenis_lapangan,
 				jam_mulai: responseData.SesiLapangan.jam_mulai,
 				jam_berakhir: responseData.SesiLapangan.jam_berakhir,
-				tanggal: formatDate(date || new Date()),
+				tanggal: formatDate(date || currentDateTZ),
 			})
 			setIsBookingOpen(true)
 		} else {

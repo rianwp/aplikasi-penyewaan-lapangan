@@ -10,6 +10,7 @@ import { deleteSesiLapangan, getSesiLapangan } from "@/lib/http"
 import { useQuery } from "@tanstack/react-query"
 import { SesiLapanganResponseInterface } from "@/types/SesiLapanganInterface"
 import { useToast } from "@/components/ui/use-toast"
+import { currentDateTZ } from "@/constants"
 
 const header = ["no", "jam mulai", "jam berakhir"]
 
@@ -64,8 +65,8 @@ const SesiLapanganData = () => {
 			id: "",
 			jam_berakhir: "",
 			jam_mulai: "",
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			createdAt: currentDateTZ,
+			updatedAt: currentDateTZ,
 		},
 	})
 	const [deleteData, setDeleteData] = useState({

@@ -1,4 +1,4 @@
-import { FAILED_TRANSACTION } from "@/constants"
+import { FAILED_TRANSACTION, currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
@@ -69,8 +69,8 @@ export const POST = async (req: NextRequest) => {
 				harga,
 				id_jenislap,
 				id_sesilap,
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				createdAt: currentDateTZ,
+				updatedAt: currentDateTZ,
 			},
 		})
 
@@ -156,20 +156,14 @@ export const GET = async (req: NextRequest) => {
 			}
 			const isLapanganPast =
 				new Date(
-					`${formatDate(new Date(tanggal || new Date()))} ${
+					`${formatDate(new Date(tanggal || currentDateTZ))} ${
 						lap.SesiLapangan.jam_berakhir
 					}`
-				) < utcToZonedTime(new Date(), "Asia/Jakarta")
+				) < currentDateTZ
 			const isLapanganBooked = lap.Booking.some((data) => {
 				return (
 					!FAILED_TRANSACTION.includes(data.status) &&
 					formatDate(data.tanggal) === formatDate(new Date(tanggal))
-					// &&
-					// new Date(
-					// 	`${formatDate(new Date(tanggal || new Date()))} ${
-					// 		lap.SesiLapangan.jam_berakhir
-					// 	}`
-					// ) < utcToZonedTime(new Date(), "Asia/Jakarta")
 				)
 			})
 			return {

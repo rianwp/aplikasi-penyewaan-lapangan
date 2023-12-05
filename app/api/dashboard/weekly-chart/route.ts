@@ -1,4 +1,4 @@
-import { SUCCESS_TRANSACTION } from "@/constants"
+import { SUCCESS_TRANSACTION, currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import formatDate from "@/utils/formatDate"
@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest) => {
 	}
 	try {
 		const firstDayOfThisWeek = () => {
-			const currentDate = new Date()
+			const currentDate = currentDateTZ
 			currentDate.setDate(currentDate.getDate() - currentDate.getDay())
 			return new Date(formatDate(currentDate))
 		}

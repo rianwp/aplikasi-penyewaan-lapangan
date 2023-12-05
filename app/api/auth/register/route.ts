@@ -1,4 +1,4 @@
-import { COOKIE_AUTH, MAX_AGE } from "@/constants"
+import { COOKIE_AUTH, MAX_AGE, currentDateTZ } from "@/constants"
 import { prisma } from "@/lib/db"
 import { RegisterInterface } from "@/types/RegisterInterface"
 import checkBody from "@/utils/checkBody"
@@ -105,8 +105,8 @@ export const POST = async (req: NextRequest) => {
 				name,
 				password: hashedPassword,
 				no_telp,
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				createdAt: currentDateTZ,
+				updatedAt: currentDateTZ,
 			},
 		})
 

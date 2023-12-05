@@ -10,6 +10,7 @@ import AddLapangan from "./AddLapangan"
 import EditLapangan from "./EditLapangan"
 import handleObjectState from "@/utils/handleObjectState"
 import DeleteData from "../../DeleteData"
+import { currentDateTZ } from "@/constants"
 
 const LapanganData = () => {
 	const { toast } = useToast()
@@ -61,8 +62,8 @@ const LapanganData = () => {
 				jam_mulai: "",
 				jam_berakhir: "",
 			},
-			createdAt: new Date(),
-			updatedAt: new Date(),
+			createdAt: currentDateTZ,
+			updatedAt: currentDateTZ,
 		},
 	})
 

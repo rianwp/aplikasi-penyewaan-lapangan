@@ -1,4 +1,5 @@
 import { $Enums } from "@prisma/client"
+import { utcToZonedTime } from "date-fns-tz"
 
 export const COOKIE_AUTH = "token"
 export const MAX_AGE = 60 * 60 * 24
@@ -14,3 +15,4 @@ export const FAILED_TRANSACTION: $Enums.TransactionStatus[] = [
 	"failure",
 	"deny",
 ]
+export const currentDateTZ = utcToZonedTime(new Date(), "Asia/Jakarta")

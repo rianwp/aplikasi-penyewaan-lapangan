@@ -1,3 +1,4 @@
+import { currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { SesiLapanganRequestInterface } from "@/types/SesiLapanganInterface"
@@ -73,8 +74,8 @@ export const POST = async (req: NextRequest) => {
 			data: {
 				jam_mulai: jam_mulai,
 				jam_berakhir: jam_berakhir,
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				createdAt: currentDateTZ,
+				updatedAt: currentDateTZ,
 			},
 		})
 

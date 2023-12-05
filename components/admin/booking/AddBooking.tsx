@@ -19,6 +19,7 @@ import SelectLapangan from "./SelectLapangan"
 import DatePicker from "@/components/DatePicker"
 import formatDate from "@/utils/formatDate"
 import { Input } from "@/components/ui/input"
+import { currentDateTZ } from "@/constants"
 
 interface AddBookingPropsInterface {
 	isOpen: boolean
@@ -35,11 +36,11 @@ const AddBooking = ({ isOpen, onOpenChange }: AddBookingPropsInterface) => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["getBooking"] })
 			queryClient.invalidateQueries({ queryKey: ["getLapangan"] })
-		}
+		},
 	})
 
 	const [inputForm, setInputForm] = useState<BookingRequestInterface>({
-		tanggal: formatDate(new Date()),
+		tanggal: formatDate(currentDateTZ),
 		id_lapangan: "",
 	})
 

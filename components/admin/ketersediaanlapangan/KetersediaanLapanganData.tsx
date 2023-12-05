@@ -9,11 +9,12 @@ import { LapanganResponseInterface } from "@/types/LapanganInterface"
 import DatePicker from "@/components/DatePicker"
 import { Label } from "@/components/ui/label"
 import formatDate from "@/utils/formatDate"
+import { currentDateTZ } from "@/constants"
 
 const KetersediaanLapanganData = () => {
 	const { toast } = useToast()
 
-	const [dateFilter, setDateFilter] = useState<Date | undefined>(new Date())
+	const [dateFilter, setDateFilter] = useState<Date | undefined>(currentDateTZ)
 
 	const {
 		data: dataLapangan,
@@ -26,7 +27,7 @@ const KetersediaanLapanganData = () => {
 	} = useQuery({
 		queryKey: ["getLapangan"],
 		refetchOnWindowFocus: false,
-		queryFn: () => getLapangan(formatDate(dateFilter || new Date())),
+		queryFn: () => getLapangan(formatDate(dateFilter || currentDateTZ)),
 	})
 
 	useEffect(() => {

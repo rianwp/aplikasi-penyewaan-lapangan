@@ -1,4 +1,4 @@
-import { FAILED_TRANSACTION } from "@/constants"
+import { FAILED_TRANSACTION, currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
@@ -77,21 +77,15 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 				const { Booking, ...lapWithoutBooking } = lapangan
 				const isLapanganPast =
 					new Date(
-						`${formatDate(new Date(tanggal || new Date()))} ${
+						`${formatDate(new Date(tanggal || currentDateTZ))} ${
 							lapangan.SesiLapangan.jam_berakhir
 						}`
-					) < utcToZonedTime(new Date(), "Asia/Jakarta")
+					) < currentDateTZ
 				const isLapanganBooked = lapangan.Booking.some((data) => {
 					return (
 						!FAILED_TRANSACTION.includes(data.status) &&
 						formatDate(data.tanggal) ===
-							formatDate(new Date(tanggal || new Date()))
-						// 	&&
-						// new Date(
-						// 	`${formatDate(new Date(tanggal || new Date()))} ${
-						// 		lapangan.SesiLapangan.jam_berakhir
-						// 	}`
-						// ) < utcToZonedTime(new Date(), "Asia/Jakarta")
+							formatDate(new Date(tanggal || currentDateTZ))
 					)
 				})
 				return {
@@ -208,7 +202,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				id_sesilap: {
 					set: id_sesilap,
 				},
-				updatedAt: new Date(),
+				updatedAt: currentDateTZ,
 			},
 			where: {
 				id,

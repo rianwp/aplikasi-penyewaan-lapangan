@@ -13,7 +13,7 @@ import EditBooking from "./EditBooking"
 import formatDate from "@/utils/formatDate"
 import formatCurrency from "@/utils/formatCurrency"
 import { cn } from "@/lib/shadcnUtils"
-import { FAILED_TRANSACTION } from "@/constants"
+import { FAILED_TRANSACTION, currentDateTZ } from "@/constants"
 import { $Enums } from "@prisma/client"
 
 const header = [
@@ -113,9 +113,9 @@ const BookingData = () => {
 			harga: 0,
 			status: "pending",
 			payment_type: "",
-			createdAt: formatDate(new Date()),
-			updatedAt: formatDate(new Date()),
-			tanggal: formatDate(new Date()),
+			createdAt: formatDate(currentDateTZ),
+			updatedAt: formatDate(currentDateTZ),
+			tanggal: formatDate(currentDateTZ),
 		},
 	})
 	const [deleteData, setDeleteData] = useState({

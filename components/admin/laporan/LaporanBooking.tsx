@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
+import { currentDateTZ } from "@/constants"
 import { getBooking } from "@/lib/http"
 import { BookingResponseInterface } from "@/types/BookingInterface"
 import formatCurrency from "@/utils/formatCurrency"
@@ -64,7 +65,7 @@ const LaporanBooking = () => {
 		const ws = XLSX.utils.json_to_sheet(data)
 		const wb = XLSX.utils.book_new()
 		XLSX.utils.book_append_sheet(wb, ws, "Sheet1")
-		XLSX.writeFile(wb, `Laporan_${formatDate(new Date(), true)}.xlsx`)
+		XLSX.writeFile(wb, `Laporan_${formatDate(currentDateTZ, true)}.xlsx`)
 	}
 
 	return (

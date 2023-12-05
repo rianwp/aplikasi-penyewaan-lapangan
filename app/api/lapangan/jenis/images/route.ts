@@ -1,3 +1,4 @@
+import { currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import imageKit from "@/lib/imageKit"
@@ -69,8 +70,8 @@ export const POST = async (req: NextRequest) => {
 			data: {
 				id: uploadedImage.fileId,
 				imageUrl: uploadedImage.url,
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				createdAt: currentDateTZ,
+				updatedAt: currentDateTZ,
 			},
 		})
 		return NextResponse.json(

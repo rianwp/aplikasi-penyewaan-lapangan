@@ -1,4 +1,4 @@
-import { FAILED_TRANSACTION } from "@/constants"
+import { FAILED_TRANSACTION, currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { BookingRequestInterface } from "@/types/BookingInterface"
@@ -86,7 +86,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 		if (
 			new Date(
 				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
-			) < utcToZonedTime(new Date(), "Asia/Jakarta")
+			) < currentDateTZ
 		) {
 			return NextResponse.json(
 				{
@@ -129,7 +129,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				id_lapangan: {
 					set: id_lapangan,
 				},
-				updatedAt: new Date(),
+				updatedAt: currentDateTZ,
 			},
 			where: {
 				id,

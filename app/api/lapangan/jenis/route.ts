@@ -1,3 +1,4 @@
+import { currentDateTZ } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
@@ -50,8 +51,8 @@ export const POST = async (req: NextRequest) => {
 				Image: {
 					connect: imageIdMap,
 				},
-				createdAt: new Date(),
-				updatedAt: new Date(),
+				createdAt: currentDateTZ,
+				updatedAt: currentDateTZ,
 			},
 		})
 
