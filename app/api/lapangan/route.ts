@@ -157,12 +157,13 @@ export const GET = async (req: NextRequest) => {
 			const isLapanganBooked = lap.Booking.some((data) => {
 				return (
 					!FAILED_TRANSACTION.includes(data.status) &&
-					formatDate(data.tanggal) === formatDate(new Date(tanggal)) &&
-					new Date(
-						`${formatDate(new Date(data.tanggal))} ${
-							lap.SesiLapangan.jam_berakhir
-						}`
-					) < utcToZonedTime(new Date(), "Asia/Jakarta")
+					formatDate(data.tanggal) === formatDate(new Date(tanggal))
+					// &&
+					// new Date(
+					// 	`${formatDate(new Date(data.tanggal))} ${
+					// 		lap.SesiLapangan.jam_berakhir
+					// 	}`
+					// ) < utcToZonedTime(new Date(), "Asia/Jakarta")
 				)
 			})
 			return {
