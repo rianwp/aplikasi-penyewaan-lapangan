@@ -80,7 +80,12 @@ const AddLapangan = ({ isOpen, onOpenChange }: AddLapanganPropsInterface) => {
 								autoComplete="off"
 								value={inputForm.harga}
 								onChange={(e) =>
-									handleObjectState("harga", handleNegativeNumber(Number(e.target.value)), setInputForm)}
+									handleObjectState(
+										"harga",
+										handleNegativeNumber(e.target.value),
+										setInputForm
+									)
+								}
 								className="w-full"
 							/>
 						</div>

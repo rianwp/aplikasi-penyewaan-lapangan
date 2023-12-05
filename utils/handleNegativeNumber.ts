@@ -1,8 +1,8 @@
-const handleNegativeNumber = (number: number) => {
-	if (number < 0) {
+const handleNegativeNumber = (number: number | string) => {
+	if (Number(number) < 0) {
 		return 0
 	}
-	return number
+	return Number(number)
 }
 
 export default handleNegativeNumber

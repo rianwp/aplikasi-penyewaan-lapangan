@@ -111,7 +111,7 @@ const EditLapangan = ({
 								onChange={(e) =>
 									handleObjectState(
 										"harga",
-										handleNegativeNumber(Number(e.target.value)),
+										handleNegativeNumber(e.target.value),
 										setInputForm
 									)
 								}
