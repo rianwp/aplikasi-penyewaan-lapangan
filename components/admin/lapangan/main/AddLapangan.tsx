@@ -124,7 +124,12 @@ const AddLapangan = ({ isOpen, onOpenChange }: AddLapanganPropsInterface) => {
 				<DialogFooter>
 					<Button
 						disabled={isPending}
-						onClick={() => mutate(inputForm)}
+						onClick={() =>
+							mutate({
+								...inputForm,
+								harga: Number(inputForm.harga),
+							})
+						}
 						className="bg-system-button-primary hover:bg-system-button-primary_hover flex flex-row gap-x-2"
 						type="button"
 					>

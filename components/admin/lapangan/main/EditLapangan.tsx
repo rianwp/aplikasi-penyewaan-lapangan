@@ -154,7 +154,13 @@ const EditLapangan = ({
 					<Button
 						disabled={isPending}
 						onClick={() =>
-							mutate({ id: currentData.id, dataLapangan: inputForm })
+							mutate({
+								id: currentData.id,
+								dataLapangan: {
+									...inputForm,
+									harga: Number(inputForm.harga),
+								},
+							})
 						}
 						className="bg-system-button-primary hover:bg-system-button-primary_hover flex flex-row gap-x-2"
 						type="button"
