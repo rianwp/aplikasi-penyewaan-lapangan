@@ -154,7 +154,13 @@ export const GET = async (req: NextRequest) => {
 			if (!tanggal) {
 				return lapWithoutBooking
 			}
-			const isLapanganNotAvailable = lap.Booking.some((data) => {
+			const isLapanganPast =
+				new Date(
+					`${formatDate(new Date(tanggal || new Date()))} ${
+						lap.SesiLapangan.jam_berakhir
+					}`
+				) < utcToZonedTime(new Date(), "Asia/Jakarta")
+			const isLapanganBooked = lap.Booking.some((data) => {
 				return (
 					!FAILED_TRANSACTION.includes(data.status) &&
 					formatDate(data.tanggal) === formatDate(new Date(tanggal))
@@ -168,7 +174,7 @@ export const GET = async (req: NextRequest) => {
 			})
 			return {
 				...lapWithoutBooking,
-				available: !isLapanganNotAvailable,
+				available: !isLapanganBooked && !isLapanganPast,
 			}
 		})
 

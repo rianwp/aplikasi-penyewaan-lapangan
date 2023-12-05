@@ -75,7 +75,13 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 		} else {
 			const filterBooking = () => {
 				const { Booking, ...lapWithoutBooking } = lapangan
-				const isLapanganNotAvailable = lapangan.Booking.some((data) => {
+				const isLapanganPast =
+					new Date(
+						`${formatDate(new Date(tanggal || new Date()))} ${
+							lapangan.SesiLapangan.jam_berakhir
+						}`
+					) < utcToZonedTime(new Date(), "Asia/Jakarta")
+				const isLapanganBooked = lapangan.Booking.some((data) => {
 					return (
 						!FAILED_TRANSACTION.includes(data.status) &&
 						formatDate(data.tanggal) ===
@@ -90,7 +96,7 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 				})
 				return {
 					...lapWithoutBooking,
-					available: !isLapanganNotAvailable,
+					available: !isLapanganBooked && !isLapanganPast,
 				}
 			}
 
