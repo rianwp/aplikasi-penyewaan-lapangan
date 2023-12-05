@@ -220,22 +220,34 @@ const ImageUploader = ({
 						<Input
 							className="w-fit"
 							type="file"
-							disabled={isDeleteImagePending || isUploadImagePending}
+							disabled={
+								isDeleteImagePending ||
+								isUploadImagePending ||
+								isDataImagesPending
+							}
 							onChange={(e) => handleImageChange(e)}
 						/>
-						{isUploadImagePending || isDeleteImagePending ? (
+						{isUploadImagePending ||
+						isDeleteImagePending ||
+						isDataImagesPending ? (
 							<Loader2 className="h-6 w-6 animate-spin text-white" />
 						) : null}
 					</div>
 				</div>
 				<DialogFooter>
 					<Button
-						disabled={isDataImagesPending || isDeleteImagePending}
+						disabled={
+							isDataImagesPending ||
+							isDeleteImagePending ||
+							isUploadImagePending
+						}
 						onClick={() => handleSave(false)}
 						className="bg-system-button-primary hover:bg-system-button-primary_hover flex flex-row gap-x-2"
 						type="button"
 					>
-						{isDataImagesPending || isDeleteImagePending ? (
+						{isDataImagesPending ||
+						isDeleteImagePending ||
+						isUploadImagePending ? (
 							<Loader2 className="h-5 w-5 animate-spin text-white" />
 						) : null}
 						<p>Simpan</p>
