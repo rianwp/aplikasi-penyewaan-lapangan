@@ -8,6 +8,7 @@ import formatDate from "@/utils/formatDate"
 import { Prisma } from "@prisma/client"
 import { NextRequest, NextResponse } from "next/server"
 import { v4 as uuidv4 } from "uuid"
+import { utcToZonedTime } from "date-fns-tz"
 
 export const POST = async (req: NextRequest) => {
 	const user = await auth(req)
@@ -70,7 +71,7 @@ export const POST = async (req: NextRequest) => {
 		if (
 			new Date(
 				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
-			) < new Date()
+			) < utcToZonedTime(new Date(), "Asia/Jakarta")
 		) {
 			return NextResponse.json(
 				{
@@ -163,7 +164,7 @@ export const POST = async (req: NextRequest) => {
 			await prisma.booking.create({
 				data: {
 					...bookingPayload,
-					payment_link: redirect_url
+					payment_link: redirect_url,
 				},
 			})
 

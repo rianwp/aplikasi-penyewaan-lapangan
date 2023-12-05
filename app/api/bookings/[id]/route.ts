@@ -5,6 +5,7 @@ import { BookingRequestInterface } from "@/types/BookingInterface"
 import { IdParamsInterface } from "@/types/IdParamsInterface"
 import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
+import { utcToZonedTime } from "date-fns-tz"
 import { NextRequest, NextResponse } from "next/server"
 
 export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
@@ -85,7 +86,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 		if (
 			new Date(
 				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
-			) < new Date()
+			) < utcToZonedTime(new Date(), "Asia/Jakarta")
 		) {
 			return NextResponse.json(
 				{
