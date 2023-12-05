@@ -75,22 +75,21 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 		} else {
 			const filterBooking = () => {
 				const { Booking, ...lapWithoutBooking } = lapangan
-				const isLapanganBooked = lapangan.Booking.some((data) => {
+				const isLapanganNotAvailable = lapangan.Booking.some((data) => {
 					return (
 						!FAILED_TRANSACTION.includes(data.status) &&
 						formatDate(data.tanggal) ===
-							formatDate(new Date(tanggal || new Date()))
-						// 	&&
-						// new Date(
-						// 	`${formatDate(new Date(data.tanggal))} ${
-						// 		lapangan.SesiLapangan.jam_berakhir
-						// 	}`
-						// ) < utcToZonedTime(new Date(), "Asia/Jakarta")
+							formatDate(new Date(tanggal || new Date())) &&
+						new Date(
+							`${formatDate(new Date(tanggal || new Date()))} ${
+								lapangan.SesiLapangan.jam_berakhir
+							}`
+						) < utcToZonedTime(new Date(), "Asia/Jakarta")
 					)
 				})
 				return {
 					...lapWithoutBooking,
-					available: !isLapanganBooked,
+					available: !isLapanganNotAvailable,
 				}
 			}
 
