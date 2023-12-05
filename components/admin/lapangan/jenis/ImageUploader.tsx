@@ -194,6 +194,7 @@ const ImageUploader = ({
 										</button>
 										{checkIsSelected(data.id) ? (
 											<button
+												disabled={isDeleteImagePending}
 												className="absolute z-10 w-full h-full bg-black/40 flex items-center justify-center text-white"
 												onClick={() => handleImageUnselect(data.id)}
 											>
@@ -201,6 +202,7 @@ const ImageUploader = ({
 											</button>
 										) : (
 											<button
+												disabled={isDeleteImagePending}
 												className="absolute z-10 w-full h-full bg-black/0 hover:bg-black/40 transition duration-300 flex items-center justify-center text-white/0 hover:text-white"
 												onClick={() => handleImageSelect(data)}
 											>
