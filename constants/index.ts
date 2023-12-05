@@ -15,4 +15,4 @@ export const FAILED_TRANSACTION: $Enums.TransactionStatus[] = [
 	"failure",
 	"deny",
 ]
-export const currentDateTZ = utcToZonedTime(new Date(), "Asia/Jakarta")
+export const currentDateTZ = new Date()
