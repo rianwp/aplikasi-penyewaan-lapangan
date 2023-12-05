@@ -56,7 +56,7 @@ export const POST = async (req: NextRequest) => {
 				gross_amount: Number(gross_amount),
 				updatedAt: currentDateTZ,
 				payment_type: payment_type,
-				transaction_time: new Date(transaction_time),
+				transaction_time: transaction_time,
 			},
 		})
 		return NextResponse.json({})
