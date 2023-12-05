@@ -186,6 +186,7 @@ const ImageUploader = ({
 								<div className="p-2" key={data.id}>
 									<div className="relative w-24 h-24">
 										<button
+											disabled={isDeleteImagePending}
 											onClick={() => handleImageDelete(data.id)}
 											className="w-4 h-4 absolute z-20 -right-1 -top-1 text-white bg-system-danger hover:bg-red-800 rounded-full transition duration-300"
 										>
@@ -229,10 +230,14 @@ const ImageUploader = ({
 				</div>
 				<DialogFooter>
 					<Button
+						disabled={isDataImagesPending || isDeleteImagePending}
 						onClick={() => handleSave(false)}
 						className="bg-system-button-primary hover:bg-system-button-primary_hover flex flex-row gap-x-2"
 						type="button"
 					>
+						{isDataImagesPending || isDeleteImagePending ? (
+							<Loader2 className="h-5 w-5 animate-spin text-white" />
+						) : null}
 						<p>Simpan</p>
 					</Button>
 				</DialogFooter>
