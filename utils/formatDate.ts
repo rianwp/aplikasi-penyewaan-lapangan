@@ -1,8 +1,11 @@
+import validateAndConvertTZ from "./validateAndConvertTZ"
+
 const formatDate = (date: Date, local?: boolean) => {
+	const checkedDate = validateAndConvertTZ(date)
 	if (local) {
-		return date.toLocaleDateString("id-ID", { dateStyle: "medium" })
+		return checkedDate.toLocaleDateString("id-ID", { dateStyle: "medium" })
 	}
-	return date.toDateString()
+	return checkedDate.toDateString()
 }
 
 export default formatDate
