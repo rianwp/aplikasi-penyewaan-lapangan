@@ -48,7 +48,7 @@ const Page = async ({
 	return (
 		<div className="w-full min-h-[calc(100vh-100px)] flex justify-center items-center">
 			<div className="md:w-1/2 w-4/5 text-center">
-				{status ? (
+				{status() ? (
 					<h1
 						className={cn([
 							"text-3xl font-bold mb-4",
