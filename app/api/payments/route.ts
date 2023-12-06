@@ -2,7 +2,6 @@ import { prisma } from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 import { currentDateTZ } from "@/constants"
-import { utcToZonedTime } from "date-fns-tz"
 import validateAndConvertTZ from "@/utils/validateAndConvertTZ"
 
 export const POST = async (req: NextRequest) => {
@@ -13,7 +12,6 @@ export const POST = async (req: NextRequest) => {
 		gross_amount,
 		status_code,
 		transaction_status,
-		transaction_time,
 	} = await req.json()
 
 	const verifySignature = crypto
@@ -57,7 +55,7 @@ export const POST = async (req: NextRequest) => {
 				gross_amount: Number(gross_amount),
 				updatedAt: currentDateTZ,
 				payment_type: payment_type,
-				transaction_time: validateAndConvertTZ(transaction_time),
+				transaction_time: currentDateTZ,
 			},
 		})
 		return NextResponse.json({})
