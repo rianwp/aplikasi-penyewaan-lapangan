@@ -1,3 +1,4 @@
+import validateAndConvertTZ from "@/utils/validateAndConvertTZ"
 import { $Enums } from "@prisma/client"
 import { utcToZonedTime } from "date-fns-tz"
 
@@ -15,4 +16,4 @@ export const FAILED_TRANSACTION: $Enums.TransactionStatus[] = [
 	"failure",
 	"deny",
 ]
-export const currentDateTZ = new Date()
+export const currentDateTZ = validateAndConvertTZ(new Date())
