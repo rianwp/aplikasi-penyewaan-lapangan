@@ -1,6 +1,5 @@
 import validateAndConvertTZ from "@/utils/validateAndConvertTZ"
 import { $Enums } from "@prisma/client"
-import { utcToZonedTime } from "date-fns-tz"
 
 export const COOKIE_AUTH = "token"
 export const MAX_AGE = 60 * 60 * 24

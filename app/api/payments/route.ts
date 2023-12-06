@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 import { currentDateTZ } from "@/constants"
 import { utcToZonedTime } from "date-fns-tz"
+import validateAndConvertTZ from "@/utils/validateAndConvertTZ"
 
 export const POST = async (req: NextRequest) => {
 	const {
@@ -56,7 +57,7 @@ export const POST = async (req: NextRequest) => {
 				gross_amount: Number(gross_amount),
 				updatedAt: currentDateTZ,
 				payment_type: payment_type,
-				transaction_time: transaction_time,
+				transaction_time: validateAndConvertTZ(transaction_time),
 			},
 		})
 		return NextResponse.json({})
