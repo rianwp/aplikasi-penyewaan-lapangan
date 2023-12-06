@@ -2,7 +2,6 @@ import { prisma } from "@/lib/db"
 import { NextRequest, NextResponse } from "next/server"
 import crypto from "crypto"
 import { currentDateTZ } from "@/constants"
-import validateAndConvertTZ from "@/utils/validateAndConvertTZ"
 
 export const POST = async (req: NextRequest) => {
 	const {
