@@ -1,8 +1,7 @@
-import { FAILED_TRANSACTION } from "@/constants"
+import { FAILED_TRANSACTION, currentDateTZ } from "@/constants"
 import { cn } from "@/lib/shadcnUtils"
 import { BookingResponseInterface } from "@/types/BookingInterface"
 import formatDate from "@/utils/formatDate"
-import validateAndConvertTZ from "@/utils/validateAndConvertTZ"
 import { $Enums } from "@prisma/client"
 
 interface ItemBookingPropsInterface {
@@ -19,6 +18,10 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 		}
 		return "bg-yellow-400"
 	}
+	console.log("new Date() " + new Date())
+	console.log("Date.now " + Date.now())
+	console.log("currentDateTZ " + currentDateTZ)
+	console.log("createdAT " + data.createdAt)
 
 	return (
 		<div className="w-full p-4 rounded-lg border flex flex-col gap-y-4 bg-white">
@@ -36,11 +39,8 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 				</div>
 				<p className="text-sm text-gray-400 text-right pl-2">
 					{data.transaction_time
-						? formatDate(
-								validateAndConvertTZ(new Date(data.transaction_time)),
-								true
-						  )
-						: formatDate(validateAndConvertTZ(new Date(data.createdAt)), true)}
+						? formatDate(new Date(data.transaction_time), true)
+						: formatDate(new Date(data.createdAt), true)}
 				</p>
 			</div>
 			<p className="text-xs font-bold pt-2 border-t">Detail Booking</p>
