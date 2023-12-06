@@ -113,9 +113,9 @@ const BookingData = () => {
 			harga: 0,
 			status: "pending",
 			payment_type: "",
-			createdAt: formatDate(currentDateTZ),
-			updatedAt: formatDate(currentDateTZ),
-			tanggal: formatDate(currentDateTZ),
+			createdAt: formatDate(new Date()),
+			updatedAt: formatDate(new Date()),
+			tanggal: formatDate(new Date()),
 		},
 	})
 	const [deleteData, setDeleteData] = useState({

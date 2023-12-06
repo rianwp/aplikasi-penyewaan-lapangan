@@ -62,8 +62,8 @@ const LapanganData = () => {
 				jam_mulai: "",
 				jam_berakhir: "",
 			},
-			createdAt: currentDateTZ,
-			updatedAt: currentDateTZ,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 	})
 

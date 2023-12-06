@@ -48,7 +48,7 @@ const DatePicker = ({
 					selected={date}
 					required={true}
 					onDayClick={() => setOpen(false)}
-					fromDate={currentDateTZ}
+					fromDate={new Date()}
 					onSelect={onDateChange}
 					initialFocus
 				/>

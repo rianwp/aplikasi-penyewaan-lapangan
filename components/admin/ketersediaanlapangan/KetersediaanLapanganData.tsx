@@ -14,7 +14,7 @@ import { currentDateTZ } from "@/constants"
 const KetersediaanLapanganData = () => {
 	const { toast } = useToast()
 
-	const [dateFilter, setDateFilter] = useState<Date | undefined>(currentDateTZ)
+	const [dateFilter, setDateFilter] = useState<Date | undefined>(new Date())
 
 	const {
 		data: dataLapangan,
@@ -27,7 +27,7 @@ const KetersediaanLapanganData = () => {
 	} = useQuery({
 		queryKey: ["getLapangan"],
 		refetchOnWindowFocus: false,
-		queryFn: () => getLapangan(formatDate(dateFilter || currentDateTZ)),
+		queryFn: () => getLapangan(formatDate(dateFilter || new Date())),
 	})
 
 	useEffect(() => {

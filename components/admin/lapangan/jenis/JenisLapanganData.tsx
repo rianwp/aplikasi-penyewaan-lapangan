@@ -73,8 +73,8 @@ const JenisLapanganData = () => {
 			Image: [],
 			jenis_lapangan: "",
 			deskripsi: "",
-			createdAt: currentDateTZ,
-			updatedAt: currentDateTZ,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 	})
 	const [deleteData, setDeleteData] = useState({

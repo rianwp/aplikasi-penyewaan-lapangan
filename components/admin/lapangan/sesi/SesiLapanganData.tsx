@@ -65,8 +65,8 @@ const SesiLapanganData = () => {
 			id: "",
 			jam_berakhir: "",
 			jam_mulai: "",
-			createdAt: currentDateTZ,
-			updatedAt: currentDateTZ,
+			createdAt: new Date(),
+			updatedAt: new Date(),
 		},
 	})
 	const [deleteData, setDeleteData] = useState({

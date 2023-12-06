@@ -34,8 +34,8 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 	const [date, setDate] = useState<Date | undefined>(
 		new Date(
 			checkDate(searchParams.get("tanggal"))
-				? new Date(searchParams.get("tanggal") || currentDateTZ)
-				: currentDateTZ
+				? new Date(searchParams.get("tanggal") || new Date())
+				: new Date()
 		)
 	)
 
@@ -51,7 +51,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 		queryKey: ["getLapangan", id],
 		refetchOnWindowFocus: true,
 		queryFn: () =>
-			getLapanganById(id, formatDate(date || currentDateTZ) || undefined),
+			getLapanganById(id, formatDate(date || new Date()) || undefined),
 	})
 
 	const { data: userData, isFetching: isUserFetching } = useQuery({
@@ -96,7 +96,7 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 				jenis_lapangan: responseData.JenisLapangan.jenis_lapangan,
 				jam_mulai: responseData.SesiLapangan.jam_mulai,
 				jam_berakhir: responseData.SesiLapangan.jam_berakhir,
-				tanggal: formatDate(date || currentDateTZ),
+				tanggal: formatDate(date || new Date()),
 			})
 			setIsBookingOpen(true)
 		} else {
