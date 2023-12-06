@@ -20,8 +20,6 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 		return "bg-yellow-400"
 	}
 
-	console.log(data.transaction_time)
-	console.log(data.tanggal)
 	return (
 		<div className="w-full p-4 rounded-lg border flex flex-col gap-y-4 bg-white">
 			<div className="flex fex-row justify-between">
