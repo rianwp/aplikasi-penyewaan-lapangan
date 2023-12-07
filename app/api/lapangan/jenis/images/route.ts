@@ -70,8 +70,8 @@ export const POST = async (req: NextRequest) => {
 			data: {
 				id: uploadedImage.fileId,
 				imageUrl: uploadedImage.url,
-				createdAt: currentDateTZ,
-				updatedAt: currentDateTZ,
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			},
 		})
 		return NextResponse.json(

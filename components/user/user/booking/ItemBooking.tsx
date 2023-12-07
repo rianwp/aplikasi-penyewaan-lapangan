@@ -20,13 +20,6 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 		}
 		return "bg-yellow-400"
 	}
-	console.log(
-		"parse ISO " + utcToZonedTime(parseISO(data.createdAt), "Asia/Jakarta")
-	)
-	console.log("new Date() " + new Date())
-	console.log("Date.now " + Date.now())
-	console.log("currentDateTZ " + currentDateTZ)
-	console.log("createdAT " + data.createdAt)
 
 	return (
 		<div className="w-full p-4 rounded-lg border flex flex-col gap-y-4 bg-white">

@@ -105,8 +105,8 @@ export const POST = async (req: NextRequest) => {
 				name,
 				password: hashedPassword,
 				no_telp,
-				createdAt: currentDateTZ,
-				updatedAt: currentDateTZ,
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			},
 		})
 

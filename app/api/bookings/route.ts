@@ -1,4 +1,8 @@
-import { FAILED_TRANSACTION, SUCCESS_TRANSACTION, currentDateTZ } from "@/constants"
+import {
+	FAILED_TRANSACTION,
+	SUCCESS_TRANSACTION,
+	currentDateTZ,
+} from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
 import { BookingRequestInterface } from "@/types/BookingInterface"
@@ -138,11 +142,11 @@ export const POST = async (req: NextRequest) => {
 					: user.data?.name || "",
 			amount: lapangan.harga,
 			gross_amount: lapangan.harga,
-			transaction_time: user.data?.role === "admin" ? currentDateTZ : undefined,
+			transaction_time: user.data?.role === "admin" ? new Date() : undefined,
 			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
 			status: user.data?.role === "admin" ? "offline_payment" : undefined,
 			createdAt: new Date(),
-			updatedAt: currentDateTZ,
+			updatedAt: new Date(),
 		}
 
 		if (user.data?.role === "user") {

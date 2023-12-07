@@ -91,7 +91,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 			data: {
 				jam_mulai,
 				jam_berakhir,
-				updatedAt: currentDateTZ,
+				updatedAt: new Date(),
 			},
 			where: {
 				id,

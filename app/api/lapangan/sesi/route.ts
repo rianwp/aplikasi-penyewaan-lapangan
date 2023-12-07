@@ -74,8 +74,8 @@ export const POST = async (req: NextRequest) => {
 			data: {
 				jam_mulai: jam_mulai,
 				jam_berakhir: jam_berakhir,
-				createdAt: currentDateTZ,
-				updatedAt: currentDateTZ,
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			},
 		})
 

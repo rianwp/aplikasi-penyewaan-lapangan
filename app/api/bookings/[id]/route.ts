@@ -129,7 +129,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				id_lapangan: {
 					set: id_lapangan,
 				},
-				updatedAt: currentDateTZ,
+				updatedAt: new Date(),
 			},
 			where: {
 				id,

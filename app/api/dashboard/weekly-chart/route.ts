@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest) => {
 	}
 	try {
 		const firstDayOfThisWeek = () => {
-			const currentDate = currentDateTZ
+			const currentDate = new Date()
 			currentDate.setDate(currentDate.getDate() - currentDate.getDay())
 			return new Date(formatDate(currentDate))
 		}

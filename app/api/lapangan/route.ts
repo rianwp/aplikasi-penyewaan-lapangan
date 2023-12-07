@@ -69,8 +69,8 @@ export const POST = async (req: NextRequest) => {
 				harga,
 				id_jenislap,
 				id_sesilap,
-				createdAt: currentDateTZ,
-				updatedAt: currentDateTZ,
+				createdAt: new Date(),
+				updatedAt: new Date(),
 			},
 		})
 
@@ -156,7 +156,7 @@ export const GET = async (req: NextRequest) => {
 			}
 			const isLapanganPast =
 				new Date(
-					`${formatDate(new Date(tanggal || currentDateTZ))} ${
+					`${formatDate(new Date(tanggal || new Date()))} ${
 						lap.SesiLapangan.jam_berakhir
 					}`
 				) < currentDateTZ

@@ -77,7 +77,7 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 				const { Booking, ...lapWithoutBooking } = lapangan
 				const isLapanganPast =
 					new Date(
-						`${formatDate(new Date(tanggal || currentDateTZ))} ${
+						`${formatDate(new Date(tanggal || new Date()))} ${
 							lapangan.SesiLapangan.jam_berakhir
 						}`
 					) < currentDateTZ
@@ -85,7 +85,7 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 					return (
 						!FAILED_TRANSACTION.includes(data.status) &&
 						formatDate(data.tanggal) ===
-							formatDate(new Date(tanggal || currentDateTZ))
+							formatDate(new Date(tanggal || new Date()))
 					)
 				})
 				return {
@@ -202,7 +202,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				id_sesilap: {
 					set: id_sesilap,
 				},
-				updatedAt: currentDateTZ,
+				updatedAt: new Date(),
 			},
 			where: {
 				id,
