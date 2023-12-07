@@ -141,7 +141,7 @@ export const POST = async (req: NextRequest) => {
 			transaction_time: user.data?.role === "admin" ? currentDateTZ : undefined,
 			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
 			status: user.data?.role === "admin" ? "offline_payment" : undefined,
-			createdAt: currentDateTZ,
+			createdAt: new Date(),
 			updatedAt: currentDateTZ,
 		}
 
