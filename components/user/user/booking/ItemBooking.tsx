@@ -3,6 +3,8 @@ import { cn } from "@/lib/shadcnUtils"
 import { BookingResponseInterface } from "@/types/BookingInterface"
 import formatDate from "@/utils/formatDate"
 import { $Enums } from "@prisma/client"
+import { parseISO } from "date-fns"
+import { utcToZonedTime } from "date-fns-tz"
 
 interface ItemBookingPropsInterface {
 	data: BookingResponseInterface
@@ -18,6 +20,9 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 		}
 		return "bg-yellow-400"
 	}
+	console.log(
+		"parse ISO " + utcToZonedTime(parseISO(data.createdAt), "Asia/Jakarta")
+	)
 	console.log("new Date() " + new Date())
 	console.log("Date.now " + Date.now())
 	console.log("currentDateTZ " + currentDateTZ)
