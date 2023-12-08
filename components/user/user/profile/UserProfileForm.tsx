@@ -137,7 +137,7 @@ const UserProfileForm = () => {
 	}
 
 	return (
-		<>
+		<div className="w-full px-6 flex flex-col gap-y-4">
 			<div className="flex flex-col gap-y-4">
 				<div className="flex flex-col gap-y-2">
 					<Label htmlFor="name">Nama</Label>
@@ -217,7 +217,7 @@ const UserProfileForm = () => {
 					confirmPassword={inputForm.password}
 				/>
 			) : null}
-		</>
+		</div>
 	)
 }
 
