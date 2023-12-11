@@ -38,8 +38,16 @@ const LoginPage = () => {
 		}
 	}, [isPending, isError, isIdle])
 
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		mutate(inputForm)
+	}
+
 	return (
-		<div className="bg-white border rounded-lg flex flex-col gap-y-4 p-8">
+		<form
+			onSubmit={handleSubmit}
+			className="bg-white border rounded-lg flex flex-col gap-y-4 p-8"
+		>
 			<h1 className="font-bold text-2xl text-center">Login</h1>
 			<div className="flex flex-col gap-y-1">
 				<Label htmlFor="email">Email</Label>
@@ -77,14 +85,14 @@ const LoginPage = () => {
 				disabled={isPending}
 				size="lg"
 				className="flex flex-row gap-x-2 justify-center items-center bg-client-primary hover:bg-red-800 w-full"
-				onClick={() => mutate(inputForm)}
+				type="submit"
 			>
 				{isPending ? (
 					<Loader2 className="h-5 w-5 animate-spin text-white" />
 				) : null}
 				<p>Login</p>
 			</Button>
-		</div>
+		</form>
 	)
 }
 

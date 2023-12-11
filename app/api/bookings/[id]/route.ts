@@ -65,6 +65,7 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 				harga: true,
 				SesiLapangan: {
 					select: {
+						jam_mulai: true,
 						jam_berakhir: true,
 					},
 				},
@@ -86,7 +87,17 @@ export const PUT = async (req: NextRequest, { params }: IdParamsInterface) => {
 		if (
 			new Date(
 				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
-			) < currentDateTZ
+			) < currentDateTZ &&
+			new Date(
+				`${formatDate(new Date(tanggal || new Date()))} ${
+					lapangan.SesiLapangan.jam_mulai
+				}`
+			) <
+				new Date(
+					`${formatDate(new Date(tanggal || new Date()))} ${
+						lapangan.SesiLapangan.jam_berakhir
+					}`
+				)
 		) {
 			return NextResponse.json(
 				{

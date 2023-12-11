@@ -92,7 +92,7 @@ const BookingData = () => {
 				payment_type: data.payment_type,
 				transaction_time: data.transaction_time
 					? formatDate(new Date(data.transaction_time), true)
-					: "",
+					: formatDate(new Date(data.createdAt), true),
 				tanggal: formatDate(new Date(data.tanggal), true),
 			},
 		}

@@ -54,6 +54,7 @@ export const POST = async (req: NextRequest) => {
 				harga: true,
 				SesiLapangan: {
 					select: {
+						jam_mulai: true,
 						jam_berakhir: true,
 					},
 				},
@@ -75,7 +76,17 @@ export const POST = async (req: NextRequest) => {
 		if (
 			new Date(
 				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
-			) < currentDateTZ
+			) < currentDateTZ &&
+			new Date(
+				`${formatDate(new Date(tanggal || new Date()))} ${
+					lapangan.SesiLapangan.jam_mulai
+				}`
+			) <
+				new Date(
+					`${formatDate(new Date(tanggal || new Date()))} ${
+						lapangan.SesiLapangan.jam_berakhir
+					}`
+				)
 		) {
 			return NextResponse.json(
 				{

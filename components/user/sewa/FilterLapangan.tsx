@@ -12,8 +12,17 @@ import { useRecoilState } from "recoil"
 const FilterLapangan = () => {
 	const [filter, setFilter] = useRecoilState<FilterInterface>(filterState)
 	const [tempFilter, setTempFilter] = useState(filter)
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		setFilter(tempFilter)
+	}
+
 	return (
-		<div className="flex lg:flex-row flex-col w-full bg-white rounded-lg border border-border shadow-lg p-2">
+		<form
+			onSubmit={handleSubmit}
+			className="flex lg:flex-row flex-col w-full bg-white rounded-lg border border-border shadow-lg p-2"
+		>
 			<div className="w-full flex lg:flex-row flex-col">
 				<div className="p-4 lg:w-1/3 w-full">
 					<div className="flex flex-col gap-y-2">
@@ -60,9 +69,9 @@ const FilterLapangan = () => {
 				</div>
 			</div>
 			<div className="shrink-0 p-4 self-end">
-				<Button onClick={() => setFilter(tempFilter)}>Cari</Button>
+				<Button type="submit">Cari</Button>
 			</div>
-		</div>
+		</form>
 	)
 }
 

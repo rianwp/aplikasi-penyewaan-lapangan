@@ -80,7 +80,17 @@ export const GET = async (req: NextRequest, { params }: IdParamsInterface) => {
 						`${formatDate(new Date(tanggal || new Date()))} ${
 							lapangan.SesiLapangan.jam_berakhir
 						}`
-					) < currentDateTZ
+					) < currentDateTZ &&
+					new Date(
+						`${formatDate(new Date(tanggal || new Date()))} ${
+							lapangan.SesiLapangan.jam_mulai
+						}`
+					) <
+						new Date(
+							`${formatDate(new Date(tanggal || new Date()))} ${
+								lapangan.SesiLapangan.jam_berakhir
+							}`
+						)
 				const isLapanganBooked = lapangan.Booking.some((data) => {
 					return (
 						!FAILED_TRANSACTION.includes(data.status) &&
