@@ -52,7 +52,7 @@ const LaporanBooking = () => {
 							"Tipe Payment": data.payment_type,
 							"Tanggal Transaksi": data.transaction_time
 								? formatDate(new Date(data.transaction_time), true)
-								: "",
+								: formatDate(new Date(data.createdAt), true),
 							"Tanggal Booking": formatDate(new Date(data.tanggal), true),
 						}
 					})
