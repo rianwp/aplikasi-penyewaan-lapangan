@@ -15,6 +15,7 @@ const FilterLapangan = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		e.stopPropagation()
 		setFilter(tempFilter)
 	}
 

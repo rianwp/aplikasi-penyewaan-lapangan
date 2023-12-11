@@ -39,6 +39,7 @@ const LoginPage = () => {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
+		e.stopPropagation()
 		mutate(inputForm)
 	}
 
