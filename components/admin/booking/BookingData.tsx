@@ -59,6 +59,15 @@ const BookingData = () => {
 	const responseData =
 		(dataBooking?.data.booking as BookingResponseInterface[]) ?? []
 
+	responseData.sort((a, b) => {
+		return (
+			new Date(
+				b.transaction_time ? b.transaction_time : b.createdAt
+			).getTime() -
+			new Date(a.transaction_time ? a.transaction_time : a.createdAt).getTime()
+		)
+	})
+
 	const statusColor = (status: string) => {
 		if (status === "success") {
 			return "bg-green-500"

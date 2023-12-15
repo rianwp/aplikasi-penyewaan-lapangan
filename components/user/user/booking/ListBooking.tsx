@@ -36,6 +36,15 @@ const ListBooking = () => {
 	const responseData =
 		(dataBooking?.data.booking as BookingResponseInterface[]) ?? []
 
+	responseData.sort((a, b) => {
+		return (
+			new Date(
+				b.transaction_time ? b.transaction_time : b.createdAt
+			).getTime() -
+			new Date(a.transaction_time ? a.transaction_time : a.createdAt).getTime()
+		)
+	})
+
 	return (
 		<div className="w-full px-6 flex flex-col gap-y-2">
 			{!isPending
