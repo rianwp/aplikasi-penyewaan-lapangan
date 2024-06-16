@@ -5,7 +5,7 @@ import {
 } from "@/constants"
 import auth from "@/lib/auth"
 import { prisma } from "@/lib/db"
-import { BookingRequestInterface } from "@/types/BookingInterface"
+import { BatchBookingRequestInterface } from "@/types/BookingInterface"
 import checkBody from "@/utils/checkBody"
 import checkDate from "@/utils/checkDate"
 import formatDate from "@/utils/formatDate"
@@ -31,7 +31,7 @@ export const POST = async (req: NextRequest) => {
 	const body = await req.json()
 	checkBody(["tanggal", "id_lapangan"], body)
 
-	const { tanggal, id_lapangan, name } = body as BookingRequestInterface
+	const { id_lapangan, name, tanggal } = body as BatchBookingRequestInterface
 
 	if (!checkDate(tanggal)) {
 		return NextResponse.json(
@@ -46,11 +46,14 @@ export const POST = async (req: NextRequest) => {
 	}
 
 	try {
-		const lapangan = await prisma.lapangan.findUnique({
+		const lapangan = await prisma.lapangan.findMany({
 			where: {
-				id: id_lapangan,
+				id: {
+					in: id_lapangan.map((item) => item),
+				},
 			},
 			select: {
+				id: true,
 				harga: true,
 				SesiLapangan: {
 					select: {
@@ -61,7 +64,7 @@ export const POST = async (req: NextRequest) => {
 			},
 		})
 
-		if (!lapangan) {
+		if (!lapangan || lapangan.length === 0) {
 			return NextResponse.json(
 				{
 					success: false,
@@ -73,37 +76,41 @@ export const POST = async (req: NextRequest) => {
 			)
 		}
 
-		if (
-			new Date(
-				`${formatDate(new Date(tanggal))} ${lapangan.SesiLapangan.jam_berakhir}`
-			) < currentDateTZ &&
-			new Date(
-				`${formatDate(new Date(tanggal || new Date()))} ${
-					lapangan.SesiLapangan.jam_mulai
-				}`
-			) <
+		lapangan.forEach((item) => {
+			if (
+				new Date(
+					`${formatDate(new Date(tanggal))} ${item.SesiLapangan.jam_berakhir}`
+				) < currentDateTZ &&
 				new Date(
 					`${formatDate(new Date(tanggal || new Date()))} ${
-						lapangan.SesiLapangan.jam_berakhir
+						item.SesiLapangan.jam_mulai
 					}`
+				) <
+					new Date(
+						`${formatDate(new Date(tanggal || new Date()))} ${
+							item.SesiLapangan.jam_berakhir
+						}`
+					)
+			) {
+				return NextResponse.json(
+					{
+						success: false,
+						message:
+							"Sesi yang di booking sudah terlewat, silahkan booking sesi selanjutnya",
+					},
+					{
+						status: 400,
+					}
 				)
-		) {
-			return NextResponse.json(
-				{
-					success: false,
-					message:
-						"Sesi yang di booking sudah terlewat, silahkan booking sesi selanjutnya",
-				},
-				{
-					status: 400,
-				}
-			)
-		}
+			}
+		})
 
 		const tanggalNotAvailable = await prisma.booking.findFirst({
 			where: {
 				tanggal: new Date(formatDate(new Date(tanggal))),
-				id_lapangan,
+				id_lapangan: {
+					in: id_lapangan.map((item) => item),
+				},
 				status: {
 					notIn: FAILED_TRANSACTION,
 				},
@@ -122,13 +129,17 @@ export const POST = async (req: NextRequest) => {
 			)
 		}
 
-		const orderId = uuidv4()
+		// const orderId = uuidv4()
 		const batchId = uuidv4()
+		const totalAmount = lapangan.reduce(
+			(accumulator, currentValue) => accumulator + currentValue.harga,
+			0
+		)
 
 		const dataTransaction = {
 			transaction_details: {
-				order_id: orderId,
-				gross_amount: lapangan.harga,
+				order_id: batchId,
+				gross_amount: totalAmount,
 			},
 			customer_details: {
 				first_name:
@@ -150,7 +161,7 @@ export const POST = async (req: NextRequest) => {
 						? user.data.name
 						: name
 					: user.data?.name || "",
-			gross_amount: lapangan.harga,
+			gross_amount: totalAmount,
 			transaction_time: user.data?.role === "admin" ? new Date() : undefined,
 			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
 			status: user.data?.role === "admin" ? "offline_payment" : undefined,
@@ -158,26 +169,54 @@ export const POST = async (req: NextRequest) => {
 			updatedAt: new Date(),
 		}
 
-		const bookingPayload: Prisma.BookingUncheckedCreateInput = {
-			id: orderId,
-			tanggal: new Date(formatDate(new Date(tanggal))),
-			id_lapangan,
-			id_user: user.data?.id || "",
-			atas_nama:
-				user.data?.role === "admin"
-					? !name || name === ""
-						? user.data.name
-						: name
-					: user.data?.name || "",
-			amount: lapangan.harga,
-			gross_amount: lapangan.harga,
-			transaction_time: user.data?.role === "admin" ? new Date() : undefined,
-			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
-			status: user.data?.role === "admin" ? "offline_payment" : undefined,
-			createdAt: new Date(),
-			updatedAt: new Date(),
-			id_batchbooking: batchId,
-		}
+		// const bookingPayload: Prisma.BookingUncheckedCreateInput = {
+		// 	id: orderId,
+		// 	tanggal: new Date(formatDate(new Date(tanggal))),
+		// 	id_lapangan,
+		// 	id_user: user.data?.id || "",
+		// 	atas_nama:
+		// 		user.data?.role === "admin"
+		// 			? !name || name === ""
+		// 				? user.data.name
+		// 				: name
+		// 			: user.data?.name || "",
+		// 	amount: lapangan.harga,
+		// 	gross_amount: lapangan.harga,
+		// 	transaction_time: user.data?.role === "admin" ? new Date() : undefined,
+		// 	payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
+		// 	status: user.data?.role === "admin" ? "offline_payment" : undefined,
+		// 	createdAt: new Date(),
+		// 	updatedAt: new Date(),
+		// 	id_batchbooking: batchId,
+		// }
+
+		const bookingsPayload: Prisma.BookingUncheckedCreateInput[] = lapangan.map(
+			(item) => {
+				const orderId = uuidv4()
+
+				return {
+					id: orderId,
+					tanggal: new Date(formatDate(new Date(tanggal))),
+					id_lapangan: item.id,
+					id_user: user.data?.id || "",
+					atas_nama:
+						user.data?.role === "admin"
+							? !name || name === ""
+								? user.data.name
+								: name
+							: user.data?.name || "",
+					amount: item.harga,
+					gross_amount: item.harga,
+					transaction_time:
+						user.data?.role === "admin" ? new Date() : undefined,
+					payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
+					status: user.data?.role === "admin" ? "offline_payment" : undefined,
+					createdAt: new Date(),
+					updatedAt: new Date(),
+					id_batchbooking: batchId,
+				}
+			}
+		)
 
 		if (user.data?.role === "user") {
 			const transaction = await fetch(process.env.MIDTRANS_SERVER_URL || "", {
@@ -202,11 +241,8 @@ export const POST = async (req: NextRequest) => {
 				},
 			})
 
-			await prisma.booking.create({
-				data: {
-					...bookingPayload,
-					payment_link: redirect_url,
-				},
+			await prisma.booking.createMany({
+				data: bookingsPayload,
 			})
 
 			return NextResponse.json(
@@ -226,8 +262,8 @@ export const POST = async (req: NextRequest) => {
 			data: batchBookingPayload,
 		})
 
-		await prisma.booking.create({
-			data: bookingPayload,
+		await prisma.booking.createMany({
+			data: bookingsPayload,
 		})
 
 		return NextResponse.json(

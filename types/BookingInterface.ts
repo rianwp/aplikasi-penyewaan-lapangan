@@ -6,6 +6,12 @@ export interface BookingRequestInterface {
 	name?: string
 }
 
+export interface BatchBookingRequestInterface {
+	tanggal: string
+	id_lapangan: string[]
+	name?: string
+}
+
 export interface BookingResponseInterface {
 	id: string
 	name: string

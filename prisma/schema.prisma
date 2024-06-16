@@ -32,13 +32,30 @@ model Booking {
   payment_link      String?           @db.VarChar(255)          
   id_user           String            @db.VarChar(255)
   id_lapangan       String            @db.VarChar(255)
+  id_batchbooking   String            @db.VarChar(255)
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @default(now()) @updatedAt
   User              User              @relation(fields: [id_user], references: [id], onDelete: Cascade)
   Lapangan          Lapangan          @relation(fields: [id_lapangan], references: [id], onDelete: Cascade)
+  BatchBooking      BatchBooking      @relation(fields: [id_batchbooking], references: [id], onDelete: Cascade)
 
   @@index([id_user])
   @@index([id_lapangan])
+  @@index([id_batchbooking])
+}
+
+model BatchBooking {
+  id                String            @id
+  gross_amount      Int
+  atas_nama         String            @db.VarChar(255)
+  status            TransactionStatus @default(pending)
+  tanggal           DateTime          @default(now()) 
+  payment_type      String            @db.VarChar(255)
+  transaction_time  DateTime?
+  payment_link      String?           @db.VarChar(255)
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @default(now()) @updatedAt
+  Booking           Booking[]
 }
 
 model Lapangan {
