@@ -141,7 +141,6 @@ export const POST = async (req: NextRequest) => {
 				email: user.data?.email,
 			},
 			expiry: {
-				start_time: format(new Date(), "yyyy-MM-dd HH:mm:ss '+0700'"),
 				unit: 'minutes',
 				duration: 5,
 			},
