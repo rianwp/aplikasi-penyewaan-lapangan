@@ -2,17 +2,18 @@ import {
 	FAILED_TRANSACTION,
 	SUCCESS_TRANSACTION,
 	currentDateTZ,
-} from "@/constants"
-import auth from "@/lib/auth"
-import { prisma } from "@/lib/db"
-import { BookingRequestInterface } from "@/types/BookingInterface"
-import checkBody from "@/utils/checkBody"
-import checkDate from "@/utils/checkDate"
-import formatDate from "@/utils/formatDate"
-import { Prisma } from "@prisma/client"
-import { NextRequest, NextResponse } from "next/server"
-import { v4 as uuidv4 } from "uuid"
-import { utcToZonedTime } from "date-fns-tz"
+} from '@/constants'
+import auth from '@/lib/auth'
+import { prisma } from '@/lib/db'
+import { BookingRequestInterface } from '@/types/BookingInterface'
+import checkBody from '@/utils/checkBody'
+import checkDate from '@/utils/checkDate'
+import formatDate from '@/utils/formatDate'
+import { Prisma } from '@prisma/client'
+import { NextRequest, NextResponse } from 'next/server'
+import { v4 as uuidv4 } from 'uuid'
+import { utcToZonedTime } from 'date-fns-tz'
+import { format } from 'date-fns'
 
 export const POST = async (req: NextRequest) => {
 	const user = await auth(req)
@@ -29,7 +30,7 @@ export const POST = async (req: NextRequest) => {
 	}
 
 	const body = await req.json()
-	checkBody(["tanggal", "id_lapangan"], body)
+	checkBody(['tanggal', 'id_lapangan'], body)
 
 	const { tanggal, id_lapangan, name } = body as BookingRequestInterface
 
@@ -37,7 +38,7 @@ export const POST = async (req: NextRequest) => {
 		return NextResponse.json(
 			{
 				success: false,
-				message: "Format tanggal tidak valid",
+				message: 'Format tanggal tidak valid',
 			},
 			{
 				status: 400,
@@ -65,7 +66,7 @@ export const POST = async (req: NextRequest) => {
 			return NextResponse.json(
 				{
 					success: false,
-					message: "Lapangan dengan id tersebut tidak ditemukan",
+					message: 'Lapangan dengan id tersebut tidak ditemukan',
 				},
 				{
 					status: 404,
@@ -92,7 +93,7 @@ export const POST = async (req: NextRequest) => {
 				{
 					success: false,
 					message:
-						"Sesi yang di booking sudah terlewat, silahkan booking sesi selanjutnya",
+						'Sesi yang di booking sudah terlewat, silahkan booking sesi selanjutnya',
 				},
 				{
 					status: 400,
@@ -114,7 +115,7 @@ export const POST = async (req: NextRequest) => {
 			return NextResponse.json(
 				{
 					success: false,
-					message: "Tanggal ini sudah di booking",
+					message: 'Tanggal ini sudah di booking',
 				},
 				{
 					status: 400,
@@ -132,12 +133,16 @@ export const POST = async (req: NextRequest) => {
 			},
 			customer_details: {
 				first_name:
-					user.data?.role === "admin"
-						? !name || name === ""
+					user.data?.role === 'admin'
+						? !name || name === ''
 							? user.data.name
 							: name
-						: user.data?.name || "",
+						: user.data?.name || '',
 				email: user.data?.email,
+			},
+			page_expiry: {
+				unit: 'minutes',
+				duration: 5,
 			},
 		}
 
@@ -145,15 +150,15 @@ export const POST = async (req: NextRequest) => {
 			id: batchId,
 			tanggal: new Date(formatDate(new Date(tanggal))),
 			atas_nama:
-				user.data?.role === "admin"
-					? !name || name === ""
+				user.data?.role === 'admin'
+					? !name || name === ''
 						? user.data.name
 						: name
-					: user.data?.name || "",
+					: user.data?.name || '',
 			gross_amount: lapangan.harga,
-			transaction_time: user.data?.role === "admin" ? new Date() : undefined,
-			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
-			status: user.data?.role === "admin" ? "offline_payment" : undefined,
+			transaction_time: user.data?.role === 'admin' ? new Date() : undefined,
+			payment_type: user.data?.role === 'admin' ? 'offline' : 'midtrans',
+			status: user.data?.role === 'admin' ? 'offline_payment' : undefined,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 		}
@@ -162,29 +167,29 @@ export const POST = async (req: NextRequest) => {
 			id: orderId,
 			tanggal: new Date(formatDate(new Date(tanggal))),
 			id_lapangan,
-			id_user: user.data?.id || "",
+			id_user: user.data?.id || '',
 			atas_nama:
-				user.data?.role === "admin"
-					? !name || name === ""
+				user.data?.role === 'admin'
+					? !name || name === ''
 						? user.data.name
 						: name
-					: user.data?.name || "",
+					: user.data?.name || '',
 			amount: lapangan.harga,
 			gross_amount: lapangan.harga,
-			transaction_time: user.data?.role === "admin" ? new Date() : undefined,
-			payment_type: user.data?.role === "admin" ? "offline" : "midtrans",
-			status: user.data?.role === "admin" ? "offline_payment" : undefined,
+			transaction_time: user.data?.role === 'admin' ? new Date() : undefined,
+			payment_type: user.data?.role === 'admin' ? 'offline' : 'midtrans',
+			status: user.data?.role === 'admin' ? 'offline_payment' : undefined,
 			createdAt: new Date(),
 			updatedAt: new Date(),
 			id_batchbooking: batchId,
 		}
 
-		if (user.data?.role === "user") {
-			const transaction = await fetch(process.env.MIDTRANS_SERVER_URL || "", {
-				method: "POST",
+		if (user.data?.role === 'user') {
+			const transaction = await fetch(process.env.MIDTRANS_SERVER_URL || '', {
+				method: 'POST',
 				headers: {
-					"Content-Type": "application/json",
-					Accept: "application/json",
+					'Content-Type': 'application/json',
+					Accept: 'application/json',
 					Authorization: `Basic ${process.env.MIDTRANS_SERVER_KEY_HASHED}`,
 				},
 				body: JSON.stringify(dataTransaction),
@@ -233,7 +238,7 @@ export const POST = async (req: NextRequest) => {
 		return NextResponse.json(
 			{
 				success: true,
-				message: "Booking sukses dibuat",
+				message: 'Booking sukses dibuat',
 			},
 			{
 				status: 201,
@@ -244,7 +249,7 @@ export const POST = async (req: NextRequest) => {
 		return NextResponse.json(
 			{
 				success: false,
-				message: error.message ?? "Terjadi kesalahan pada server",
+				message: error.message ?? 'Terjadi kesalahan pada server',
 			},
 			{
 				status: 500,
@@ -254,7 +259,7 @@ export const POST = async (req: NextRequest) => {
 }
 
 export const GET = async (req: NextRequest) => {
-	const user = await auth(req, "admin")
+	const user = await auth(req, 'admin')
 	if (!user.success) {
 		return NextResponse.json(
 			{
@@ -302,7 +307,7 @@ export const GET = async (req: NextRequest) => {
 				updatedAt: data.updatedAt,
 				transaction_time: data.transaction_time,
 				status: SUCCESS_TRANSACTION.includes(data.status)
-					? "success"
+					? 'success'
 					: data.status,
 				payment_type: data.payment_type,
 				tanggal: data.tanggal,
@@ -325,7 +330,7 @@ export const GET = async (req: NextRequest) => {
 		return NextResponse.json(
 			{
 				success: false,
-				message: error.message ?? "Terjadi kesalahan pada server",
+				message: error.message ?? 'Terjadi kesalahan pada server',
 			},
 			{
 				status: 500,
