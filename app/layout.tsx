@@ -1,20 +1,20 @@
-import GlobalProvider from "@/components/GlobalProvider"
-import "./globals.css"
-import type { Metadata } from "next"
-import { Toaster } from "@/components/ui/toaster"
-import { Inter as FontSans } from "next/font/google"
-import { cn } from "@/lib/shadcnUtils"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import GlobalProvider from '@/components/GlobalProvider'
+import './globals.css'
+import type { Metadata } from 'next'
+import { Toaster } from '@/components/ui/toaster'
+import { Inter as FontSans } from 'next/font/google'
+import { cn } from '@/lib/shadcnUtils'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 export const fontSans = FontSans({
-	subsets: ["latin"],
-	variable: "--font-sans",
+	subsets: ['latin'],
+	variable: '--font-sans',
 })
 
 export const metadata: Metadata = {
-	title: "Margajaya App",
-	description: "Aplikasi Penyewaan Lapangan Badminton",
-	icons: "/favicon.ico",
+	title: 'Jawara Kalasan App',
+	description: 'Aplikasi Penyewaan Lapangan Badminton',
+	icons: '/favicon.ico',
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
@@ -23,7 +23,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 			<html lang="en">
 				<body
 					className={cn(
-						"min-h-screen bg-background font-sans antialiased overflow-y-auto scroll-smooth",
+						'min-h-screen bg-background font-sans antialiased overflow-y-auto scroll-smooth',
 						fontSans.variable
 					)}
 				>
