@@ -140,10 +140,6 @@ export const POST = async (req: NextRequest) => {
 						: user.data?.name || '',
 				email: user.data?.email,
 			},
-			expiry: {
-				unit: 'minutes',
-				duration: 5,
-			},
 		}
 
 		const batchBookingPayload: Prisma.BatchBookingUncheckedCreateInput = {
