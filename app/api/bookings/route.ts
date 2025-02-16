@@ -140,7 +140,8 @@ export const POST = async (req: NextRequest) => {
 						: user.data?.name || '',
 				email: user.data?.email,
 			},
-			page_expiry: {
+			expiry: {
+				start_time: format(new Date(), "yyyy-MM-dd HH:mm:ss '+0700'"),
 				unit: 'minutes',
 				duration: 5,
 			},
