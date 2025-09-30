@@ -1,4 +1,5 @@
 import ProfileAvatar from "../ProfileAvatar"
+import BatchBookingButton from "./BatchBookingButton"
 import Brand from "./Brand"
 
 const Navbar = () => {
@@ -7,6 +8,7 @@ const Navbar = () => {
 			<div className="flex flex-row justify-between items-center lg:w-9/12 md:w-10/12 w-full">
 				<Brand />
 				<div className="flex flex-row items-center gap-x-2">
+					<BatchBookingButton />
 					<ProfileAvatar role="user" />
 				</div>
 			</div>

@@ -3,101 +3,93 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id              String            @id @default(cuid())
-  name            String            @db.VarChar(255)
-  email           String            @unique
-  password        String            @db.VarChar(255)
-  no_telp         String?           @db.VarChar(20)
-  role            Role              @default(user)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  Booking         Booking[]
+  id        String    @id @default(cuid())
+  name      String    @db.VarChar(255)
+  email     String    @unique
+  password  String    @db.VarChar(255)
+  no_telp   String?   @db.VarChar(20)
+  role      Role      @default(user)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+  Booking   Booking[]
 }
 
 model Booking {
-  id                String            @id
-  amount            Int
-  gross_amount      Int
-  atas_nama         String            @db.VarChar(255)
-  status            TransactionStatus @default(pending)
-  tanggal           DateTime          @default(now()) 
-  payment_type      String            @db.VarChar(255)
-  transaction_time  DateTime?
-  payment_link      String?           @db.VarChar(255)          
-  id_user           String            @db.VarChar(255)
-  id_lapangan       String            @db.VarChar(255)
-  id_batchbooking   String            @db.VarChar(255)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @default(now()) @updatedAt
-  User              User              @relation(fields: [id_user], references: [id], onDelete: Cascade)
-  Lapangan          Lapangan          @relation(fields: [id_lapangan], references: [id], onDelete: Cascade)
-  BatchBooking      BatchBooking      @relation(fields: [id_batchbooking], references: [id], onDelete: Cascade)
-
-  @@index([id_user])
-  @@index([id_lapangan])
-  @@index([id_batchbooking])
+  id               String            @id
+  amount           Int
+  gross_amount     Int
+  atas_nama        String            @db.VarChar(255)
+  status           TransactionStatus @default(pending)
+  tanggal          DateTime          @default(now())
+  payment_type     String            @db.VarChar(255)
+  transaction_time DateTime?
+  payment_link     String?           @db.VarChar(255)
+  id_user          String            @db.VarChar(255)
+  id_lapangan      String            @db.VarChar(255)
+  id_batchbooking  String            @db.VarChar(255)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  User             User              @relation(fields: [id_user], references: [id], onDelete: Cascade)
+  Lapangan         Lapangan          @relation(fields: [id_lapangan], references: [id], onDelete: Cascade)
+  BatchBooking     BatchBooking      @relation(fields: [id_batchbooking], references: [id], onDelete: Cascade)
 }
 
 model BatchBooking {
-  id                String            @id
-  gross_amount      Int
-  atas_nama         String            @db.VarChar(255)
-  status            TransactionStatus @default(pending)
-  tanggal           DateTime          @default(now()) 
-  payment_type      String            @db.VarChar(255)
-  transaction_time  DateTime?
-  payment_link      String?           @db.VarChar(255)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @default(now()) @updatedAt
-  Booking           Booking[]
+  id               String            @id
+  gross_amount     Int
+  atas_nama        String            @db.VarChar(255)
+  status           TransactionStatus @default(pending)
+  tanggal          DateTime          @default(now())
+  payment_type     String            @db.VarChar(255)
+  transaction_time DateTime?
+  payment_link     String?           @db.VarChar(255)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @default(now()) @updatedAt
+  Booking          Booking[]
 }
 
 model Lapangan {
-  id              String            @id @default(cuid())
-  id_jenislap     String            @db.VarChar(255)
-  id_sesilap      String            @db.VarChar(255)
-  harga           Int
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  JenisLapangan   JenisLapangan     @relation(fields: [id_jenislap], references: [id], onDelete: Cascade)
-  SesiLapangan    SesiLapangan      @relation(fields: [id_sesilap], references: [id], onDelete: Cascade)
-  Booking         Booking[]
-
-  @@index([id_jenislap])
-  @@index([id_sesilap])
+  id            String        @id @default(cuid())
+  id_jenislap   String        @db.VarChar(255)
+  id_sesilap    String        @db.VarChar(255)
+  harga         Int
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+  JenisLapangan JenisLapangan @relation(fields: [id_jenislap], references: [id], onDelete: Cascade)
+  SesiLapangan  SesiLapangan  @relation(fields: [id_sesilap], references: [id], onDelete: Cascade)
+  Booking       Booking[]
 }
 
 model JenisLapangan {
-  id              String            @id @default(cuid())
-  jenis_lapangan  String            @db.VarChar(255)
-  deskripsi       String            @db.Text
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  Image           Image[]
-  Lapangan        Lapangan[]
+  id             String     @id @default(cuid())
+  jenis_lapangan String     @db.VarChar(255)
+  deskripsi      String     @db.Text
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @default(now()) @updatedAt
+  Image          Image[]
+  Lapangan       Lapangan[]
 }
 
 model SesiLapangan {
-  id              String            @id @default(cuid())
-  jam_mulai       String            @db.VarChar(10)
-  jam_berakhir    String            @db.VarChar(10)
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  Lapangan        Lapangan[]
+  id           String     @id @default(cuid())
+  jam_mulai    String     @db.VarChar(10)
+  jam_berakhir String     @db.VarChar(10)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
+  Lapangan     Lapangan[]
 }
 
 model Image {
-  id              String            @id @default(cuid())
-  imageUrl        String            @db.Text()
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @default(now()) @updatedAt
-  JenisLapangan   JenisLapangan[]
+  id            String          @id @default(cuid())
+  imageUrl      String          @db.Text
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+  JenisLapangan JenisLapangan[]
 }
 
 enum Role {

@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { toast } from "@/components/ui/use-toast"
-import { addBooking } from "@/lib/http"
+import { addBatchBooking, addBooking } from "@/lib/http"
 import { currentOrderState } from "@/store/app-store"
-import { BookingRequestInterface } from "@/types/BookingInterface"
+import { BatchBookingRequestInterface } from "@/types/BookingInterface"
 import formatCurrency from "@/utils/formatCurrency"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Loader2 } from "lucide-react"
@@ -32,7 +32,7 @@ const BookingConfirmation = ({
 
 	const { mutate, data, isPending, isError, error, isIdle } = useMutation({
 		mutationKey: ["addBooking"],
-		mutationFn: (data: BookingRequestInterface) => addBooking(data),
+		mutationFn: (data: BatchBookingRequestInterface) => addBatchBooking(data),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["getBooking"] })
 			queryClient.invalidateQueries({ queryKey: ["getLapangan"] })
@@ -58,12 +58,12 @@ const BookingConfirmation = ({
 		<Dialog open={isOpen} onOpenChange={(open) => onOpenChange(open)}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Konfirmasi Booking</DialogTitle>
+					<DialogTitle>Keranjang Booking</DialogTitle>
 					<DialogDescription>
 						Konfirmasi Pembayaran untuk Booking
 					</DialogDescription>
 				</DialogHeader>
-				<div className="flex flex-col gap-y-4 py-4">
+				{/* <div className="flex flex-col gap-y-4 py-4">
 					<div className="flex flex-row justify-between items-center gap-4">
 						<Label className="text-left">Jenis Lapangan</Label>
 						<p className="font-bold text-sm text-right">
@@ -82,6 +82,37 @@ const BookingConfirmation = ({
 							Rp. {formatCurrency(currentOrder.harga)}
 						</p>
 					</div>
+				</div> */}
+				<div className="flex flex-col gap-y-4 py-4 overflow-y-auto max-h-40">
+					{currentOrder.lapangan.map((item, index) => (
+						<div
+							key={index}
+							className="flex flex-row justify-between items-center gap-4"
+						>
+							<div className="flex flex-col gap-y-1">
+								<p className="font-bold text-left">{item.jenis_lapangan}</p>
+								<p className="font-bold text-sm text-left">
+									{item.jam_mulai} - {item.jam_berakhir}
+								</p>
+							</div>
+							<p className="font-bold text-lg text-right">
+								Rp. {formatCurrency(item.harga)}
+							</p>
+						</div>
+					))}
+					<div className="flex flex-row justify-between items-start gap-4">
+						<Label className="text-left">Total</Label>
+						<p className="font-bold text-xl text-right">
+							Rp.{" "}
+							{formatCurrency(
+								currentOrder.lapangan.reduce(
+									(accumulator, currentValue) =>
+										accumulator + currentValue.harga,
+									0
+								)
+							)}
+						</p>
+					</div>
 				</div>
 				<DialogFooter>
 					{isIdle || isPending ? (
@@ -89,7 +120,9 @@ const BookingConfirmation = ({
 							disabled={isPending}
 							onClick={() =>
 								mutate({
-									id_lapangan: currentOrder.id_lapangan,
+									id_lapangan: currentOrder.lapangan.map(
+										(item) => item.id_lapangan
+									),
 									tanggal: currentOrder.tanggal,
 								})
 							}

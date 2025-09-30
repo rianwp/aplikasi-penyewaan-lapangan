@@ -1,5 +1,8 @@
 import { currentDateTZ } from "@/constants"
-import { BookingConfirmationInterface } from "@/types/BookingInterface"
+import {
+	BatchBookingConfirmationInterface,
+	BookingConfirmationInterface,
+} from "@/types/BookingInterface"
 import { FilterInterface } from "@/types/FilterInterface"
 import { UserEditRequestInterface } from "@/types/UserInterface"
 import formatDate from "@/utils/formatDate"
@@ -14,14 +17,15 @@ export const filterState = atom<FilterInterface>({
 	},
 })
 
-export const currentOrderState = atom<BookingConfirmationInterface>({
+export const currentOrderState = atom<BatchBookingConfirmationInterface>({
 	key: "currentOrderState",
 	default: {
-		id_lapangan: "",
+		lapangan: [],
 		tanggal: formatDate(new Date()),
-		jenis_lapangan: "",
-		jam_mulai: "",
-		jam_berakhir: "",
-		harga: 0,
 	},
+})
+
+export const isBookingOpenState = atom<boolean>({
+	key: "isBookingOpenState",
+	default: false,
 })

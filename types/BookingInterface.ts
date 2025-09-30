@@ -35,3 +35,15 @@ export interface BookingConfirmationInterface extends BookingRequestInterface {
 	jam_berakhir: string
 	harga: number
 }
+
+export interface BatchBookingConfirmationInterface {
+	tanggal: string
+	name?: string
+	lapangan: {
+		id_lapangan: string
+		jenis_lapangan: string
+		jam_mulai: string
+		jam_berakhir: string
+		harga: number
+	}[]
+}

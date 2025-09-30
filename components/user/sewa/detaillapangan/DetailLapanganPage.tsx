@@ -20,9 +20,9 @@ import PageNotFound from "../../PageNotFound"
 import checkDate from "@/utils/checkDate"
 import LoginAlert from "./LoginAlert"
 import { useRecoilState } from "recoil"
-import { currentOrderState } from "@/store/app-store"
-import BookingConfirmation from "./BookingConfirmation"
+import { currentOrderState, isBookingOpenState } from "@/store/app-store"
 import { currentDateTZ } from "@/constants"
+import BookingConfirmation from "../../BookingConfirmation"
 
 interface DetailLapanganPagePropsInterface {
 	id: string
@@ -86,16 +86,21 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 	const [selectedImage, setSelectedImage] = useState(0)
 	const [isLoginAlertOpen, setIsLoginAlertOpen] = useState(false)
 	const [currentOrder, setCurrentOrder] = useRecoilState(currentOrderState)
-	const [isBookingOpen, setIsBookingOpen] = useState(false)
+	const [isBookingOpen, setIsBookingOpen] = useRecoilState(isBookingOpenState)
 
 	const handleOrder = () => {
 		if (userData?.success) {
 			setCurrentOrder({
-				id_lapangan: responseData.id,
-				harga: responseData.harga,
-				jenis_lapangan: responseData.JenisLapangan.jenis_lapangan,
-				jam_mulai: responseData.SesiLapangan.jam_mulai,
-				jam_berakhir: responseData.SesiLapangan.jam_berakhir,
+				lapangan: [
+					...currentOrder.lapangan,
+					{
+						id_lapangan: responseData.id,
+						harga: responseData.harga,
+						jenis_lapangan: responseData.JenisLapangan.jenis_lapangan,
+						jam_mulai: responseData.SesiLapangan.jam_mulai,
+						jam_berakhir: responseData.SesiLapangan.jam_berakhir,
+					},
+				],
 				tanggal: formatDate(date || new Date()),
 			})
 			setIsBookingOpen(true)
@@ -179,7 +184,9 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 								{isRefetching || isUserFetching ? (
 									<Loader2 className="h-5 w-5 animate-spin text-white" />
 								) : null}
-								{responseData.available ? "Pesan" : "Tidak Tersedia"}
+								{responseData.available
+									? "Tambah ke Keranjang"
+									: "Tidak Tersedia"}
 							</Button>
 						</div>
 					</div>
@@ -193,12 +200,12 @@ const DetailLapanganPage = ({ id }: DetailLapanganPagePropsInterface) => {
 				isOpen={isLoginAlertOpen}
 				onOpenChange={setIsLoginAlertOpen}
 			/>
-			{isBookingOpen ? (
+			{/* {isBookingOpen ? (
 				<BookingConfirmation
 					isOpen={isBookingOpen}
 					onOpenChange={setIsBookingOpen}
 				/>
-			) : null}
+			) : null} */}
 		</div>
 	)
 }

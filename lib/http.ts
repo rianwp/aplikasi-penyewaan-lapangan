@@ -1,4 +1,7 @@
-import { BookingRequestInterface } from "@/types/BookingInterface"
+import {
+	BatchBookingRequestInterface,
+	BookingRequestInterface,
+} from "@/types/BookingInterface"
 import { JenisLapanganRequestInterface } from "@/types/JenisLapanganInterface"
 import { LapanganRequestInterface } from "@/types/LapanganInterface"
 import { LoginInterface } from "@/types/LoginInterface"
@@ -562,6 +565,29 @@ export const getBooking = async () => {
 export const addBooking = async (data: BookingRequestInterface) => {
 	try {
 		const response = await axios.post("/api/bookings", data)
+		return response.data
+	} catch (err) {
+		if (err instanceof AxiosError) {
+			const error = err as AxiosError
+			if (error.code === "500") {
+				throw {
+					success: false,
+					message: "Terjadi Kesalahan",
+				}
+			}
+			throw error.response?.data
+		} else {
+			throw {
+				success: false,
+				message: "Terjadi Kesalahan",
+			}
+		}
+	}
+}
+
+export const addBatchBooking = async (data: BatchBookingRequestInterface) => {
+	try {
+		const response = await axios.post("/api/bookings/batch", data)
 		return response.data
 	} catch (err) {
 		if (err instanceof AxiosError) {

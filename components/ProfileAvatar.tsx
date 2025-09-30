@@ -15,20 +15,14 @@ import { List, Loader2, User2 } from "lucide-react"
 import { Button, buttonVariants } from "./ui/button"
 import Link from "next/link"
 import Brand from "./user/Brand"
+import useAuth from "@/hooks/useAuth"
 
 interface ProfileAvatarPropsInterface {
 	role: "admin" | "user"
 }
 
 const ProfileAvatar = ({ role }: ProfileAvatarPropsInterface) => {
-	const { data, isFetching } = useQuery({
-		queryKey: [role === "admin" ? "adminData" : "userData"],
-		refetchOnMount: false,
-		refetchOnWindowFocus: false,
-		refetchInterval: false,
-		retry: 2,
-		queryFn: () => (role === "admin" ? getAdminData() : getUserData()),
-	})
+	const { data, isFetching } = useAuth(role)
 	const { mutateAsync, isPending: isLogoutPending } = useMutation({
 		mutationKey: ["logout"],
 		mutationFn: logout,
