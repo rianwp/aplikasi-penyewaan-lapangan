@@ -1,10 +1,10 @@
-import { FAILED_TRANSACTION, currentDateTZ } from "@/constants"
-import { cn } from "@/lib/shadcnUtils"
-import { BookingResponseInterface } from "@/types/BookingInterface"
-import formatDate from "@/utils/formatDate"
-import { $Enums } from "@prisma/client"
-import { parseISO } from "date-fns"
-import { utcToZonedTime } from "date-fns-tz"
+import { FAILED_TRANSACTION, currentDateTZ } from '@/constants'
+import { cn } from '@/lib/shadcnUtils'
+import { BookingResponseInterface } from '@/types/BookingInterface'
+import formatDate from '@/utils/formatDate'
+import { $Enums } from '@prisma/client'
+import { parseISO } from 'date-fns'
+import { utcToZonedTime } from 'date-fns-tz'
 
 interface ItemBookingPropsInterface {
 	data: BookingResponseInterface
@@ -12,13 +12,13 @@ interface ItemBookingPropsInterface {
 
 const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 	const statusColor = (status: string) => {
-		if (status === "success") {
-			return "bg-green-500"
+		if (status === 'success') {
+			return 'bg-green-500'
 		}
 		if (FAILED_TRANSACTION.includes(status as $Enums.TransactionStatus)) {
-			return "bg-red-600"
+			return 'bg-red-600'
 		}
-		return "bg-yellow-400"
+		return 'bg-yellow-400'
 	}
 
 	return (
@@ -27,7 +27,7 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 				<div className="flex flex-row gap-x-2 items-center">
 					<p
 						className={cn([
-							"text-sm font-semibold px-2.5 text-white rounded-full",
+							'text-sm font-semibold px-2.5 text-white rounded-full',
 							statusColor(data.status),
 						])}
 					>
@@ -56,14 +56,20 @@ const ItemBooking = ({ data }: ItemBookingPropsInterface) => {
 						</p>
 					</div>
 				</div>
-				{data.status === "pending" ? (
+				{data.status === 'pending' ? (
 					<div>
-						<a
-							href={data.payment_link || ""}
-							className="text-sm transition duration-300 hover:text-client-primary hover:underline"
-						>
-							Lanjutkan Pembayaran
-						</a>
+						{data.payment_link ? (
+							<a
+								href={data.payment_link || ''}
+								className="text-sm transition duration-300 hover:text-client-primary hover:underline"
+							>
+								Lanjutkan Pembayaran
+							</a>
+						) : (
+							<p className="text-sm text-gray-400">
+								Menunggu proses pembayaran
+							</p>
+						)}
 					</div>
 				) : null}
 			</div>
